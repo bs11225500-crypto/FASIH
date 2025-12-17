@@ -1,0 +1,44 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}
+فَصِيح | الصفحة الرئيسية
+{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<section class="home-hero">
+
+    <h1 class="home-title">نرافقك خطوة بخطوة في رحلة النطق</h1>
+    <p class="home-subtitle">
+        ابدأ بتقييم الحالة مع أخصائي نطق،
+        لنساعدك على بناء خطة علاجية مناسبة.
+    </p>
+
+    <div class="cards-wrapper single">
+
+        <div class="card rectangular">
+            <span class="material-icons card-icon">
+                psychology
+            </span>
+
+            <h3>استشارة</h3>
+            <p>
+                اختيار أخصائي نطق مناسب،
+                تعبئة استبيان شامل،
+                ثم إعداد خطة علاجية.
+            </p>
+
+            <a href="#" class="card-btn">ابدأ الآن</a>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+

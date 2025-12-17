@@ -1,0 +1,112 @@
+/* ========== HOME HERO ========== */
+.home-hero {
+    min-height: 150vh;
+    padding: 120px 20px 80px;
+
+    background: linear-gradient(
+        180deg,
+        #679be5 0%,
+        #82ceef 45%,
+        #8fe4b7 100%
+    );
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+}
+
+
+.home-title {
+    color: #ffffff;
+}
+
+.home-subtitle {
+    color: rgba(255,255,255,0.88);
+}
+
+
+.cards-wrapper.single {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+
+.card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 36px 30px;
+
+    max-width: 520px;
+    width: 100%;
+
+    box-shadow: 0 14px 34px rgba(0,0,0,0.08);
+
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 44px rgba(0,0,0,0.12);
+}
+
+
+.card-icon {
+    font-size: 48px;
+    color: #679be5;
+    margin-bottom: 18px;
+}
+
+
+.card h3 {
+    font-size: 21px;
+    font-weight: 700;
+    color: #2E2E3A;
+    margin-bottom: 12px;
+}
+
+.card p {
+    font-size: 15px;
+    color: #6B6B85;
+    line-height: 1.8;
+}
+
+.card-btn {
+    display: inline-block;
+    margin-top: 26px;
+    padding: 10px 30px;
+
+    background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
+    color: #ffffff;
+
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(58,123,213,0.35);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .home-title {
+        font-size: 30px;
+    }
+
+    .home-subtitle {
+        font-size: 16px;
+        margin-bottom: 40px;
+    }
+
+    .card {
+        padding: 30px 24px;
+    }
+}

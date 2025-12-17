@@ -1,0 +1,108 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    background: #f6f5fa;
+}
+
+/* NAVBAR */
+.main-navbar {
+    position: fixed;      
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+
+    background: transparent;
+    padding: 16px 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    transition: background 0.35s ease, box-shadow 0.35s ease;
+}
+
+
+.main-navbar.scrolled {
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.main-navbar.scrolled .nav-links a,
+.main-navbar.scrolled .logo {
+    color: #679be5;
+}
+
+
+.main-navbar.scrolled .icon-btn {
+    border-color: #679be5;
+    color: #3A7BD5;
+}
+
+.logo img {
+    height: 66px;      
+    width: auto;
+    display: block;
+}
+
+
+.nav-links {
+    display: flex;
+    gap: 18px;
+}
+
+.nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.nav-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.6);
+
+    color: #ffffff;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.icon-btn .material-icons {
+    font-size: 22px;
+}
+
+.icon-btn:hover {
+    background: rgba(255,255,255,0.2);
+    border-color: #ffffff;
+}
+
+
+/* FOOTER */
+.main-footer {
+    background: linear-gradient(135deg, #7ED6A7, #679be5);
+    padding: 20px;
+    text-align: center;
+}
+
+.main-footer p {
+    color: #ffffff;
+    font-size: 14px;
+}
+
+
+
