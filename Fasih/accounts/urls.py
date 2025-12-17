@@ -11,8 +11,10 @@ urlpatterns = [
     path('register/patient/complete/',views.complete_patient_profile,name='complete_patient_profile'),
     path('register/specialist/',views.register_specialist_account,name='register_specialist_account'),
     path('register/specialist/complete/',views.complete_specialist_profile,name='complete_specialist_profile'),
-    path('login/', views.login_view, name='login'),
+    path('login/', views.login_view, name='sign_in'),
     path('logout/', views.logout_view, name='logout'),
     path('specialist/pending/', views.specialist_pending, name='specialist_pending'),
+    path('choose-role/', views.choose_role, name='choose_role'),
+
 ]
 
