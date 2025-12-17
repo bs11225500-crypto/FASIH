@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}فَصِيح | منصة النطق للأطفال{% endblock title %}
+    </title>
+
+    <!-- Google Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Arabic Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+    {% block extra_css %}{% endblock extra_css %}
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="main-navbar">
+
+        <a href="{% url 'main:home' %}" class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="فصيح">
+        </a>
+
+
+        <div class="nav-links">
+            <a href="{% url 'main:home' %}">الرئيسية</a>
+            <a href="#">عن فَصِيح</a>
+        </div>
+
+        <div class="nav-actions">
+            <a href="#" class="icon-btn" title="تسجيل الدخول">
+                <span class="material-icons">login</span>
+            </a>
+            <a href="#" class="icon-btn" title="إنشاء حساب">
+                <span class="material-icons">person_add</span>
+            </a>
+        </div>
+
+    </nav>
+
+
+    {% if messages %}
+        <div class="messages">
+            {% for msg in messages %}
+            <p class="msg {{ msg.tags }}">{{ msg }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- PAGE CONTENT -->
+    <main>
+        {% block content %}{% endblock content %}
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+        <p>© 2025 منصة النطق — جميع الحقوق محفوظة</p>
+    </footer>
+
+    {% block extra_js %}
+    <script src="{% static 'js/base.js' %}"></script>
+    {% endblock extra_js %}
+
+</body>
+</html>
