@@ -1,0 +1,99 @@
+{
+  "sections": [
+    {
+      "id": "medical_history",
+      "title": "التاريخ المرضي",
+      "questions": [
+        {
+          "id": "child_age",
+          "type": "number",
+          "label": "عمر الطفل"
+        },
+        {
+          "id": "strangers_understand",
+          "type": "choice",
+          "label": "هل يفهم كلامه الغرباء؟",
+          "options": ["نعم", "أحيانًا", "لا"]
+        },
+        {
+          "id": "previous_speech_sessions",
+          "type": "boolean",
+          "label": "هل سبق واخذ جلسات تخاطب؟"
+        },
+        {
+          "id": "ear_fluids",
+          "type": "boolean",
+          "label": "هل سبق وكان لديه سوائل في الأذن؟"
+        },
+        {
+          "id": "nasal_adenoids",
+          "type": "boolean",
+          "label": "هل لديه لحميات في الأنف؟"
+        },
+        {
+          "id": "language_delay_history",
+          "type": "boolean",
+          "label": "هل لديه تاريخ في التأخر اللغوي؟"
+        },
+        {
+          "id": "developmental_diagnosis",
+          "type": "boolean",
+          "label": "هل سبق وتم تشخيصه باضطراب نمائي؟"
+        },
+        {
+          "id": "diagnosis_details",
+          "type": "text",
+          "label": "في حال نعم، يرجى ذكر التشخيص",
+          "depends_on": "developmental_diagnosis"
+        }
+      ]
+    },
+
+    {
+      "id": "speech_evaluation",
+      "title": "التقييم",
+      "questions": [
+        {
+          "id": "difficult_letters",
+          "type": "multi_select",
+          "label": "الحروف التي لا يستطيع الطفل نطقها",
+          "options": ["م","ف","د","ن","ل","ر","س","ز","ش","ص","ج","ث","ذ","ظ","ك","ق","خ","غ","ع","هـ"]
+        },
+        {
+          "id": "picture_description_audio",
+          "type": "audio_group",
+          "label": "تسجيل وصف الصور",
+          "sections": 4
+        }
+      ]
+    },
+
+    {
+      "id": "severity_analysis",
+      "title": "فهم وتحديد حجم المشكلة",
+      "questions": [
+        {
+          "id": "understood_outside_family",
+          "type": "choice",
+          "label": "هل يفهم كلام طفلك أشخاص خارج الأسرة؟",
+          "options": ["نعم", "أحيانًا", "لا"]
+        },
+        {
+          "id": "repeated_same_errors",
+          "type": "choice",
+          "label": "هل يخطئ في نفس الحروف غالبًا؟",
+          "options": [
+            "نعم (نفس الخطأ يتكرر)",
+            "لا (يتغير من كلمة لكلمة)"
+          ]
+        },
+        {
+          "id": "tries_to_correct",
+          "type": "choice",
+          "label": "هل يحاول الطفل نطق الحرف بشكل صحيح عند تنبيهه؟",
+          "options": ["نعم", "لا", "لم نلاحظ"]
+        }
+      ]
+    }
+  ]
+}

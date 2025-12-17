@@ -1,0 +1,182 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/assessment.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="assessment-wrapper">
+
+  <!-- Progress -->
+  <div class="progress-wrapper">
+    <div class="progress-text">1 / 3</div>
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+    </div>
+  </div>
+    <form id="assessmentForm">
+
+    <!--page 1-->
+    <div class="form-step active">
+
+        <h2>الجزء الأول: التاريخ المرضي</h2>
+        <hr>
+
+        <div class="question">
+        <label>عمر الطفل</label>
+        <input type="number" name="child_age">
+        </div>
+
+        <div class="question">
+        <label>هل يفهم كلامه الغرباء؟</label>
+        <label><input type="radio" name="strangers_understand"> نعم</label>
+        <label><input type="radio" name="strangers_understand"> أحيانًا</label>
+        <label><input type="radio" name="strangers_understand"> لا</label>
+        </div>
+
+        <div class="question">
+        <label>هل سبق واخذ جلسات تخاطب؟</label>
+        <label><input type="radio" name="speech_sessions"> نعم</label>
+        <label><input type="radio" name="speech_sessions"> لا</label>
+        </div>
+
+        <div class="question">
+        <label>هل سبق وكان لديه سوائل في الأذن؟</label>
+        <label><input type="radio" name="ear_fluids"> نعم</label>
+        <label><input type="radio" name="ear_fluids"> لا</label>
+        </div>
+
+        <div class="question">
+        <label>هل لديه لحميات في الأنف؟</label>
+        <label><input type="radio" name="adenoids"> نعم</label>
+        <label><input type="radio" name="adenoids"> لا</label>
+        </div>
+
+        <div class="question">
+        <label>هل لديه تاريخ في التأخر اللغوي؟</label>
+        <label><input type="radio" name="language_delay"> نعم</label>
+        <label><input type="radio" name="language_delay"> لا</label>
+        </div>
+
+        <div class="question">
+        <label>هل سبق وتم تشخيصه باضطراب نمائي؟</label>
+        <label><input type="radio" name="developmental"> نعم</label>
+        <label><input type="radio" name="developmental"> لا</label>
+        </div>
+
+        <div class="question">
+        <label>في حال نعم، يرجى ذكر التشخيص</label>
+        <input type="text" name="diagnosis_details">
+        </div>
+
+         <!-- الأزرار -->
+        <div class="form-footer">
+            <a href="/" class="btn-secondary">رجوع</a>
+            <button type="button" class="btn-primary next-btn">التالي</button>
+        </div>
+    </div>
+
+    <!-- page 2 -->
+    <div class="form-step">
+
+        <h2>الجزء الثاني: التقييم</h2>
+        <hr>
+
+        <div class="question">
+        <label>ضعي ✔ على الحرف الذي لا يستطيع الطفل نطقه</label>
+
+        <div class="letters-grid">
+            <label><input type="checkbox"> م</label>
+            <label><input type="checkbox"> ف</label>
+            <label><input type="checkbox"> د</label>
+            <label><input type="checkbox"> ن</label>
+            <label><input type="checkbox"> ل</label>
+            <label><input type="checkbox"> ر</label>
+            <label><input type="checkbox"> س</label>
+            <label><input type="checkbox"> ز</label>
+            <label><input type="checkbox"> ش</label>
+            <label><input type="checkbox"> ص</label>
+            <label><input type="checkbox"> ج</label>
+            <label><input type="checkbox"> ث</label>
+            <label><input type="checkbox"> ذ</label>
+            <label><input type="checkbox"> ظ</label>
+            <label><input type="checkbox"> ك</label>
+            <label><input type="checkbox"> ق</label>
+            <label><input type="checkbox"> خ</label>
+            <label><input type="checkbox"> غ</label>
+            <label><input type="checkbox"> ع</label>
+            <label><input type="checkbox"> هـ</label>
+        </div>
+        </div>
+
+        <div class="question audio-step">
+
+            <p class="audio-instruction">
+                اوصف الصورة بصوتك
+            </p>
+
+            <div class="image-box">
+                <img id="currentImage" src="/static/img/img1.jpeg" alt="صورة التقييم">
+            </div>
+
+            <div class="audio-controls">
+                <button type="button" id="recordBtn">🎙️ بدء التسجيل</button>
+                <span id="recordStatus"></span>
+            </div>
+
+            <div class="audio-navigation">
+                <button type="button" id="nextImageBtn" class="btn-primary">
+                التالي
+                </button>
+            </div>
+
+        </div>
+
+        <div class="form-footer">
+            <button type="button" class="btn-secondary prev-btn">السابق</button>
+            <button type="button" class="btn-primary next-btn">التالي</button>
+        </div>
+
+    </div>
+
+    <!-- page 3 -->
+    <div class="form-step">
+
+        <h2>الجزء الثالث: فهم وتحديد حجم المشكلة</h2>
+        <hr>
+
+        <div class="question">
+        <label>هل يفهم كلام طفلك أشخاص خارج الأسرة؟</label>
+        <label><input type="radio" name="outside_family"> نعم</label>
+        <label><input type="radio" name="outside_family"> أحيانًا</label>
+        <label><input type="radio" name="outside_family"> لا</label>
+        </div>
+
+        <div class="question">
+        <label>هل يخطئ في نفس الحروف غالبًا؟</label>
+        <label><input type="radio" name="same_errors"> نعم (نفس الخطأ)</label>
+        <label><input type="radio" name="same_errors"> لا (يتغير)</label>
+        </div>
+
+        <div class="question">
+        <label>هل يحاول الطفل نطق الحرف بشكل صحيح عند تنبيهه؟</label>
+        <label><input type="radio" name="tries_correct"> نعم</label>
+        <label><input type="radio" name="tries_correct"> لا</label>
+        <label><input type="radio" name="tries_correct"> لم نلاحظ</label>
+        </div>
+
+        <div class="form-footer">
+            <button type="button" class="btn-secondary prev-btn">السابق</button>
+            <button type="submit" class="btn-primary">إرسال التقييم</button>
+        </div>
+
+    </div>
+
+    </form>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/assessment.js' %}"></script>
+{% endblock extra_js %}
