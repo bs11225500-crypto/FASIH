@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'session',
     'specialist',
     'task',
-    'treatment',    
+    'treatment',
+    'assessment',    
 ]
 AUTH_USER_MODEL = 'accounts.User'
 
