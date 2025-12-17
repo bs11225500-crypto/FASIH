@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>اختيار نوع الحساب</title>
+
+  <link rel="stylesheet" href="{% static 'css/choose_role.css' %}">
+</head>
+<body>
+
+<div class="card">
+  <h2>اختر نوع الحساب</h2>
+  <p>من فضلك حدّد نوع الحساب للمتابعة</p>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="roles">
+      <button
+        type="submit"
+        name="role"
+        value="PATIENT"
+        class="role-btn role-patient"
+      >
+        ولي أمر / مريض
+      </button>
+
+      <button
+        type="submit"
+        name="role"
+        value="SPECIALIST"
+        class="role-btn role-specialist"
+      >
+        أخصائي اضطرابات نطق
+      </button>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>
