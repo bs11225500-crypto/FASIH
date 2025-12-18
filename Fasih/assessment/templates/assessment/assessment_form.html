@@ -122,12 +122,17 @@
 
             <div class="audio-controls">
                 <button type="button" id="recordBtn">🎙️ بدء التسجيل</button>
+                <button type="button" id="stopBtn" disabled>⏹️ إيقاف</button>
+                <button type="button" id="redoBtn" disabled>🔄 إعادة تسجيل</button>
                 <span id="recordStatus"></span>
             </div>
 
+            <!-- الصوت -->
+            <audio id="audioPreview" controls style="display:none; margin-top:15px;"></audio>
+
             <div class="audio-navigation">
                 <button type="button" id="nextImageBtn" class="btn-primary">
-                التالي
+                    التالي
                 </button>
             </div>
 
