@@ -1,0 +1,24 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}إكمال بيانات المريض{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/complete_profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-card">
+  <h2>إكمال بيانات المريض</h2>
+  <p>يرجى إدخال البيانات التالية للمتابعة</p>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit" class="primary-btn">
+      حفظ والمتابعة
+    </button>
+  </form>
+</div>
+{% endblock %}

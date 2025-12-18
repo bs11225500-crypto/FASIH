@@ -6,9 +6,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
     <title>
         {% block title %}فَصِيح | منصة النطق للأطفال{% endblock title %}
     </title>
+    <link rel="website icon" type="image/png" href="{% static 'img/logo.png' %}">
+
 
     <!-- Google Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -23,11 +26,10 @@
 
 <body>
 
-    <!-- NAVBAR -->
     <nav class="main-navbar">
 
         <a href="{% url 'main:home' %}" class="logo">
-            <img src="{% static 'img/logo.png' %}" alt="فصيح">
+            <img src="{% static 'img/logo1.png' %}" alt="فصيح">
         </a>
 
 
@@ -37,12 +39,20 @@
         </div>
 
         <div class="nav-actions">
-            <a href="#" class="icon-btn" title="تسجيل الدخول">
-                <span class="material-icons">login</span>
-            </a>
-            <a href="#" class="icon-btn" title="إنشاء حساب">
-                <span class="material-icons">person_add</span>
-            </a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'accounts:logout' %}" class="icon-btn logout" title="تسجيل الخروج">
+                    <span class="material-icons">logout</span>
+                </a>
+            {% else %}
+                <a href="{% url 'accounts:login' %}" class="icon-btn" title="تسجيل الدخول">
+                    <span class="material-icons">login</span>
+                </a>
+
+                <a href="{% url 'accounts:register' %}" class="icon-btn" title="إنشاء حساب">
+                    <span class="material-icons">person_add</span>
+                </a>
+            {% endif %}
+
         </div>
 
     </nav>
@@ -56,12 +66,10 @@
         </div>
     {% endif %}
 
-    <!-- PAGE CONTENT -->
     <main>
         {% block content %}{% endblock content %}
     </main>
 
-    <!-- FOOTER -->
     <footer class="main-footer">
         <p>© 2025 منصة النطق — جميع الحقوق محفوظة</p>
     </footer>

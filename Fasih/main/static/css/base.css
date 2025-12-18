@@ -44,7 +44,7 @@ body {
 }
 
 .logo img {
-    height: 66px;      
+    height: 85px;      
     width: auto;
     display: block;
 }
@@ -102,6 +102,13 @@ body {
 .main-footer p {
     color: #ffffff;
     font-size: 14px;
+}
+.icon-btn.logout {
+    color: #c0392b; 
+}
+
+.icon-btn.logout:hover {
+    background-color: rgba(192, 57, 43, 0.1);
 }
 
 

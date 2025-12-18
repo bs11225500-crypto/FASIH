@@ -1,0 +1,88 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}إنشاء حساب | فصيح{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/sign_in.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+  <div class="auth-container is-signup">
+
+    <!-- Form Side -->
+    <div class="auth-side auth-form">
+      <h2>إنشاء حساب</h2>
+
+      {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+            <p class="msg {{ message.tags }}">{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <form method="post" action="{% url 'accounts:register' %}" novalidate>
+        {% csrf_token %}
+
+        <input
+          type="email"
+          name="email"
+          placeholder="البريد الإلكتروني"
+          required
+        >
+
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="كلمة المرور"
+          required
+        >
+
+        <ul class="password-rules">
+          <li id="rule-length">❌ لا تقل عن 8 أحرف</li>
+          <li id="rule-upper">❌ تحتوي على حرف كبير (A-Z)</li>
+          <li id="rule-lower">❌ تحتوي على حرف صغير (a-z)</li>
+          <li id="rule-number">❌ تحتوي على رقم (0-9)</li>
+        </ul>
+
+        <input
+          type="password"
+          id="password2"
+          name="password2"
+          placeholder="تأكيد كلمة المرور"
+          required
+        >
+
+        <p id="match-password" class="password-match"></p>
+
+        <button type="submit" class="primary-btn">
+          إنشاء الحساب
+        </button>
+      </form>
+
+      <div class="auth-links">
+        <span>لديك حساب بالفعل؟</span>
+        <a href="{% url 'accounts:login' %}" class="link-btn">
+          تسجيل الدخول
+        </a>
+      </div>
+    </div>
+
+    <!-- Overlay Side -->
+    <div class="auth-side auth-overlay">
+      <div class="overlay-content">
+        <h2>أهلًا بك </h2>
+        <p>أنشئ حسابك وابدأ رحلة فصيح مع طفلك.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/sign_in.js' %}"></script>
+{% endblock %}

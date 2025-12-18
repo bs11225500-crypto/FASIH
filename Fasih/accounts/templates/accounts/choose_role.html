@@ -1,42 +1,26 @@
+{% extends "main/base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <title>اختيار نوع الحساب</title>
 
-  <link rel="stylesheet" href="{% static 'css/choose_role.css' %}">
-</head>
-<body>
+{% block title %}اختيار نوع الحساب{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/choose_role.css' %}">
+{% endblock %}
+
+{% block content %}
 <div class="card">
   <h2>اختر نوع الحساب</h2>
-  <p>من فضلك حدّد نوع الحساب للمتابعة</p>
+  <p>حدّد نوع الحساب للمتابعة</p>
 
   <form method="post">
     {% csrf_token %}
+    <button name="role" value="PATIENT" class="role-btn primary">
+      ولي أمر / مريض
+    </button>
 
-    <div class="roles">
-      <button
-        type="submit"
-        name="role"
-        value="PATIENT"
-        class="role-btn role-patient"
-      >
-        ولي أمر / مريض
-      </button>
-
-      <button
-        type="submit"
-        name="role"
-        value="SPECIALIST"
-        class="role-btn role-specialist"
-      >
-        أخصائي اضطرابات نطق
-      </button>
-    </div>
+    <button name="role" value="SPECIALIST" class="role-btn outline">
+      أخصائي اضطرابات نطق
+    </button>
   </form>
 </div>
-
-</body>
-</html>
+{% endblock %}

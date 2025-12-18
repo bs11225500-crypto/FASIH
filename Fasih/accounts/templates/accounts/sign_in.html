@@ -1,79 +1,50 @@
+{% extends "main/base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <title>تسجيل الدخول</title>
 
-  <link rel="stylesheet" href="{% static 'css/sign_in.css' %}">
-</head>
-<body>
+{% block title %}تسجيل الدخول | فصيح{% endblock %}
 
-<div class="container" id="container">
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/sign_in.css' %}">
+{% endblock %}
 
-  <div class="form-container sign-up-container">
-    {% if messages %}
-  <div class="messages">
-    {% for message in messages %}
-      <p class="{{ message.tags }}">{{ message }}</p>
-    {% endfor %}
-  </div>
-{% endif %}
+{% block content %}
+<div class="auth-wrapper">
+  <div class="auth-container">
 
-    <form method="post" action="{% url 'accounts:register_patient_account' %}">
-      {% csrf_token %}
-
-      <h2>إنشاء حساب</h2>
-
-      <input type="email" name="email" placeholder="البريد الإلكتروني" required />
-      <input type="password" name="password" placeholder="كلمة المرور" required />
-      <input type="password" name="password2" placeholder="تأكيد كلمة المرور" required />
-
-      <button type="submit">إنشاء الحساب</button>
-    </form>
-  </div>
-
-  <div class="form-container sign-in-container">
-    <form method="post" action="{% url 'accounts:sign_in' %}">
-      {% csrf_token %}
-
+    <!-- Form Side -->
+    <div class="auth-side auth-form">
       <h2>تسجيل الدخول</h2>
 
-      <input type="email" name="email" placeholder="البريد الإلكتروني" required />
-      <input type="password" name="password" placeholder="كلمة المرور" required />
+      <form method="post" action="{% url 'accounts:login' %}">
+        {% csrf_token %}
 
-      <button type="submit">دخول</button>
-    </form>
-  </div>
+        <input type="email" name="email" placeholder="البريد الإلكتروني" required>
+        <input type="password" name="password" placeholder="كلمة المرور" required>
+        <a href="{% url 'accounts:password_reset_request' %}" class="forgot-password">
+            نسيت كلمة المرور؟
+        </a>
+      
+        <button type="submit" class="primary-btn">دخول</button>
+      </form>
 
-  <div class="overlay-container">
-    <div class="overlay">
-
-      <div class="overlay-panel overlay-left">
-        <h1>مرحبًا بعودتك</h1>
-        <p>هل لديك حساب بالفعل؟</p>
-        <button type="button" class="ghost" id="goToSignIn">
-          تسجيل الدخول
-        </button>
+      <div class="auth-links">
+        <span>ليس لديك حساب؟</span>
+        <a href="{% url 'accounts:register' %}" class="link-btn" data-auth-link="signup">إنشاء حساب</a>
       </div>
-
-      <div class="overlay-panel overlay-right">
-        <h1>أهلًا بك</h1>
-        <p>أنشئ حسابك الآن وابدأ الرحلة</p>
-        <button type="button" class="ghost" id="goToSignUp">
-          إنشاء حساب
-        </button>
-      </div>
-
     </div>
-  </div>
 
+    <!-- Overlay Side -->
+    <div class="auth-side auth-overlay">
+      <div class="overlay-content">
+        <h2>مرحبًا بعودتك</h2>
+        <p>سعداء بعودتك إلى فصيح، سجّل دخولك لمتابعة رحلة النطق.</p>
+      </div>
+    </div>
+
+  </div>
 </div>
+{% endblock %}
 
 {% block extra_js %}
-    <script src="{% static 'js/sign_in.js' %}"></script>
-{% endblock extra_js %}
-
-
-</body>
-</html>
+<script src="{% static 'js/sign_in.js' %}"></script>
+{% endblock %}
