@@ -272,9 +272,7 @@
 .forgot-password:hover {
   color: #3A7BD5; 
 }
-/* =========================
-   PASSWORD RESET PAGE
-========================= */
+
 
 .auth-reset .auth-container {
   display: flex;
@@ -284,7 +282,7 @@
 
 .auth-reset .auth-container.single {
   width: 100%;
-  max-width: 900px;   /* نفس الساين إن */
+  max-width: 900px;   
   margin: 0 auto;}
 
 .auth-reset .auth-side {
@@ -293,12 +291,10 @@
   text-align: center;
 }
 
-/* العنوان */
 .auth-reset h2 {
   margin-bottom: 14px;
 }
 
-/* الوصف */
 .auth-reset .auth-desc {
   color: #555;
   font-size: 15px;
@@ -306,7 +302,6 @@
   line-height: 1.7;
 }
 
-/* الفورم */
 .auth-reset form {
   display: flex;
   flex-direction: column;
@@ -319,13 +314,11 @@
   max-width: 420px;
 }
 
-/* زر الإرسال */
 .auth-reset .primary-btn {
   width: 100%;
   max-width: 420px;
 }
 
-/* رابط الرجوع */
 .auth-reset .reset-back {
   margin-top: 22px;
   display: inline-block;

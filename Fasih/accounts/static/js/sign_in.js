@@ -1,9 +1,6 @@
-// اختياري: يضمن أن أي زر/رابط محدد يشتغل كرابط طبيعي
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("[data-auth-link]").forEach((el) => {
     el.addEventListener("click", () => {
-      // لا شيء مطلوب هنا — مجرد وجود الملف يمنع لبس الفريق
-      // وتقدرين لاحقاً تضيفين tracking أو loading state
     });
   });
 });
@@ -60,5 +57,40 @@ document.addEventListener("DOMContentLoaded", () => {
       matchText.textContent = "❌ كلمتا المرور غير متطابقتين";
       matchText.className = "password-match error";
     }
+  }
+});
+
+const passwordInput = document.getElementById("password");
+const rules = {
+  length: value => value.length >= 8,
+  uppercase: value => /[A-Z]/.test(value),
+  lowercase: value => /[a-z]/.test(value),
+  number: value => /[0-9]/.test(value),
+};
+
+passwordInput.addEventListener("input", () => {
+  const value = passwordInput.value;
+
+  Object.keys(rules).forEach(rule => {
+    const ruleElement = document.querySelector(
+      `.password-rules p[data-rule="${rule}"]`
+    );
+
+    if (rules[rule](value)) {
+      ruleElement.classList.add("valid");
+    } else {
+      ruleElement.classList.remove("valid");
+    }
+  });
+});
+const form = passwordInput.closest("form");
+
+form.addEventListener("submit", e => {
+  const value = passwordInput.value;
+  const isValid = Object.values(rules).every(rule => rule(value));
+
+  if (!isValid) {
+    e.preventDefault();
+    alert("كلمة المرور لا تحقق جميع الشروط");
   }
 });
