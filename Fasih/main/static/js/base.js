@@ -9,3 +9,24 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const toasts = document.querySelectorAll(".toast");
+
+  if (!toasts.length) return;
+
+  toasts.forEach((toast) => {
+    const SHOW_TIME = 4500;
+
+    setTimeout(() => {
+      toast.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+      toast.style.opacity = "0";
+      toast.style.transform = "translateY(-10px)";
+
+      setTimeout(() => {
+        toast.remove();
+      }, 400);
+
+    }, SHOW_TIME);
+  });
+});

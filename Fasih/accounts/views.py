@@ -8,6 +8,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.urls import reverse
 from django.conf import settings
+from django.template.loader import render_to_string
 
 from .models import User
 from .forms import ( AccountRegisterForm,PatientRegisterForm,SpecialistRegisterForm)
@@ -222,20 +223,24 @@ def password_reset_request(request):
                 )
             )
 
-            html_content = f"""
-            <p>مرحبًا،</p>
-            <p>تم طلب إعادة تعيين كلمة المرور لحسابك في منصة فصيح.</p>
-            <p>اضغط على الرابط التالي:</p>
-            <a href="{reset_link}">إعادة تعيين كلمة المرور</a>
-            <br><br>
-            <p>إذا لم تطلب ذلك، تجاهل الرسالة.</p>
-            """
+            logo_url = request.build_absolute_uri(
+                settings.STATIC_URL + "main/img/logo.png"
+            )
+
+            html_content = render_to_string(
+                "accounts/emails/password_reset.html",
+                {
+                    "reset_link": reset_link,
+                    "logo_url": logo_url,
+                }
+            )
 
             send_email(
                 to=email,
-                subject="إعادة تعيين كلمة المرور | فصيح",
+                subject="إعادة تعيين كلمة المرور | منصة فصيح",
                 html_content=html_content
             )
+
 
         messages.success(
             request,
