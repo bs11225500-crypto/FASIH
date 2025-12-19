@@ -1,0 +1,51 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}
+فَصِيح | عن فصيح
+{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<section class="about-hero">
+    <h1>عن فصيح</h1>
+    <p>
+        فَصِيح منصة متخصصة في دعم وتشخيص وعلاج اضطرابات النطق والتخاطب،
+        نرافقك بخطوات علمية وإنسانية لبناء رحلة علاجية فعّالة.
+    </p>
+</section>
+
+<section class="about-content">
+
+    <div class="about-card">
+        <h3>رؤيتنا</h3>
+        <p>
+            أن يكون فصيح الجسر الآمن بين الأسرة وأخصائي النطق،
+            لتقديم رعاية رقمية موثوقة وسهلة الوصول.
+        </p>
+    </div>
+
+    <div class="about-card">
+        <h3>رسالتنا</h3>
+        <p>
+            تمكين الأسر والأخصائيين من أدوات ذكية،
+            وخطط علاجية مخصصة مبنية على تقييم علمي دقيق.
+        </p>
+    </div>
+
+    <div class="about-card">
+        <h3>لماذا فصيح؟</h3>
+        <ul>
+            <li>✔ إشراف أخصائيين معتمدين</li>
+            <li>✔ خطط علاج مخصصة</li>
+            <li>✔ متابعة مستمرة وتقدم واضح</li>
+        </ul>
+    </div>
+
+</section>
+
+{% endblock %}

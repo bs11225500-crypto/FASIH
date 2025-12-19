@@ -39,6 +39,61 @@
     </div>
 
 </section>
+<!-- CONTACT SECTION -->
+<section class="contact-fullscreen">
+
+    <div class="contact-overlay"></div>
+
+    <div class="contact-card">
+
+        <h2>تواصل معنا</h2>
+
+        <form method="POST" action="">
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="field">
+                    <label>الاسم الأول</label>
+                    <input type="text" name="first_name" required>
+                </div>
+
+                <div class="field">
+                    <label>اسم العائلة</label>
+                    <input type="text" name="last_name" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="field">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" name="email" required>
+                </div>
+
+                <div class="field">
+                    <label>رقم الهاتف</label>
+                    <input type="text" name="phone">
+                </div>
+            </div>
+
+            <div class="field">
+                <label>الرسالة</label>
+                <textarea rows="4" name="message" required></textarea>
+            </div>
+
+            <div class="checkbox">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">أوافق على سياسة الخصوصية</label>
+            </div>
+
+            <button type="submit" class="contact-btn">
+                إرسال
+            </button>
+
+        </form>
+    </div>
+
+</section>
+
 
 {% endblock %}
 
