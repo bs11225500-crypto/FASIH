@@ -1,50 +1,184 @@
+
+
 .profile-card {
-  background: #fff;
-  max-width: 480px;
-  margin: 80px auto;
-  padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+  background: #ffffff;
+  max-width: 520px;
+  margin: 100px auto;
+  padding: 42px 36px;
+  border-radius: 18px;
+  box-shadow: 0 24px 50px rgba(0,0,0,0.12);
   text-align: center;
 }
 
 .profile-card h2 {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
+  font-size: 26px;
   color: #222;
 }
 
-.profile-card p {
-  margin-bottom: 30px;
-  color: #555;
+.profile-card > p {
+  margin-bottom: 32px;
+  color: #666;
   font-size: 14px;
 }
+
+.profile-card h3 {
+  margin: 28px 0 14px;
+  font-size: 18px;
+  color: #111;
+  text-align: right;
+}
+
+.profile-card hr {
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 28px 0;
+}
+
+
+
+.profile-image-preview {
+  margin: 10px auto 26px;
+}
+
+.profile-image-preview img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #eaf5f6;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+}
+
+
 
 .profile-card form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: right;
+}
+
+.form-group label {
+  font-size: 13px;
+  color: #555;
 }
 
 .profile-card input,
 .profile-card select,
 .profile-card textarea {
-  padding: 12px;
-  border-radius: 8px;
+  padding: 12px 14px;
+  border-radius: 10px;
   border: 1px solid #ddd;
   font-size: 14px;
+  font-family: inherit;
+  background: #fafafa;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.profile-card input:focus,
+.profile-card select:focus,
+.profile-card textarea:focus {
+  outline: none;
+  background: #ffffff;
+  border-color: #0fa4af;
+  box-shadow: 0 0 0 2px rgba(15,164,175,0.15);
+}
+
+/* File input */
+.profile-card input[type="file"] {
+  padding: 10px;
+  background: #ffffff;
+}
+
+
+
 .primary-btn {
-  margin-top: 20px;
-  padding: 12px;
-  background: linear-gradient(to right, #0fa4af, #14c1cc);
-  color: white;
+  margin-top: 26px;
+  padding: 14px;
+  background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
+  color: #ffffff;
   border: none;
-  border-radius: 10px;
+  border-radius: 999px;
   font-size: 15px;
+  font-weight: 700;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .primary-btn:hover {
-  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(58,123,213,0.35);
+}
+
+
+.notice {
+  background: linear-gradient(
+    135deg,
+    rgba(58, 123, 213, 0.08),
+    rgba(126, 214, 167, 0.12)
+  );
+  border: 1px solid rgba(58, 123, 213, 0.25);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin: 18px 0 24px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #333;
+  text-align: right;
+}
+
+.notice strong {
+  color: #3A7BD5;
+}
+
+
+
+.profile-card form .primary-btn {
+  margin-top: 30px;
+}
+
+.profile-card select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left 12px center;
+  padding-left: 36px;
+}
+
+/* responsive */
+
+@media (max-width: 600px) {
+  .notice {
+    font-size: 13px;
+    padding: 14px;
+  }
+}
+
+
+
+@media (max-width: 600px) {
+  .profile-card {
+    margin: 80px 14px;
+    padding: 32px 22px;
+  }
+
+  .profile-card h2 {
+    font-size: 22px;
+  }
+
+  .profile-card h3 {
+    font-size: 16px;
+  }
+
+  .profile-image-preview img {
+    width: 100px;
+    height: 100px;
+  }
 }

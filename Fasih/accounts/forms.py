@@ -3,20 +3,17 @@ from django.contrib.auth.password_validation import validate_password
 from .models import User
 from patient.models import Patient
 from specialist.models import Specialist
-
+from specialist.models import SpecialistCertificate
 
 
 class AccountRegisterForm(forms.Form):
-    email = forms.EmailField(
-        label="البريد الإلكتروني"
-    )
+    email = forms.EmailField(label="البريد الإلكتروني")
 
     password = forms.CharField(
         label="كلمة المرور",
         widget=forms.PasswordInput,
         min_length=8
     )
-
     password2 = forms.CharField(
         label="تأكيد كلمة المرور",
         widget=forms.PasswordInput
@@ -44,72 +41,90 @@ class AccountRegisterForm(forms.Form):
         return cleaned_data
 
     def save(self):
-        """
-        Create User only (no role yet)
-        """
         return User.objects.create_user(
             email=self.cleaned_data['email'],
-            password=self.cleaned_data['password']
+            password=self.cleaned_data['password'],
         )
 
 
 
-class PatientRegisterForm(forms.Form):
-    child_name = forms.CharField(
-        label="اسم الطفل",
-        max_length=255
-    )
-
-    birth_date = forms.DateField(
-        label="تاريخ الميلاد",
-        widget=forms.DateInput(attrs={'type': 'date'})
-    )
-
-    def save(self, user):
-        """
-        Create Patient profile for existing User
-        Prevent duplicate Patient creation
-        """
-        patient, created = Patient.objects.get_or_create(
-            user=user,
-            defaults={
-                'child_name': self.cleaned_data['child_name'],
-                'birth_date': self.cleaned_data['birth_date']
-            }
-        )
-        return patient
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            'first_name',
+            'middle_name',
+            'last_name',
+            'profile_image',
+        ]
+        labels = {
+            'first_name': 'الاسم الأول',
+            'middle_name': 'الاسم الأوسط',
+            'last_name': 'اسم العائلة',
+            'profile_image': 'صورة الحساب',
+        }
 
 
+class PatientProfileForm(forms.ModelForm):
+    class Meta:
+        model = Patient
+        fields = ['birth_date', 'gender']
+        labels = {
+            'birth_date': 'تاريخ الميلاد',
+            'gender': 'الجنس',
+        }
+        widgets = {
+            'birth_date': forms.DateInput(
+                attrs={
+                    'type': 'date',
+                }
+            )
+        }
 
-class SpecialistRegisterForm(forms.Form):
-    specialization = forms.CharField(
-        label="التخصص",
-        max_length=255
-    )
 
-    license_number = forms.CharField(
-        label="رقم الرخصة",
-        max_length=100
-    )
 
-    years_of_experience = forms.IntegerField(
-        label="سنوات الخبرة",
-        min_value=0
-    )
+class SpecialistProfileForm(forms.ModelForm):
+    class Meta:
+        model = Specialist
+        fields = [
+            'specialization',
+            'license_number',
+            'years_of_experience'
+        ]
+        labels = {
+            'specialization': 'التخصص',
+            'license_number': 'رقم رخصة مزاولة المهنة',
+            'years_of_experience': 'سنوات الخبرة',
+        }
 
-    certificate_file = forms.FileField(
-        label="شهادة الأخصائي",
-        required=False
-    )
 
-    def save(self, user):
-        specialist, created = Specialist.objects.get_or_create(
-            user=user,
-            defaults={
-                'specialization': self.cleaned_data['specialization'],
-                'license_number': self.cleaned_data['license_number'],
-                'years_of_experience': self.cleaned_data['years_of_experience'],
-                'certificate_file': self.cleaned_data.get('certificate_file'),
-            }
-        )
-        return specialist
+
+class SpecialistCertificateForm(forms.ModelForm):
+    class Meta:
+        model = SpecialistCertificate
+        fields = [
+            'title',
+            'description',
+            'certificate_file',
+            'issue_date',
+            'expiry_date',
+        ]
+        labels = {
+            'title': 'عنوان الشهادة',
+            'description': 'وصف الشهادة',
+            'certificate_file': 'ملف الشهادة',
+            'issue_date': 'تاريخ الإصدار',
+            'expiry_date': 'تاريخ الانتهاء',
+        }
+        widgets = {
+            'issue_date': forms.DateInput(
+                attrs={
+                    'type': 'date'
+                }
+            ),
+            'expiry_date': forms.DateInput(
+                attrs={
+                    'type': 'date'
+                }
+            ),
+        }

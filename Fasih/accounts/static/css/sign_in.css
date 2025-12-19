@@ -1,16 +1,12 @@
-/* Wrapper */
 .auth-wrapper{
-  min-height: calc(100vh - 160px);
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  padding-top: 100px;   
-  padding-bottom: 60px;
+  padding: 40px 16px;
+  box-sizing: border-box;
 }
 
-
-/* Container */
 .auth-container{
   width: 900px;
   max-width: 100%;
@@ -26,7 +22,7 @@
 }
 
 
-/* Sides */
+
 .auth-side{
   height: 100%;
   display:flex;
@@ -35,7 +31,6 @@
   padding: 40px;
 }
 
-/* Form side */
 .auth-form{
   display: flex;
   flex-direction: column;
@@ -74,7 +69,6 @@
   border-color: #3A7BD5;
 }
 
-/* Buttons */
 .primary-btn{
   margin-top: 10px;
   padding: 12px 32px;
@@ -112,7 +106,6 @@
   font-weight: 700;
 }
 
-/* Overlay side */
 .auth-overlay{
   background: linear-gradient(
     180deg,
@@ -172,12 +165,10 @@
 }
 
 
-/* Slide feel between pages */
 .auth-container .auth-form{
   animation: formIn .55s ease;
 }
 
-/* When on sign_up page, swap the columns visually (TikTok feel) */
 .auth-container.is-signup{
   direction: rtl;
 }
@@ -330,4 +321,98 @@
 
 .auth-reset .reset-back:hover {
   color: #3A7BD5;
+}
+
+/* responsive*/
+
+@media (max-width: 900px){
+
+  .auth-wrapper{
+    padding: 24px 16px;
+    min-height: auto;
+    align-items: flex-start;
+  }
+
+  .auth-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    min-height: auto;
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  .auth-overlay{
+    order: 1;
+    min-height: 220px;
+    padding: 32px 20px;
+    border-radius: 24px 24px 0 0;
+    text-align: center;
+  }
+
+  .auth-form{
+    order: 2;
+    padding: 32px 20px;
+  }
+
+  .auth-side{
+    width: 100%;
+    padding: 0;
+  }
+
+  .auth-form h2{
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .auth-form form{
+    max-width: 100%;
+  }
+
+  .primary-btn{
+    width: 100%;
+  }
+}
+
+@media (max-width: 900px){
+
+  .auth-container{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .auth-overlay{
+    display: flex;             
+    order: 1;
+    min-height: 220px;
+    padding: 32px 20px;
+    border-radius: 24px 24px 0 0;
+  }
+
+  .auth-form{
+    order: 2;
+    padding: 32px 20px;
+  }
+}
+@media (max-width: 900px){
+  .auth-wrapper{
+    padding-top: 120px;
+  }
+}
+
+.password-field {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.password-field input {
+  width: 100%;
+}
+
+.password-rules {
+  margin-top: 8px;
 }

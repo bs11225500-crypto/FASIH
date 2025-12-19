@@ -14,13 +14,14 @@
 
   <form method="post">
     {% csrf_token %}
-    <button name="role" value="PATIENT" class="role-btn primary">
+    <button name="role" value="PATIENT" class="role-btn role-option">
       ولي أمر / مريض
     </button>
 
-    <button name="role" value="SPECIALIST" class="role-btn outline">
+    <button name="role" value="SPECIALIST" class="role-btn role-option">
       أخصائي اضطرابات نطق
     </button>
+
   </form>
 </div>
 {% endblock %}

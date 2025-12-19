@@ -9,16 +9,97 @@
 
 {% block content %}
 <div class="profile-card">
+
   <h2>إكمال بيانات الأخصائي</h2>
   <p>يرجى إدخال البيانات المهنية للمتابعة</p>
 
+  <div class="profile-image-preview">
+    {% if user.profile_image %}
+      <img src="{{ user.profile_image.url }}" alt="صورة الحساب">
+    {% else %}
+      <img src="{% static 'img/default_userprofile_pic.png' %}" alt="صورة افتراضية">
+    {% endif %}
+  </div>
+
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+
+    <!-- بيانات الحساب -->
+    <h3>بيانات الحساب</h3>
+
+    <div class="form-group">
+      {{ user_form.first_name.label_tag }}
+      {{ user_form.first_name }}
+    </div>
+
+    <div class="form-group">
+      {{ user_form.middle_name.label_tag }}
+      {{ user_form.middle_name }}
+    </div>
+
+    <div class="form-group">
+      {{ user_form.last_name.label_tag }}
+      {{ user_form.last_name }}
+    </div>
+
+    <div class="form-group">
+      {{ user_form.profile_image.label_tag }}
+      {{ user_form.profile_image }}
+    </div>
+
+    <hr>
+
+    <h3>بيانات الأخصائي</h3>
+
+    <div class="form-group">
+      {{ specialist_form.specialization.label_tag }}
+      {{ specialist_form.specialization }}
+    </div>
+
+    <div class="form-group">
+      {{ specialist_form.license_number.label_tag }}
+      {{ specialist_form.license_number }}
+    </div>
+
+    <div class="form-group">
+      {{ specialist_form.years_of_experience.label_tag }}
+      {{ specialist_form.years_of_experience }}
+    </div>
+
+    <hr>
+
+    <h3>رخصة مزاولة المهنة</h3>
+
+    <p class="notice">
+      <strong>تنبيه مهم:</strong><br>
+      يشترط رفع <strong>رخصة مزاولة المهنة</strong> سارية المفعول ليتم مراجعة وقبول حسابك في منصة فصيح.<br>
+      يمكنك إضافة شهادات أخرى لاحقًا بعد تفعيل الحساب.
+    </p>   
+
+    <div class="form-group">
+      {{ certificate_form.title.label_tag }}
+      {{ certificate_form.title }}
+    </div>
+
+    <div class="form-group">
+      {{ certificate_form.certificate_file.label_tag }}
+      {{ certificate_form.certificate_file }}
+    </div>
+
+    <div class="form-group">
+      {{ certificate_form.issue_date.label_tag }}
+      {{ certificate_form.issue_date }}
+    </div>
+
+    <div class="form-group">
+      {{ certificate_form.expiry_date.label_tag }}
+      {{ certificate_form.expiry_date }}
+    </div>
 
     <button type="submit" class="primary-btn">
       حفظ والمتابعة
     </button>
+
   </form>
 </div>
 {% endblock %}

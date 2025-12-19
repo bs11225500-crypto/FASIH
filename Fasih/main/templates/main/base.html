@@ -40,6 +40,9 @@
 
         <div class="nav-actions">
             {% if user.is_authenticated %}
+                <span class="welcome-text">
+                مرحبًا، {{ user.first_name }} {{ user.last_name }}
+                </span>
                 <a href="{% url 'accounts:logout' %}" class="icon-btn logout" title="تسجيل الخروج">
                     <span class="material-icons">logout</span>
                 </a>
@@ -70,15 +73,18 @@
 
 
     <main>
-        {% block content %}{% endblock content %}
+        <div class="page-wrapper">
+
+            {% block content %}{% endblock content %}
+        </div>
     </main>
 
     <footer class="main-footer">
         <p>© 2025 منصة النطق — جميع الحقوق محفوظة</p>
     </footer>
+    <script src="{% static 'js/base.js' %}"></script>
 
     {% block extra_js %}
-    <script src="{% static 'js/base.js' %}"></script>
     {% endblock extra_js %}
 
 </body>

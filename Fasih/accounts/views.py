@@ -11,7 +11,9 @@ from django.conf import settings
 from django.template.loader import render_to_string
 
 from .models import User
-from .forms import ( AccountRegisterForm,PatientRegisterForm,SpecialistRegisterForm)
+from patient.models import Patient
+from specialist.models import Specialist
+from .forms import (AccountRegisterForm, PatientProfileForm,SpecialistProfileForm, UserProfileForm,SpecialistCertificateForm)
 from main.email_service import send_email 
 
 def register_account(request):
@@ -28,10 +30,6 @@ def register_account(request):
                 login(request, user)
 
             messages.success(request, "تم إنشاء الحساب بنجاح")
-
-            if user.is_staff or user.is_superuser:
-                return redirect('main:home')
-
             return redirect('accounts:choose_role')
 
         except Exception as e:
@@ -66,21 +64,8 @@ def login_view(request):
             login(request, user)
             messages.success(request, "تم تسجيل الدخول بنجاح")
 
-            if user.is_staff or user.is_superuser:
-                return redirect('main:home')
-
             if not user.role:
                 return redirect('accounts:choose_role')
-
-            if user.role == User.Role.PATIENT:
-                if not hasattr(user, 'patient'):
-                    return redirect('accounts:complete_patient_profile')
-                return redirect('main:home')
-
-            if user.role == User.Role.SPECIALIST:
-                if not hasattr(user, 'specialist'):
-                    return redirect('accounts:complete_specialist_profile')
-                return redirect('main:home')
 
         except Exception as e:
             print("LOGIN ERROR:", e)
@@ -102,39 +87,31 @@ def logout_view(request):
 @login_required
 def choose_role(request):
     user = request.user
+    if user.role:
+        if user.role == User.Role.PATIENT:
+            return redirect('accounts:complete_patient_profile')
 
-    if user.is_staff or user.is_superuser:
-        return redirect('main:home')
-
-    if user.role == User.Role.PATIENT:
-        return redirect('accounts:complete_patient_profile')
-
-    if user.role == User.Role.SPECIALIST:
-        return redirect('accounts:complete_specialist_profile')
+        if user.role == User.Role.SPECIALIST:
+            return redirect('accounts:complete_specialist_profile')
 
     if request.method == 'POST':
         selected_role = request.POST.get('role')
 
-        if selected_role == User.Role.PATIENT:
-            user.role = User.Role.PATIENT
+        if selected_role in [User.Role.PATIENT, User.Role.SPECIALIST]:
+            user.role = selected_role
             user.save()
-            return redirect('accounts:complete_patient_profile')
 
-        if selected_role == User.Role.SPECIALIST:
-            user.role = User.Role.SPECIALIST
-            user.save()
-            return redirect('accounts:complete_specialist_profile')
+            if selected_role == User.Role.PATIENT:
+                return redirect('accounts:complete_patient_profile')
+            else:
+                return redirect('accounts:complete_specialist_profile')
 
     return render(request, 'accounts/choose_role.html')
-
 
 
 @login_required
 def complete_patient_profile(request):
     user = request.user
-
-    if user.is_staff or user.is_superuser:
-        return redirect('main:home')
 
     if user.role != User.Role.PATIENT:
         return redirect('accounts:choose_role')
@@ -142,66 +119,120 @@ def complete_patient_profile(request):
     if hasattr(user, 'patient'):
         return redirect('main:home')
 
-    if request.method == 'POST':
-        form = PatientRegisterForm(request.POST)
+    patient = Patient(user=user)
 
-        if form.is_valid():
-            form.save(user=user)
+    if request.method == 'POST':
+        user_form = UserProfileForm(
+            request.POST,
+            request.FILES,
+            instance=user
+        )
+        patient_form = PatientProfileForm(
+            request.POST,
+            instance=patient
+        )
+
+        if user_form.is_valid() and patient_form.is_valid():
+            user_form.save()
+            patient_form.save()
             messages.success(request, "تم إكمال بيانات المريض بنجاح")
             return redirect('main:home')
-
     else:
-        form = PatientRegisterForm()
+        user_form = UserProfileForm(instance=user)
+        patient_form = PatientProfileForm()
 
     return render(
         request,
         'accounts/complete_patient_profile.html',
-        {'form': form}
+        {
+            'user_form': user_form,
+            'patient_form': patient_form
+        }
     )
-
-
 
 @login_required
 def complete_specialist_profile(request):
     user = request.user
 
-    if user.is_staff or user.is_superuser:
-        return redirect('main:home')
-
     if user.role != User.Role.SPECIALIST:
         return redirect('accounts:choose_role')
 
-    if hasattr(user, 'specialist'):
-        return redirect('main:home')
+    specialist, created = Specialist.objects.get_or_create(
+        user=user,
+        defaults={
+            'verification_status': Specialist.VerificationStatus.PENDING
+        }
+    )
+
+    if specialist.verification_status == Specialist.VerificationStatus.PENDING and not created:
+        return redirect('accounts:specialist_pending')
 
     if request.method == 'POST':
-        form = SpecialistRegisterForm(request.POST, request.FILES)
+        user_form = UserProfileForm(request.POST, request.FILES, instance=user)
+        specialist_form = SpecialistProfileForm(request.POST, instance=specialist)
+        certificate_form = SpecialistCertificateForm(request.POST, request.FILES)
 
-        if form.is_valid():
-            try:
-                with transaction.atomic():
-                    form.save(user=user)
+        if (
+            user_form.is_valid()
+            and specialist_form.is_valid()
+            and certificate_form.is_valid()
+        ):
+            user_form.save()
 
-                messages.success(request, "تم إكمال بيانات الأخصائي بنجاح")
-                return redirect('main:home')
+            specialist = specialist_form.save(commit=False)
+            specialist.verification_status = Specialist.VerificationStatus.PENDING
+            specialist.save()
 
-            except Exception:
-                messages.error(request, "حدث خطأ أثناء حفظ البيانات")
+            cert = certificate_form.save(commit=False)
+            cert.specialist = specialist
+            cert.save()
+
+            messages.success(
+                request,
+                "تم إرسال بياناتك بنجاح، وسيتم مراجعتها من الإدارة"
+            )
+
+            return redirect('accounts:specialist_pending')
+
+        else:
+            messages.error(
+                request,
+                "تأكد من إدخال جميع البيانات المطلوبة ورفع ملف الرخصة بشكل صحيح"
+            )
 
     else:
-        form = SpecialistRegisterForm()
+        user_form = UserProfileForm(instance=user)
+        specialist_form = SpecialistProfileForm(instance=specialist)
+        certificate_form = SpecialistCertificateForm()
 
     return render(
         request,
         'accounts/complete_specialist_profile.html',
-        {'form': form}
+        {
+            'user_form': user_form,
+            'specialist_form': specialist_form,
+            'certificate_form': certificate_form,
+        }
     )
+
+
 
 
 @login_required
 def specialist_pending(request):
-    if request.user.role != User.Role.SPECIALIST:
+    user = request.user
+
+    if user.role != User.Role.SPECIALIST:
         return redirect('main:home')
+
+    specialist = getattr(user, 'specialist', None)
+
+    if not specialist:
+        return redirect('accounts:complete_specialist_profile')
+
+    if specialist.verification_status == Specialist.VerificationStatus.APPROVED:
+        return redirect('main:home')  # لاحقاً داشبورد الأخصائي
+    messages.info(request,"حسابك قيد المراجعة حاليًا، سيتم إشعارك بعد الموافقة")
 
     return render(request, 'accounts/specialist_pending.html')
 
@@ -262,20 +293,51 @@ def password_reset_confirm(request, uidb64, token):
         return redirect('accounts:login')
 
     if request.method == 'POST':
-        password1 = request.POST.get('password1')
-        password2 = request.POST.get('password2')
+        password1 = request.POST.get('new_password1')
+        password2 = request.POST.get('new_password2')
+
+        if not password1 or not password2:
+            messages.error(request, "الرجاء إدخال كلمة المرور")
+            return render(request, 'accounts/password_reset_confirm.html')
 
         if password1 != password2:
             messages.error(request, "كلمتا المرور غير متطابقتين")
-        elif len(password1) < 8:
+            return render(request, 'accounts/password_reset_confirm.html')
+
+        if len(password1) < 8:
             messages.error(request, "كلمة المرور يجب أن تكون 8 أحرف على الأقل")
-        else:
-            user.set_password(password1)
-            user.save()
-            messages.success(request, "تم تغيير كلمة المرور بنجاح")
-            return redirect('accounts:login')
+            return render(request, 'accounts/password_reset_confirm.html')
+
+        user.set_password(password1)
+        user.save()
+        messages.success(request, "تم تغيير كلمة المرور بنجاح")
+        return redirect('accounts:login')
+
 
     return render(
         request,
         'accounts/password_reset_confirm.html'
     )
+
+
+@login_required
+def post_login_redirect(request):
+    user = request.user
+
+    if user.is_staff:
+        return redirect(request.GET.get('next', '/'))
+
+    if user.role == User.Role.SPECIALIST:
+        specialist = getattr(user, 'specialist', None)
+
+        if not specialist:
+            return redirect('accounts:complete_specialist_profile')
+
+        if specialist.verification_status != Specialist.VerificationStatus.APPROVED:
+            return redirect('accounts:specialist_pending')
+
+    if not user.role:
+        return redirect('accounts:choose_role')
+
+
+    return redirect(request.GET.get('next', '/'))

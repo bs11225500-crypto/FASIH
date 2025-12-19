@@ -1,0 +1,28 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}قيد المراجعة{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pending.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="pending-wrapper">
+
+  <div class="pending-card">
+    <h2>حسابك قيد المراجعة</h2>
+
+    <p>
+      تم استلام بياناتك بنجاح، وسيتم مراجعتها من قبل إدارة منصة فصيح.
+      <br>
+      سيتم إشعارك فور اعتماد حسابك.
+    </p>
+
+    <a href="{% url 'accounts:logout' %}" class="logout-link">
+      تسجيل الخروج
+    </a>
+  </div>
+
+</div>
+{% endblock %}

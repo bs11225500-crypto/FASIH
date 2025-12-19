@@ -9,16 +9,61 @@
 
 {% block content %}
 <div class="profile-card">
+
   <h2>إكمال بيانات المريض</h2>
   <p>يرجى إدخال البيانات التالية للمتابعة</p>
 
-  <form method="post">
+  <div class="profile-image-preview">
+    {% if user.profile_image %}
+      <img src="{{ user.profile_image.url }}" alt="صورة الحساب">
+    {% else %}
+      <img src="{% static 'img/default_userprofile_pic.png' %}" alt="صورة افتراضية">
+    {% endif %}
+  </div>
+
+  <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+
+    <h3>بيانات الحساب</h3>
+
+    <div class="form-group">
+      <label>الاسم الأول</label>
+      {{ user_form.first_name }}
+    </div>
+
+    <div class="form-group">
+      <label>الاسم الأوسط</label>
+      {{ user_form.middle_name }}
+    </div>
+
+    <div class="form-group">
+      <label>اسم العائلة</label>
+      {{ user_form.last_name }}
+    </div>
+
+    <div class="form-group">
+      <label>صورة الحساب</label>
+      {{ user_form.profile_image }}
+    </div>
+
+    <hr>
+
+    <h3>بيانات المريض</h3>
+
+    <div class="form-group">
+      <label>تاريخ الميلاد</label>
+      {{ patient_form.birth_date }}
+    </div>
+
+    <div class="form-group">
+      <label>الجنس</label>
+      {{ patient_form.gender }}
+    </div>
 
     <button type="submit" class="primary-btn">
       حفظ والمتابعة
     </button>
+
   </form>
 </div>
 {% endblock %}

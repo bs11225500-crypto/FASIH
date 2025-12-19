@@ -12,7 +12,7 @@ class Specialist(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     specialization = models.CharField(max_length=255)
     license_number = models.CharField(max_length=100)
-    years_of_experience = models.IntegerField()
+    years_of_experience = models.PositiveIntegerField(null=True,blank=True)
 
     verification_status = models.CharField(
         max_length=20,

@@ -163,3 +163,18 @@ body {
   }
 }
 
+/*  page transition  */
+.page-wrapper {
+    animation: fadeSlide 0.5s ease-in-out;
+}
+
+@keyframes fadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
