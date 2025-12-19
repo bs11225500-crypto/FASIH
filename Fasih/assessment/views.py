@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-import os
-from django.conf import settings
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 
 
 def assessment_form(request):
     return render(request, 'assessment/assessment_form.html')
+
 
 
 @csrf_exempt
@@ -18,21 +19,15 @@ def upload_audio(request):
         if not audio_file:
             return JsonResponse({"error": "No audio"}, status=400)
 
-        # مجلد مؤقت
-        save_path = os.path.join(
-            settings.MEDIA_ROOT,
-            "assessment_audio"
-        )
-        os.makedirs(save_path, exist_ok=True)
+        file_name = f"assessment_audio/audio_image_{image_index}.webm"
 
-        file_name = f"audio_image_{image_index}.webm"
-        full_path = os.path.join(save_path, file_name)
 
-        with open(full_path, "wb+") as f:
-            for chunk in audio_file.chunks():
-                f.write(chunk)
+        # يحفظ باستخدام storage (محلي أو R2 حسب settings)
+        saved_path = default_storage.save(file_name, ContentFile(audio_file.read()))
 
         return JsonResponse({
             "status": "success",
-            "file": file_name
+            "file": saved_path
         })
+
+    return JsonResponse({"error": "Invalid method"}, status=405)

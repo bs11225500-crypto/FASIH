@@ -1,3 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
+def specialist_dashboard(request):
+    return render(request, "specialist/specialist_dashboard.html")

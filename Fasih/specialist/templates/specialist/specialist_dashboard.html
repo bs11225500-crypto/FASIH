@@ -1,0 +1,48 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}
+فَصِيح | لوحة الأخصائي
+{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/specialist_dashboard.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<section class="dashboard">
+
+    <h1 class="dashboard-title">
+        مرحبًا د. سارة 👋
+    </h1>
+
+    <p class="dashboard-subtitle">
+        نظرة سريعة على حالتك اليوم
+    </p>
+
+    <div class="dashboard-cards">
+
+        <div class="dash-card">
+            <span class="material-icons">groups</span>
+            <h3>عدد المرضى</h3>
+            <p class="dash-number">12</p>
+        </div>
+
+        <div class="dash-card">
+            <span class="material-icons">mic</span>
+            <h3>تسجيلات بانتظار التقييم</h3>
+            <p class="dash-number">5</p>
+        </div>
+
+        <div class="dash-card">
+            <span class="material-icons">assignment</span>
+            <h3>خطط علاج نشطة</h3>
+            <p class="dash-number">3</p>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

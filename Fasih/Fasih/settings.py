@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'specialist',
     'task',
     'treatment',
-    'assessment',    
+    'assessment', 
+    'storages',   
 ]
 AUTH_USER_MODEL = 'accounts.User'
 
@@ -136,6 +137,25 @@ STATIC_URL = 'static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+# Cloudflare R2 Storage Settings
+
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+AWS_ACCESS_KEY_ID = os.getenv("R2_ACCESS_KEY")
+AWS_SECRET_ACCESS_KEY = os.getenv("R2_SECRET_KEY")
+AWS_STORAGE_BUCKET_NAME = os.getenv("R2_BUCKET_NAME")
+
+AWS_S3_ENDPOINT_URL = f"https://{os.getenv('R2_ACCOUNT_ID')}.r2.cloudflarestorage.com"
+
+AWS_S3_REGION_NAME = "auto"
+AWS_S3_SIGNATURE_VERSION = "s3v4"
+AWS_S3_ADDRESSING_STYLE = "path"
+
+AWS_QUERYSTRING_AUTH = False
+AWS_DEFAULT_ACL = None
+
 
 BREVO_API_KEY = os.getenv("BREVO_API_KEY")
 BREVO_SENDER_EMAIL = os.getenv("BREVO_SENDER_EMAIL")
