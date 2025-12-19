@@ -1,0 +1,68 @@
+/* HERO */
+.about-hero {
+    min-height: 60vh;
+    padding: 140px 20px 80px;
+    background: linear-gradient(135deg, #679be5, #8fe4b7);
+    text-align: center;
+    color: #ffffff;
+}
+
+.about-hero h1 {
+    font-size: 42px;
+    margin-bottom: 18px;
+}
+
+.about-hero p {
+    max-width: 700px;
+    margin: auto;
+    font-size: 18px;
+    line-height: 1.9;
+    opacity: 0.95;
+}
+
+/* CONTENT */
+.about-content {
+    padding: 80px 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1100px;
+    margin: auto;
+}
+
+.about-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 14px 30px rgba(0,0,0,0.08);
+    transition: 0.3s ease;
+}
+
+.about-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+
+.about-card h3 {
+    color: #0fa4af;
+    font-size: 22px;
+    margin-bottom: 12px;
+}
+
+.about-card p,
+.about-card li {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.8;
+}
+
+.about-card ul {
+    padding-right: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .about-hero h1 {
+        font-size: 32px;
+    }
+}

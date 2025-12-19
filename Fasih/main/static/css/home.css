@@ -110,3 +110,162 @@
         padding: 30px 24px;
     }
 }
+
+
+/* =========================
+   FASIH CONTACT SECTION
+========================= */
+
+.contact-fullscreen {
+    position: relative;
+    min-height: 100vh;
+    padding: 120px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e8f7f6, #f4fbff);
+    overflow: hidden;
+}
+
+/* Decorative circles (sound waves feeling) */
+.contact-fullscreen::before,
+.contact-fullscreen::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.25;
+}
+
+.contact-fullscreen::before {
+    width: 420px;
+    height: 420px;
+    background: #8dd6d1;
+    top: -120px;
+    right: -120px;
+}
+
+.contact-fullscreen::after {
+    width: 300px;
+    height: 300px;
+    background: #b6e3ff;
+    bottom: -100px;
+    left: -100px;
+}
+
+/* Contact Card */
+.contact-card {
+    position: relative;
+    z-index: 2;
+    max-width: 850px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 40px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+}
+
+/* Title */
+.contact-card h2 {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 35px;
+    color: #0fa4af;
+    font-weight: 700;
+}
+
+/* Rows */
+.contact-card .row {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 22px;
+}
+
+/* Fields */
+.contact-card .field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-card label {
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #4a6f73;
+}
+
+/* Inputs */
+.contact-card input,
+.contact-card textarea {
+    background: #f7fbfc;
+    border: 1px solid #cfe6e8;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 15px;
+    color: #333;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.contact-card input:focus,
+.contact-card textarea:focus {
+    border-color: #0fa4af;
+    box-shadow: 0 0 0 3px rgba(15, 164, 175, 0.15);
+}
+
+/* Checkbox */
+.contact-card .checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 18px 0 28px;
+    font-size: 14px;
+    color: #4a6f73;
+}
+
+/* Button */
+.contact-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.contact-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(15, 164, 175, 0.35);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+    .contact-card {
+        padding: 30px;
+    }
+
+    .contact-card h2 {
+        font-size: 26px;
+    }
+}
+
+@media (max-width: 650px) {
+    .contact-card .row {
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .contact-card {
+        padding: 24px;
+    }
+
+    .contact-card h2 {
+        font-size: 22px;
+    }
+}
