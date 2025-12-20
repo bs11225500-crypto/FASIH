@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from main.email_service import send_email
-from specialist.models import Specialist
+from specialist.models import Specialist , SpecialistAppeal
+
 from .decorators import staff_required
 from django.template.loader import render_to_string
 
@@ -48,13 +49,18 @@ def specialist_review(request, id):
     specialist = get_object_or_404(
         Specialist.objects
         .select_related('user')
-        .prefetch_related('certificates'),
+        .prefetch_related('certificates', 'appeals'),
         id=id
     )
 
+    appeals = specialist.appeals.order_by('-created_at')
+
     return render(request, 'admin_panel/specialist_review.html', {
-        'specialist': specialist
+        'specialist': specialist,
+        'appeals': appeals,
     })
+
+
 @staff_required
 def approve_specialist(request, id):
     specialist = get_object_or_404(Specialist, id=id)

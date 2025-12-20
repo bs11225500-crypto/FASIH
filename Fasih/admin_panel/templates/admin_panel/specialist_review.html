@@ -75,7 +75,43 @@
             <p class="empty-text">لا توجد شهادات مرفقة</p>
         {% endfor %}
     </div>
+    <hr class="section-divider">
 
+    <div class="appeals-section">
+
+        <h3 class="section-title">الاعتراضات المقدّمة</h3>
+
+        {% if appeals %}
+            {% for appeal in appeals %}
+                <div class="appeal-card">
+
+                    <div class="appeal-header">
+                        <span class="appeal-date">
+                            {{ appeal.created_at|date:"Y-m-d H:i" }}
+                        </span>
+
+                        {% if appeal.reviewed %}
+                            {% if appeal.accepted %}
+                                <span class="status approved">مقبول</span>
+                            {% else %}
+                                <span class="status rejected">مرفوض</span>
+                            {% endif %}
+                        {% else %}
+                            <span class="status pending">بانتظار المراجعة</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="appeal-body">
+                        <p>{{ appeal.reason }}</p>
+                    </div>
+
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="empty-text">لا توجد اعتراضات مقدّمة.</p>
+        {% endif %}
+
+    </div>
 
 
     <!-- أزرار القرار -->

@@ -97,9 +97,12 @@ class SpecialistProfileForm(forms.ModelForm):
             'years_of_experience': 'سنوات الخبرة',
         }
 
-
-
 class SpecialistCertificateForm(forms.ModelForm):
+    certificate_file = forms.FileField(
+        required=False,
+        label='ملف الشهادة'
+    )
+
     class Meta:
         model = SpecialistCertificate
         fields = [
@@ -117,14 +120,7 @@ class SpecialistCertificateForm(forms.ModelForm):
             'expiry_date': 'تاريخ الانتهاء',
         }
         widgets = {
-            'issue_date': forms.DateInput(
-                attrs={
-                    'type': 'date'
-                }
-            ),
-            'expiry_date': forms.DateInput(
-                attrs={
-                    'type': 'date'
-                }
-            ),
+            'issue_date': forms.DateInput(attrs={'type': 'date'}),
+            'expiry_date': forms.DateInput(attrs={'type': 'date'}),
         }
+

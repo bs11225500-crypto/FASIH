@@ -327,3 +327,79 @@
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(231,76,60,0.35);
 }
+
+/* فاصل أنيق */
+.section-divider {
+    margin: 60px 0 40px;
+    border: none;
+    height: 1px;
+    background: linear-gradient(to left, transparent, #ddd, transparent);
+}
+
+/* قسم الاعتراضات */
+.appeals-section {
+    margin-bottom: 60px;
+}
+
+/* كارد الاعتراض */
+.appeal-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    border: 1px solid #eef0f4;
+}
+
+/* رأس الكارد */
+.appeal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+/* التاريخ */
+.appeal-date {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+/* نص الاعتراض */
+.appeal-body p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.8;
+    color: #374151;
+}
+
+/* حالات الاعتراض */
+.status {
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status.pending {
+    background: #fff7e6;
+    color: #b45309;
+}
+
+.status.approved {
+    background: #e6f4ea;
+    color: #065f46;
+}
+
+.status.rejected {
+    background: #fdecea;
+    color: #842029;
+}
+
+/* نص فارغ */
+.empty-text {
+    text-align: center;
+    color: #9ca3af;
+    font-size: 14px;
+    margin-top: 20px;
+}

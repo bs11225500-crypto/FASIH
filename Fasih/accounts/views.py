@@ -237,7 +237,7 @@ def specialist_pending(request):
         return redirect('accounts:complete_specialist_profile')
 
     if specialist.verification_status == Specialist.VerificationStatus.APPROVED:
-        return redirect('main:home') #لاحقا داشبورد الاخصائي
+        return redirect('specialist:specialist_home') 
 
     if specialist.verification_status == Specialist.VerificationStatus.REJECTED:
         return redirect('accounts:specialist_rejected')
@@ -350,7 +350,7 @@ def post_login_redirect(request):
             return redirect('accounts:specialist_rejected')
 
         # APPROVED
-        return redirect('main:home')  # لاحقًا داشبورد الأخصائي
+        return redirect('specialist:specialist_home')  
 
     if not user.role:
         return redirect('accounts:choose_role')
@@ -370,6 +370,7 @@ def specialist_rejected(request):
         'specialist': specialist
     })
 
+
 @login_required
 def specialist_appeal(request):
     specialist = get_object_or_404(Specialist, user=request.user)
@@ -378,18 +379,24 @@ def specialist_appeal(request):
         return redirect('main:home')
 
     if request.method == 'POST':
-        appeal_reason = request.POST.get('appeal_reason')
+        appeal_reason = request.POST.get('reason')
 
-        user_form = UserProfileForm(request.POST, request.FILES, instance=request.user)
-        specialist_form = SpecialistProfileForm(request.POST, instance=specialist)
-        certificate_form = SpecialistCertificateForm(request.POST, request.FILES)
+        user_form = UserProfileForm(
+            request.POST,
+            request.FILES,
+            instance=request.user
+        )
+        specialist_form = SpecialistProfileForm(
+            request.POST,
+            instance=specialist
+        )
+        certificate_form = SpecialistCertificateForm(
+            request.POST,
+            request.FILES
+        )
 
-        if (
-            appeal_reason
-            and user_form.is_valid()
-            and specialist_form.is_valid()
-            and certificate_form.is_valid()
-        ):
+        if appeal_reason and user_form.is_valid() and specialist_form.is_valid():
+
             user_form.save()
 
             specialist = specialist_form.save(commit=False)
@@ -402,33 +409,47 @@ def specialist_appeal(request):
                 reason=appeal_reason
             )
 
-            cert = certificate_form.save(commit=False)
-            cert.specialist = specialist
-            cert.save()
+            if (
+                certificate_form.is_valid()
+                and certificate_form.cleaned_data.get('certificate_file')
+            ):
+                cert = certificate_form.save(commit=False)
+                cert.specialist = specialist
+                cert.save()
 
-            messages.success(request,"تم إرسال الاعتراض وتحديث بياناتك بنجاح")
+            messages.success(
+                request,
+                "تم إرسال الاعتراض وتحديث بياناتك بنجاح"
+            )
+
             send_email(
                 to=request.user.email,
                 subject="تم استلام اعتراضك | منصة فصيح",
                 html_content=render_to_string(
                     "accounts/emails/specialist_appeal_received.html",
-                    {"name": request.user.get_full_name() or request.user.username}
+                    {
+                        "name": request.user.get_full_name()
+                        or request.user.username
+                    }
                 )
             )
 
             return redirect('accounts:specialist_pending')
 
-        messages.error(request, "تأكد من تعبئة جميع الحقول")
+        messages.error(request, "تأكد من تعبئة سبب الاعتراض والبيانات المطلوبة")
 
     else:
         user_form = UserProfileForm(instance=request.user)
         specialist_form = SpecialistProfileForm(instance=specialist)
         certificate_form = SpecialistCertificateForm()
 
-    return render(request, 'accounts/specialist_appeal.html', {
-        'specialist': specialist,
-        'user_form': user_form,
-        'specialist_form': specialist_form,
-        'certificate_form': certificate_form,
-    })
-
+    return render(
+        request,
+        'accounts/specialist_appeal.html',
+        {
+            'specialist': specialist,
+            'user_form': user_form,
+            'specialist_form': specialist_form,
+            'certificate_form': certificate_form,
+        }
+    )
