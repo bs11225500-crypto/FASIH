@@ -1,0 +1,49 @@
+.patients-dashboard {
+    padding: 140px 60px 60px;
+}
+
+.page-title {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.patients-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.05);
+}
+
+.patients-table th,
+.patients-table td {
+    padding: 16px 20px;
+    text-align: right;
+}
+
+.patients-table thead {
+    background: #f5f7fb;
+}
+
+.status {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status.new {
+    background: #eef4ff;
+    color: #3A7BD5;
+}
+
+.view-btn {
+    padding: 8px 16px;
+    background: #3A7BD5;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 13px;
+}

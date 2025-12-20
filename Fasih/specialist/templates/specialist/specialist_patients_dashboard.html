@@ -1,0 +1,59 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}
+فَصِيح | مرضاي
+{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/specialist_patients_dashboard.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<section class="patients-dashboard">
+
+    <h1 class="page-title">مرضاي</h1>
+
+    {% if patients %}
+    <table class="patients-table">
+        <thead>
+            <tr>
+                <th>اسم المريض</th>
+                <th>رقم الملف</th>
+                <th>العمر</th>
+                <th>الحالة</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for p in patients %}
+            <tr>
+                <td>{{ p.name }}</td>
+                <td>{{ p.file_number }}</td>
+                <td>{{ p.age }}</td>
+                <td>
+                    <span class="status new">
+                        {{ p.status }}
+                    </span>
+                </td>
+                <td>
+                    <a href="{% url 'specialist:patient_detail' p.id %}" class="view-btn">
+                        عرض التفاصيل
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+        <div class="empty-state">
+            <p>لا يوجد مرضى حاليًا</p>
+        </div>
+    {% endif %}
+
+</section>
+
+{% endblock %}

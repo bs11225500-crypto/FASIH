@@ -1,0 +1,50 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}
+فَصِيح | لوحة الأخصائي
+{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/specialist_home.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<section class="specialist-home">
+
+    <div class="welcome">
+        <h1>مرحبًا👋</h1>
+    </div>
+
+    <div class="cards-grid">
+
+        <!-- My Patients -->
+        <div class="card">
+            <span class="material-icons">groups</span>
+            <h3>مرضاي</h3>
+            <p class="number">{{ patients_count }}</p>
+            <a href="{% url 'specialist:specialist_patients_dashboard' %}" class="card-btn">عرض المرضى</a>
+        </div>
+
+        <!-- Scheduled Sessions -->
+        <div class="card">
+            <span class="material-icons">event</span>
+            <h3>الجلسات المجدولة</h3>
+            <p class="number">{{ sessions_count }}</p>
+            <a href="#" class="card-btn">عرض الجلسات</a>
+        </div>
+
+        <!-- New Consultations -->
+        <div class="card {% if new_consultations_count > 0 %}highlight{% endif %}">
+            <span class="material-icons">assignment</span>
+            <h3>طلبات استشارة جديدة</h3>
+            <p class="number">{{ new_consultations_count }}</p>
+            <a href="#" class="card-btn">مراجعة الطلبات</a>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

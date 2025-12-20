@@ -59,6 +59,8 @@ function updateImage() {
 let mediaRecorder;
 let audioChunks = [];
 let imageRecordings = [null, null, null, null];
+let uploadedAudioPaths = [null, null, null, null];
+
 
 const recordBtn = document.getElementById("recordBtn");
 const stopBtn = document.getElementById("stopBtn");
@@ -133,8 +135,36 @@ nextImageBtn.addEventListener("click", async () => {
     stopBtn.disabled = true;
 
   } else {
+
     alert("🎉 تم الانتهاء من وصف جميع الصور");
-  }
+
+    const assessmentData = {
+        images: images.map((img, index) => ({
+        image: img,
+        answer: document.querySelector(`#answer-${index}`)?.value || "",
+        audio: uploadedAudioPaths[index]
+        }))
+    };
+
+    fetch("/assessment/submit/", {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+        patient_id: 1, // مؤقت
+        assessment_data: assessmentData
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert("✅ تم حفظ التقييم");
+        console.log(data);
+    })
+    .catch(() => {
+        alert("❌ خطأ أثناء الحفظ");
+    });
+    }
 });
 
 
@@ -160,6 +190,8 @@ async function uploadCurrentAudio() {
 
     const data = await res.json();
     console.log("Uploaded:", data);
+    uploadedAudioPaths[currentImageIndex] = data.file;
+
     
     return true;
 

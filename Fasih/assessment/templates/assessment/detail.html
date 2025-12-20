@@ -1,0 +1,17 @@
+<h2>تفاصيل التقييم</h2>
+
+<p><strong>المريض:</strong> {{ assessment.patient }}</p>
+<p><strong>الحالة:</strong> {{ assessment.status }}</p>
+<p><strong>التاريخ:</strong> {{ assessment.created_at }}</p>
+
+<h3>الاستبيان</h3>
+<pre>{{ assessment.assessment_data }}</pre>
+
+<h3>التسجيلات</h3>
+<ul>
+  {% for audio in assessment.audio_files %}
+    <li>
+      <audio controls src="{{ audio }}"></audio>
+    </li>
+  {% endfor %}
+</ul>
