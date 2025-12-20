@@ -1,4 +1,3 @@
-/* ====== Layout ====== */
 .specialist-page {
     max-width: 720px;
     margin: 120px auto;
@@ -8,7 +7,6 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
-/* ====== Headings ====== */
 .specialist-page h2 {
     font-size: 24px;
     font-weight: 700;
@@ -22,13 +20,11 @@
     color: #374151;
 }
 
-/* ====== Text ====== */
 .specialist-page p {
     color: #4b5563;
     line-height: 1.7;
 }
 
-/* ====== Alerts ====== */
 .alert {
     padding: 16px;
     border-radius: 10px;
@@ -51,7 +47,6 @@
     color: #075985;
 }
 
-/* ====== Forms ====== */
 form label {
     display: block;
     font-weight: 600;
@@ -75,7 +70,6 @@ form textarea {
     resize: vertical;
 }
 
-/* ====== Buttons ====== */
 .btn {
     display: inline-block;
     padding: 12px 26px;
@@ -110,7 +104,6 @@ form textarea {
     justify-content: center;
 }
 
-/* ====== Divider ====== */
 .divider {
     height: 1px;
     background: #e5e7eb;
@@ -186,16 +179,14 @@ form textarea {
     background: #f1f1f1;
     color: #333;
 }
-/*appeal page*/
-/* يبعد المحتوى عن الهيدر والفوتر */
+
 .auth-wrapper {
-    padding: 90px 20px 100px;  /* فوق | يمين/يسار | تحت */
+    padding: 90px 20px 100px; 
     min-height: calc(100vh - 120px);
     display: flex;
     justify-content: center;
 }
 
-/* الكرت نفسه */
 .auth-card {
     margin: 0 auto;
 }
@@ -214,7 +205,6 @@ form textarea {
     gap: 20px 24px;
 }
 
-/* الحقول الطويلة */
 .form-grid .full {
     grid-column: 1 / -1;
 }

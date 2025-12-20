@@ -1,18 +1,16 @@
 {% extends "admin_panel/base_admin.html" %}
 {% load static %}
 
-
 {% block admin_css %}
 <link rel="stylesheet" href="{% static 'css/specialists.css' %}">
 {% endblock %}
 
-
 {% block admin_content %}
 <div class="specialists-wrapper">
 
-    <h2>الأخصائين</h2>
+    <h2 class="page-title">الأخصائيون</h2>
 
-    <table>
+    <table class="specialists-table">
         <thead>
             <tr>
                 <th>الاسم</th>
@@ -21,10 +19,12 @@
                 <th>الإجراء</th>
             </tr>
         </thead>
+
         <tbody>
             {% for specialist in specialists %}
             <tr>
-                <td>
+
+                <td data-label="الاسم">
                     {% if specialist.user.get_full_name %}
                         {{ specialist.user.get_full_name }}
                     {% else %}
@@ -32,10 +32,11 @@
                     {% endif %}
                 </td>
 
+                <td data-label="التخصص">
+                    {{ specialist.specialization }}
+                </td>
 
-                <td>{{ specialist.specialization }}</td>
-
-                <td>
+                <td data-label="الحالة">
                     <span class="status-badge
                         {% if specialist.verification_status == 'PENDING' %}
                             status-pending
@@ -49,18 +50,24 @@
                     </span>
                 </td>
 
-                <td>
-                    <a class="review-link" href="{% url 'admin_panel:specialist_review' specialist.id %}">
+                <td data-label="الإجراء">
+                    <a
+                        class="review-link"
+                        href="{% url 'admin_panel:specialist_review' specialist.id %}">
                         مراجعة
                     </a>
                 </td>
+
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4">لا يوجد أخصائين حاليًا</td>
+                <td colspan="4" style="text-align:center;">
+                    لا يوجد أخصائيون حاليًا
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
 </div>
 {% endblock %}

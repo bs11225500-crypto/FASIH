@@ -35,10 +35,7 @@ def register_account(request):
 
         except Exception as e:
             print("REGISTER ERROR:", e)
-            messages.error(
-                request,
-                "حدث خطأ غير متوقع أثناء إنشاء الحساب، حاول مرة أخرى"
-            )
+            messages.error(request,"حدث خطأ غير متوقع أثناء إنشاء الحساب، حاول مرة أخرى")
 
     else:
         form = AccountRegisterForm()
@@ -69,10 +66,7 @@ def login_view(request):
 
         except Exception as e:
             print("LOGIN ERROR:", e)
-            messages.error(
-                request,
-                "حدث خطأ غير متوقع أثناء تسجيل الدخول، حاول مرة أخرى"
-            )
+            messages.error(request,"حدث خطأ غير متوقع أثناء تسجيل الدخول، حاول مرة أخرى")
 
     return render(request, 'accounts/sign_in.html')
 
@@ -144,14 +138,7 @@ def complete_patient_profile(request):
         user_form = UserProfileForm(instance=user)
         patient_form = PatientProfileForm()
 
-    return render(
-        request,
-        'accounts/complete_patient_profile.html',
-        {
-            'user_form': user_form,
-            'patient_form': patient_form
-        }
-    )
+    return render(request,'accounts/complete_patient_profile.html',{'user_form': user_form,'patient_form': patient_form})
 
 @login_required
 def complete_specialist_profile(request):
@@ -160,12 +147,7 @@ def complete_specialist_profile(request):
     if user.role != User.Role.SPECIALIST:
         return redirect('accounts:choose_role')
 
-    specialist, created = Specialist.objects.get_or_create(
-        user=user,
-        defaults={
-            'verification_status': Specialist.VerificationStatus.PENDING
-        }
-    )
+    specialist, created = Specialist.objects.get_or_create(user=user,defaults={'verification_status': Specialist.VerificationStatus.PENDING})
 
     if specialist.verification_status == Specialist.VerificationStatus.PENDING:
         return redirect('accounts:specialist_pending')
@@ -176,11 +158,7 @@ def complete_specialist_profile(request):
         specialist_form = SpecialistProfileForm(request.POST, instance=specialist)
         certificate_form = SpecialistCertificateForm(request.POST, request.FILES)
 
-        if (
-            user_form.is_valid()
-            and specialist_form.is_valid()
-            and certificate_form.is_valid()
-        ):
+        if (user_form.is_valid()and specialist_form.is_valid()and certificate_form.is_valid()):
             user_form.save()
 
             specialist = specialist_form.save(commit=False)
@@ -211,15 +189,7 @@ def complete_specialist_profile(request):
         specialist_form = SpecialistProfileForm(instance=specialist)
         certificate_form = SpecialistCertificateForm()
 
-    return render(
-        request,
-        'accounts/complete_specialist_profile.html',
-        {
-            'user_form': user_form,
-            'specialist_form': specialist_form,
-            'certificate_form': certificate_form,
-        }
-    )
+    return render(request,'accounts/complete_specialist_profile.html',{'user_form': user_form,'specialist_form': specialist_form,'certificate_form': certificate_form,})
 
 
 
@@ -268,13 +238,7 @@ def password_reset_request(request):
                 settings.STATIC_URL + "main/img/logo.png"
             )
 
-            html_content = render_to_string(
-                "accounts/emails/password_reset.html",
-                {
-                    "reset_link": reset_link,
-                    "logo_url": logo_url,
-                }
-            )
+            html_content = render_to_string("accounts/emails/password_reset.html",{"reset_link": reset_link,"logo_url": logo_url,})
 
             send_email(
                 to=email,
@@ -283,10 +247,7 @@ def password_reset_request(request):
             )
 
 
-        messages.success(
-            request,
-            "إذا كان البريد مسجلاً لدينا، سيتم إرسال رابط إعادة التعيين."
-        )
+        messages.success(request,"إذا كان البريد مسجلاً لدينا، سيتم إرسال رابط إعادة التعيين.")
         return redirect('accounts:login')
 
     return render(request, 'accounts/password_reset_request.html')
@@ -324,10 +285,7 @@ def password_reset_confirm(request, uidb64, token):
         return redirect('accounts:login')
 
 
-    return render(
-        request,
-        'accounts/password_reset_confirm.html'
-    )
+    return render(request,'accounts/password_reset_confirm.html')
 
 
 @login_required
@@ -349,7 +307,7 @@ def post_login_redirect(request):
         if specialist.verification_status == Specialist.VerificationStatus.REJECTED:
             return redirect('accounts:specialist_rejected')
 
-        # APPROVED
+        
         return redirect('specialist:specialist_home')  
 
     if not user.role:
@@ -417,10 +375,7 @@ def specialist_appeal(request):
                 cert.specialist = specialist
                 cert.save()
 
-            messages.success(
-                request,
-                "تم إرسال الاعتراض وتحديث بياناتك بنجاح"
-            )
+            messages.success(request,"تم إرسال الاعتراض وتحديث بياناتك بنجاح")
 
             send_email(
                 to=request.user.email,
@@ -443,13 +398,4 @@ def specialist_appeal(request):
         specialist_form = SpecialistProfileForm(instance=specialist)
         certificate_form = SpecialistCertificateForm()
 
-    return render(
-        request,
-        'accounts/specialist_appeal.html',
-        {
-            'specialist': specialist,
-            'user_form': user_form,
-            'specialist_form': specialist_form,
-            'certificate_form': certificate_form,
-        }
-    )
+    return render(request,'accounts/specialist_appeal.html',{'specialist': specialist,'user_form': user_form,'specialist_form': specialist_form,'certificate_form': certificate_form,})

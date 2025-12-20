@@ -1,5 +1,5 @@
 .pending-wrapper {
-  min-height: calc(100vh - 80px); /* يعوض الهيدر */
+  min-height: calc(100vh - 80px); 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -36,9 +36,7 @@
   font-weight: 600;
 }
 
-/* ===================== */
-/* 📱 تحسينات الجوال */
-/* ===================== */
+
 @media (max-width: 480px) {
 
   .pending-wrapper {
