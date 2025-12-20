@@ -1,0 +1,93 @@
+.specialist-home {
+    padding: 140px 60px 60px;
+}
+
+.welcome h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 40px;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 30px 24px;
+    text-align: center;
+
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.card .material-icons {
+    font-size: 40px;
+    color: #679be5;
+    margin-bottom: 12px;
+}
+
+.card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.card .number {
+    font-size: 32px;
+    font-weight: 700;
+    color: #3A7BD5;
+    margin: 10px 0 18px;
+}
+
+.card-btn {
+    display: inline-block;
+    padding: 10px 20px;
+
+    background: #3A7BD5;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+
+    border-radius: 8px;
+    transition: background 0.25s ease;
+}
+
+.card-btn:hover {
+    background: #2f66b0;
+}
+
+.card.highlight {
+    border: 2px solid #7ED6A7;
+}
+
+.card.highlight .material-icons {
+    color: #7ED6A7;
+}
+
+.card.highlight .number {
+    color: #27ae60;
+}
+
+
+@media (max-width: 768px) {
+    .specialist-home {
+        padding: 120px 24px 40px;
+    }
+
+    .welcome h1 {
+        font-size: 24px;
+        margin-bottom: 30px;
+    }
+}
