@@ -1,56 +1,70 @@
-/* ===== Dashboard Header ===== */
-.dashboard-header {
-    margin-top: 40px;   /* ينزل الكلام تحت */
-    margin-bottom: 48px;
+/* ===== Dashboard Wrapper ===== */
+.dashboard-wrapper {
+    margin-top: 80px;   /* ينزل الداشبورد تحت */
 }
 
-.dashboard-header h2 {
-    font-size: 28px;
-    font-weight: 800;
+/* ===== Header ===== */
+.dashboard-header {
+    margin-bottom: 32px;
+}
+
+.dashboard-header h1 {
+    font-size: 26px;
+    font-weight: 700;
     color: #111827;
     margin-bottom: 6px;
 }
 
 .dashboard-header p {
-    font-size: 15px;
     color: #6b7280;
+    font-size: 14px;
 }
 
-/* ===== Dashboard Cards ===== */
+/* ===== Cards Container ===== */
 .dashboard-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
 }
 
+/* ===== Card Base ===== */
 .dashboard-card {
     background: #ffffff;
-    border-radius: 22px;
-    padding: 36px 28px;
+    border-radius: 16px;
+    padding: 22px 20px;
     text-align: center;
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.dashboard-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== Card Title ===== */
 .dashboard-card h4 {
-    font-size: 17px;
+    font-size: 14px;
     font-weight: 600;
     color: #374151;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
 }
 
-.dashboard-card span {
-    font-size: 40px;
+/* ===== Card Number ===== */
+.card-number {
+    font-size: 34px;
     font-weight: 800;
     color: #111827;
 }
 
-/* Card Colors */
+/* ===== Card Variants ===== */
 .card-green {
-    background: #e9f7ef;
+    background: #ecf8ec;
 }
 
 .card-yellow {
-    background: #fff7da;
+    background: #fff8d9;
 }
 
 .card-white {

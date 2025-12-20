@@ -1,0 +1,97 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/specialist_status.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+
+    <div class="auth-card wide">
+
+        <h2>تقديم اعتراض</h2>
+
+        <p class="muted">
+            يمكنك توضيح سبب الاعتراض، وتعديل بياناتك الخاطئة قبل إعادة المراجعة.
+        </p>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- سبب الاعتراض -->
+            <div class="form-group full">
+                <label>سبب الاعتراض</label>
+                <textarea name="reason" rows="4" required
+                          placeholder="اكتب سبب الاعتراض بشكل واضح..."></textarea>
+            </div>
+
+            <hr class="divider">
+
+            <!-- تعديل البيانات -->
+            <h3 class="section-title">تعديل البيانات</h3>
+
+            <div class="form-grid">
+
+                <!-- بيانات المستخدم -->
+                <div>
+                    <label>الاسم الأول</label>
+                    {{ user_form.first_name }}
+                </div>
+
+                <div>
+                    <label>الاسم الأوسط</label>
+                    {{ user_form.middle_name }}
+                </div>
+
+                <div>
+                    <label>اسم العائلة</label>
+                    {{ user_form.last_name }}
+                </div>
+
+
+                <!-- بيانات الأخصائي -->
+                <div class="full">
+                    <label>التخصص</label>
+                    {{ specialist_form.specialization }}
+                </div>
+
+                <div>
+                    <label>رقم الرخصة</label>
+                    {{ specialist_form.license_number }}
+                </div>
+
+                <div>
+                    <label>سنوات الخبرة</label>
+                    {{ specialist_form.years_of_experience }}
+                </div>
+
+            </div>
+
+            {% if certificate_form %}
+                <h4 class="sub-title">تحديث الشهادة (اختياري)</h4>
+
+                <div class="form-grid">
+                    <div class="full">
+                        <label>ملف الشهادة</label>
+                        {{ certificate_form.certificate_file }}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="actions">
+                <button type="submit" class="btn primary">
+                    إرسال الاعتراض وإعادة المراجعة
+                </button>
+
+                <a href="{% url 'accounts:specialist_rejected' %}" class="btn secondary">
+                    إلغاء
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+{% endblock %}

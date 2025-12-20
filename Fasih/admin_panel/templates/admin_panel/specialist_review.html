@@ -1,69 +1,112 @@
 {% extends "admin_panel/base_admin.html" %}
-
 {% load static %}
-
 
 {% block admin_css %}
 <link rel="stylesheet" href="{% static 'css/review.css' %}">
 {% endblock %}
 
-
 {% block admin_content %}
-<h2>مراجعة الأخصائي</h2>
+<div class="review-wrapper">
 
-<p>
-    <strong>الاسم:</strong>
-    {{ specialist.user.get_full_name|default:specialist.user.username }}
-</p>
+    <!-- العنوان -->
+    <div class="review-header">
+        <h2>مراجعة الأخصائي</h2>
+        <p class="sub-text">معلومات الأخصائي والوثائق المرفقة</p>
+    </div>
 
-<p><strong>التخصص:</strong> {{ specialist.specialization }}</p>
-<p><strong>رقم الرخصة:</strong> {{ specialist.license_number }}</p>
-<p><strong>سنوات الخبرة:</strong> {{ specialist.years_of_experience }}</p>
+    <!-- معلومات الأخصائي -->
+    <div class="review-card">
+        <div class="info-grid">
+            <div><strong>الاسم:</strong>
+                {% if specialist.user.get_full_name %}
+                    {{ specialist.user.get_full_name }}
+                {% else %}
+                    {{ specialist.user.username }}
+                {% endif %}
+            </div>
 
-<p>
-    <strong>الحالة:</strong>
-    <span class="
-        {% if specialist.verification_status == 'PENDING' %}
-            status-pending
-        {% elif specialist.verification_status == 'APPROVED' %}
-            status-approved
-        {% else %}
-            status-rejected
-        {% endif %}
-    ">
-        {{ specialist.get_verification_status_display }}
-    </span>
-</p>
+            <div><strong>التخصص:</strong> {{ specialist.specialization }}</div>
+            <div><strong>رقم الرخصة:</strong> {{ specialist.license_number }}</div>
+            <div><strong>سنوات الخبرة:</strong> {{ specialist.years_of_experience }}</div>
+            <div>
+                <strong>الحالة:</strong>
+                <span class="status-badge pending">
+                    {{ specialist.get_verification_status_display }}
+                </span>
+            </div>
+        </div>
+    </div>
 
-<hr>
+    <!-- الشهادات -->
+    <h3 class="section-title">الشهادات</h3>
 
-<h3>الشهادات</h3>
+    <div class="certificates-grid">
+        {% for cert in specialist.certificates.all %}
+            <div class="certificate-card">
+                <div class="cert-info">
+                    <h4>{{ cert.title }}</h4>
+                    {% if cert.description %}
+                        <p>{{ cert.description }}</p>
+                    {% endif %}
+                    <span class="cert-date">
+                        تاريخ الإضافة: {{ cert.added_at|date:"Y-m-d" }}
+                    </span>
+                </div>
 
-<ul class="cert-list">
-    {% for cert in specialist.certificates.all %}
-        <li>
-            <strong>{{ cert.title }}</strong>
-            <br>
-            <a class="btn" href="{{ cert.certificate_file.url }}" target="_blank">
-                عرض الملف
-            </a>
-        </li>
-    {% empty %}
-        <li>لا توجد شهادات</li>
-    {% endfor %}
-</ul>
+                <div class="cert-actions">
+                    <a
+                        href="{{ cert.certificate_file.url }}"
+                        target="_blank"
+                        class="btn btn-outline"
+                    >
+                        عرض
+                    </a>
 
-<hr>
+                    <a
+                        href="{{ cert.certificate_file.url }}"
+                        download
+                        class="btn btn-primary"
+                    >
+                        تحميل
+                    </a>
+                </div>
+            </div>
+        {% empty %}
+            <p class="empty-text">لا توجد شهادات مرفقة</p>
+        {% endfor %}
+    </div>
 
-{% if specialist.verification_status == 'PENDING' %}
-    <a class="btn btn-approve"
-       href="{% url 'admin_panel:approve_specialist' specialist.id %}">
-        اعتماد
-    </a>
 
-    <a class="btn btn-reject"
-       href="{% url 'admin_panel:reject_specialist' specialist.id %}">
-        رفض
-    </a>
-{% endif %}
+
+    <!-- أزرار القرار -->
+    <div class="review-actions">
+        <a
+            href="{% url 'admin_panel:approve_specialist' specialist.id %}"
+            class="btn approve"
+            onclick="return confirmApprove();"
+        >
+            اعتماد
+        </a>
+
+        <a
+            href="{% url 'admin_panel:reject_specialist' specialist.id %}"
+            class="btn reject"
+            onclick="return confirmReject();"
+        >
+            رفض
+        </a>
+    </div>
+
+
+</div>
+<script>
+function confirmApprove() {
+    return confirm("هل أنت متأكد من اعتماد هذا الأخصائي؟");
+}
+
+function confirmReject() {
+    return confirm("هل أنت متأكد من رفض هذا الأخصائي؟");
+}
+</script>
+
 {% endblock %}

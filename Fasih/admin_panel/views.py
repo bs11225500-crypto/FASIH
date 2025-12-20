@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-
+from main.email_service import send_email
 from specialist.models import Specialist
 from .decorators import staff_required
+from django.template.loader import render_to_string
+
 
 
 # Create your views here.
@@ -66,6 +68,15 @@ def approve_specialist(request, id):
     specialist.save()
 
     messages.success(request, 'تم اعتماد الأخصائي بنجاح')
+    send_email(
+        to=specialist.user.email,
+        subject="تم اعتماد طلبك | منصة فصيح",
+        html_content=render_to_string(
+            "accounts/emails/specialist_approved.html",
+            {"name": specialist.user.get_full_name() or specialist.user.username}
+        )
+    )
+
     return redirect('admin_panel:specialist_list')
 
 @staff_required
@@ -88,6 +99,18 @@ def reject_specialist(request, id):
         specialist.save()
 
         messages.error(request, 'تم رفض الأخصائي')
+        send_email(
+            to=specialist.user.email,
+            subject="حالة طلبك | منصة فصيح",
+            html_content=render_to_string(
+                "accounts/emails/specialist_rejected.html",
+                {
+                    "name": specialist.user.get_full_name() or specialist.user.username,
+                    "reason": specialist.rejection_reason
+                }
+            )
+        )
+
         return redirect('admin_panel:specialist_list')
 
     return render(request, 'admin_panel/reject_specialist.html', {

@@ -9,10 +9,11 @@ from django.utils.encoding import force_bytes, force_str
 from django.urls import reverse
 from django.conf import settings
 from django.template.loader import render_to_string
+from django.shortcuts import get_object_or_404
 
 from .models import User
 from patient.models import Patient
-from specialist.models import Specialist
+from specialist.models import Specialist,SpecialistAppeal
 from .forms import (AccountRegisterForm, PatientProfileForm,SpecialistProfileForm, UserProfileForm,SpecialistCertificateForm)
 from main.email_service import send_email 
 
@@ -166,8 +167,9 @@ def complete_specialist_profile(request):
         }
     )
 
-    if specialist.verification_status == Specialist.VerificationStatus.PENDING and not created:
+    if specialist.verification_status == Specialist.VerificationStatus.PENDING:
         return redirect('accounts:specialist_pending')
+
 
     if request.method == 'POST':
         user_form = UserProfileForm(request.POST, request.FILES, instance=user)
@@ -189,18 +191,20 @@ def complete_specialist_profile(request):
             cert.specialist = specialist
             cert.save()
 
-            messages.success(
-                request,
-                "تم إرسال بياناتك بنجاح، وسيتم مراجعتها من الإدارة"
+            messages.success(request,"تم إرسال بياناتك بنجاح، وسيتم مراجعتها من الإدارة")
+            send_email(
+                to=user.email,
+                subject="تم استلام طلبك | منصة فصيح",
+                html_content=render_to_string(
+                    "accounts/emails/specialist_request_received.html",
+                    {"name": user.get_full_name() or user.username}
+                )
             )
 
             return redirect('accounts:specialist_pending')
 
         else:
-            messages.error(
-                request,
-                "تأكد من إدخال جميع البيانات المطلوبة ورفع ملف الرخصة بشكل صحيح"
-            )
+            messages.error(request,"تأكد من إدخال جميع البيانات المطلوبة ورفع ملف الرخصة بشكل صحيح")
 
     else:
         user_form = UserProfileForm(instance=user)
@@ -233,7 +237,11 @@ def specialist_pending(request):
         return redirect('accounts:complete_specialist_profile')
 
     if specialist.verification_status == Specialist.VerificationStatus.APPROVED:
-        return redirect('main:home')  # لاحقاً داشبورد الأخصائي
+        return redirect('main:home') #لاحقا داشبورد الاخصائي
+
+    if specialist.verification_status == Specialist.VerificationStatus.REJECTED:
+        return redirect('accounts:specialist_rejected')
+
     messages.info(request,"حسابك قيد المراجعة حاليًا، سيتم إشعارك بعد الموافقة")
 
     return render(request, 'accounts/specialist_pending.html')
@@ -329,18 +337,98 @@ def post_login_redirect(request):
     if user.is_staff or user.is_superuser:
         return redirect(request.GET.get('next') or 'admin_panel:dashboard')
 
-
     if user.role == User.Role.SPECIALIST:
         specialist = getattr(user, 'specialist', None)
 
         if not specialist:
             return redirect('accounts:complete_specialist_profile')
 
-        if specialist.verification_status != Specialist.VerificationStatus.APPROVED:
+        if specialist.verification_status == Specialist.VerificationStatus.PENDING:
             return redirect('accounts:specialist_pending')
+
+        if specialist.verification_status == Specialist.VerificationStatus.REJECTED:
+            return redirect('accounts:specialist_rejected')
+
+        # APPROVED
+        return redirect('main:home')  # لاحقًا داشبورد الأخصائي
 
     if not user.role:
         return redirect('accounts:choose_role')
 
-
     return redirect(request.GET.get('next', '/'))
+
+
+
+@login_required
+def specialist_rejected(request):
+    specialist = get_object_or_404(Specialist, user=request.user)
+
+    if specialist.verification_status != Specialist.VerificationStatus.REJECTED:
+        return redirect('main:home')
+
+    return render(request, 'accounts/specialist_rejected.html', {
+        'specialist': specialist
+    })
+
+@login_required
+def specialist_appeal(request):
+    specialist = get_object_or_404(Specialist, user=request.user)
+
+    if specialist.verification_status != Specialist.VerificationStatus.REJECTED:
+        return redirect('main:home')
+
+    if request.method == 'POST':
+        appeal_reason = request.POST.get('appeal_reason')
+
+        user_form = UserProfileForm(request.POST, request.FILES, instance=request.user)
+        specialist_form = SpecialistProfileForm(request.POST, instance=specialist)
+        certificate_form = SpecialistCertificateForm(request.POST, request.FILES)
+
+        if (
+            appeal_reason
+            and user_form.is_valid()
+            and specialist_form.is_valid()
+            and certificate_form.is_valid()
+        ):
+            user_form.save()
+
+            specialist = specialist_form.save(commit=False)
+            specialist.verification_status = Specialist.VerificationStatus.PENDING
+            specialist.rejection_reason = ""
+            specialist.save()
+
+            SpecialistAppeal.objects.create(
+                specialist=specialist,
+                reason=appeal_reason
+            )
+
+            cert = certificate_form.save(commit=False)
+            cert.specialist = specialist
+            cert.save()
+
+            messages.success(request,"تم إرسال الاعتراض وتحديث بياناتك بنجاح")
+            send_email(
+                to=request.user.email,
+                subject="تم استلام اعتراضك | منصة فصيح",
+                html_content=render_to_string(
+                    "accounts/emails/specialist_appeal_received.html",
+                    {"name": request.user.get_full_name() or request.user.username}
+                )
+            )
+
+            return redirect('accounts:specialist_pending')
+
+        messages.error(request, "تأكد من تعبئة جميع الحقول")
+
+    else:
+        user_form = UserProfileForm(instance=request.user)
+        specialist_form = SpecialistProfileForm(instance=specialist)
+        certificate_form = SpecialistCertificateForm()
+
+    return render(request, 'accounts/specialist_appeal.html', {
+        'specialist': specialist,
+        'user_form': user_form,
+        'specialist_form': specialist_form,
+        'certificate_form': certificate_form,
+    })
+

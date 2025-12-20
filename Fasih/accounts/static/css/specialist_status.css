@@ -1,0 +1,271 @@
+/* ====== Layout ====== */
+.specialist-page {
+    max-width: 720px;
+    margin: 120px auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* ====== Headings ====== */
+.specialist-page h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 10px;
+}
+
+.specialist-page h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #374151;
+}
+
+/* ====== Text ====== */
+.specialist-page p {
+    color: #4b5563;
+    line-height: 1.7;
+}
+
+/* ====== Alerts ====== */
+.alert {
+    padding: 16px;
+    border-radius: 10px;
+    margin: 20px 0;
+    font-size: 15px;
+}
+
+.alert-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.alert-rejected {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.alert-info {
+    background: #e0f2fe;
+    color: #075985;
+}
+
+/* ====== Forms ====== */
+form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #374151;
+}
+
+form textarea,
+form input,
+form select {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    margin-bottom: 18px;
+}
+
+form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* ====== Buttons ====== */
+.btn {
+    display: inline-block;
+    padding: 12px 26px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-primary {
+    background: #4a6cf7;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74, 108, 247, 0.3);
+}
+
+.btn-secondary {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.btn-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+    justify-content: center;
+}
+
+/* ====== Divider ====== */
+.divider {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 30px 0;
+}
+/* reject page*/
+.auth-wrapper {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-card {
+    background: #fff;
+    width: 100%;
+    max-width: 520px;
+    padding: 40px;
+    border-radius: 18px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.auth-card h2 {
+    color: #c0392b;
+    margin-bottom: 12px;
+}
+
+.auth-card .muted {
+    color: #666;
+    margin-bottom: 25px;
+    font-size: 15px;
+}
+
+.reject-reason {
+    background: #fff5f5;
+    border: 1px solid #f1c1c1;
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 25px;
+    text-align: right;
+}
+
+.reject-reason strong {
+    color: #c0392b;
+}
+
+.reject-reason p {
+    margin-top: 8px;
+    color: #444;
+    line-height: 1.6;
+}
+
+.actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.btn {
+    padding: 12px 26px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.btn.primary {
+    background: linear-gradient(135deg,#3A7BD5,#7ED6A7);
+    color: #fff;
+}
+
+.btn.secondary {
+    background: #f1f1f1;
+    color: #333;
+}
+/*appeal page*/
+/* يبعد المحتوى عن الهيدر والفوتر */
+.auth-wrapper {
+    padding: 90px 20px 100px;  /* فوق | يمين/يسار | تحت */
+    min-height: calc(100vh - 120px);
+    display: flex;
+    justify-content: center;
+}
+
+/* الكرت نفسه */
+.auth-card {
+    margin: 0 auto;
+}
+
+.auth-card.wide {
+    max-width: 760px;   
+    padding: 40px 45px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 24px;
+}
+
+/* الحقول الطويلة */
+.form-grid .full {
+    grid-column: 1 / -1;
+}
+
+.auth-card h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.auth-card .muted {
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+
+textarea {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px
+    solid #ddd;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.divider {
+    margin: 30px 0;
+    border: none;
+    border-top: 1px solid #eee;
+}
+
+.section-title {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.sub-title {
+    margin-top: 20px;
+    font-size: 15px;
+    color: #555;
+}
+
+
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 35px;
+}
+
+.actions .primary {
+    padding: 14px 40px;
+    font-size: 15px;
+}

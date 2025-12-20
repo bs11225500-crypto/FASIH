@@ -17,6 +17,9 @@ urlpatterns = [
     path('complete/specialist/', views.complete_specialist_profile, name='complete_specialist_profile'),
     path('password-reset/',views.password_reset_request,name='password_reset_request'),
     path('password-reset/<uidb64>/<token>/',views.password_reset_confirm,name='password_reset_confirm'),
+    path('specialist/rejected/',views.specialist_rejected,name='specialist_rejected'),
+    path('specialist/appeal/',views.specialist_appeal,name='specialist_appeal'),
     path('specialist/pending/',views.specialist_pending,name='specialist_pending'),
+
 ]
 

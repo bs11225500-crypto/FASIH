@@ -1,0 +1,40 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/specialist_status.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+
+    <div class="auth-card">
+
+        <h2>تم رفض طلبك</h2>
+
+        <p class="muted">
+            للأسف، لم يتم قبول طلب التسجيل كأخصائي في منصة فصيح.
+            يمكنك الاطلاع على سبب الرفض أدناه، وتقديم اعتراض في حال رغبت بذلك.
+        </p>
+
+        {% if specialist.rejection_reason %}
+            <div class="reject-reason">
+                <strong>سبب الرفض:</strong>
+                <p>{{ specialist.rejection_reason }}</p>
+            </div>
+        {% endif %}
+
+        <div class="actions">
+            <a href="{% url 'accounts:specialist_appeal' %}" class="btn primary">
+                تقديم اعتراض
+            </a>
+
+            <a href="{% url 'main:home' %}" class="btn secondary">
+                العودة للرئيسية
+            </a>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
