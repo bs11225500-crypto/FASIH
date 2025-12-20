@@ -32,4 +32,5 @@ urlpatterns = [
     path('task/', include('task.urls')),
     path('treatment/', include('treatment.urls')),
     path('assessment/', include('assessment.urls')),
+    path('admin-panel/', include('admin_panel.urls')),
 ]  +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

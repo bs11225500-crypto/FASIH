@@ -1,0 +1,20 @@
+.cert-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.cert-list li {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+}
+
+textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}

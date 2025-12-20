@@ -1,0 +1,40 @@
+{% extends "admin_panel/base_admin.html" %}
+{% load static %}
+
+{% block admin_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block admin_content %}
+
+<div class="dashboard-header">
+    <h2>لوحة تحكم الإدارة</h2>
+    <p>
+        مرحبًا
+        {% if request.user.get_full_name %}
+            {{ request.user.get_full_name }}
+        {% else %}
+            {{ request.user.username }}
+        {% endif %}
+    </p>
+
+</div>
+
+<div class="dashboard-cards">
+    <div class="dashboard-card card-green">
+        <h4>معتمدين</h4>
+        <span>{{ approved_count }}</span>
+    </div>
+
+    <div class="dashboard-card card-yellow">
+        <h4>بانتظار المراجعة</h4>
+        <span>{{ pending_count }}</span>
+    </div>
+
+    <div class="dashboard-card card-white">
+        <h4>إجمالي الأخصائيين</h4>
+        <span>{{ total_count }}</span>
+    </div>
+</div>
+
+{% endblock %}

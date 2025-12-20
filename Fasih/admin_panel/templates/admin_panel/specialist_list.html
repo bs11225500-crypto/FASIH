@@ -1,0 +1,58 @@
+{% extends "admin_panel/base_admin.html" %}
+{% load static %}
+
+
+{% block admin_css %}
+<link rel="stylesheet" href="{% static 'css/specialists.css' %}">
+{% endblock %}
+
+
+{% block admin_content %}
+<h2>الأخصائيون</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>الاسم</th>
+            <th>التخصص</th>
+            <th>الحالة</th>
+            <th>الإجراء</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for specialist in specialists %}
+        <tr>
+            <td>
+                {{ specialist.user.get_full_name|default:specialist.user.username }}
+            </td>
+
+            <td>{{ specialist.specialization }}</td>
+
+            <td>
+                <span class="
+                    {% if specialist.verification_status == 'PENDING' %}
+                        status-pending
+                    {% elif specialist.verification_status == 'APPROVED' %}
+                        status-approved
+                    {% else %}
+                        status-rejected
+                    {% endif %}
+                ">
+                    {{ specialist.get_verification_status_display }}
+                </span>
+            </td>
+
+            <td>
+                <a class="btn" href="{% url 'admin_panel:specialist_review' specialist.id %}">
+                    مراجعة
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">لا يوجد أخصائيون حاليًا</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

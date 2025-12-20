@@ -63,9 +63,8 @@ def login_view(request):
 
             login(request, user)
             messages.success(request, "تم تسجيل الدخول بنجاح")
+            return post_login_redirect(request)
 
-            if not user.role:
-                return redirect('accounts:choose_role')
 
         except Exception as e:
             print("LOGIN ERROR:", e)
@@ -87,6 +86,9 @@ def logout_view(request):
 @login_required
 def choose_role(request):
     user = request.user
+    if user.is_staff or user.is_superuser:
+        return redirect('admin_panel:dashboard')
+
     if user.role:
         if user.role == User.Role.PATIENT:
             return redirect('accounts:complete_patient_profile')
@@ -324,8 +326,9 @@ def password_reset_confirm(request, uidb64, token):
 def post_login_redirect(request):
     user = request.user
 
-    if user.is_staff:
-        return redirect(request.GET.get('next', '/'))
+    if user.is_staff or user.is_superuser:
+        return redirect(request.GET.get('next') or 'admin_panel:dashboard')
+
 
     if user.role == User.Role.SPECIALIST:
         specialist = getattr(user, 'specialist', None)

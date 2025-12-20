@@ -1,0 +1,36 @@
+{% extends "admin_panel/base_admin.html" %}
+
+{% load static %}
+
+
+{% block admin_css %}
+<link rel="stylesheet" href="{% static 'css/review.css' %}">
+{% endblock %}
+
+
+{% block admin_content %}
+<h2>رفض الأخصائي</h2>
+
+<p>
+    سبب رفض الأخصائي:
+    <strong>
+        {{ specialist.user.get_full_name|default:specialist.user.username }}
+    </strong>
+</p>
+
+<form method="post">
+    {% csrf_token %}
+
+    <textarea
+        name="reason"
+        rows="5"
+        required
+    ></textarea>
+
+    <br><br>
+
+    <button type="submit" class="btn btn-reject">
+        تأكيد الرفض
+    </button>
+</form>
+{% endblock %}

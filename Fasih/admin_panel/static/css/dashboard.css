@@ -1,0 +1,58 @@
+/* ===== Dashboard Header ===== */
+.dashboard-header {
+    margin-top: 40px;   /* ينزل الكلام تحت */
+    margin-bottom: 48px;
+}
+
+.dashboard-header h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 6px;
+}
+
+.dashboard-header p {
+    font-size: 15px;
+    color: #6b7280;
+}
+
+/* ===== Dashboard Cards ===== */
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+}
+
+.dashboard-card {
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 36px 28px;
+    text-align: center;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+}
+
+.dashboard-card h4 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 14px;
+}
+
+.dashboard-card span {
+    font-size: 40px;
+    font-weight: 800;
+    color: #111827;
+}
+
+/* Card Colors */
+.card-green {
+    background: #e9f7ef;
+}
+
+.card-yellow {
+    background: #fff7da;
+}
+
+.card-white {
+    background: #ffffff;
+}
