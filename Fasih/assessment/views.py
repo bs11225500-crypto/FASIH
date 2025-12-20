@@ -1,4 +1,7 @@
 from django.shortcuts import render,get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from datetime import timedelta
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -36,6 +39,7 @@ def upload_audio(request):
     return JsonResponse({"error": "Invalid method"}, status=405)
 
 
+@login_required
 @csrf_exempt
 def submit_assessment(request):
     if request.method != "POST":
@@ -43,13 +47,16 @@ def submit_assessment(request):
 
     data = json.loads(request.body)
 
-    patient = Patient.objects.get(id=data["patient_id"])
+    patient = get_object_or_404(
+        Patient,
+        user=request.user
+    )
 
     assessment = Assessment.objects.create(
-    patient=patient,
-    assessment_data=data["assessment_data"]
-)
-
+        patient=patient,
+        assessment_data=data["assessment_data"],
+        audio_files=data.get("audio_files", [])
+    )
 
     return JsonResponse({
         "status": "success",
@@ -57,10 +64,28 @@ def submit_assessment(request):
     })
 
 
-
-
 def assessment_detail(request, id):
     assessment = get_object_or_404(Assessment, id=id)
     return render(request, "assessment/detail.html", {
         "assessment": assessment
     })
+
+def assessment_detail(request, id):
+    assessment = get_object_or_404(Assessment, id=id)
+
+    dt = assessment.created_at
+
+    # لو الوقت naive اعتبريه UTC (غالبًا هذا اللي عندك)
+    if timezone.is_naive(dt):
+        # نخليه كأنه UTC
+        dt = dt.replace(tzinfo=timezone.utc)
+
+    # تحويل إلى توقيت السعودية (UTC+3) بدون settings
+    dt_riyadh = dt + timedelta(hours=3)
+
+    context = {
+        "assessment": assessment,
+        "sent_date": dt_riyadh.strftime("%Y / %m / %d"),
+        "sent_time": dt_riyadh.strftime("%I:%M %p"),
+    }
+    return render(request, "assessment/detail.html", context)
