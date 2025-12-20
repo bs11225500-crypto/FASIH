@@ -1,0 +1,45 @@
+.report-container {
+  max-width: 900px;
+  margin: 150px auto;
+  background: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  direction: rtl;
+}
+
+
+h2, h3 {
+  border-bottom: 2px solid #eee;
+  padding-bottom: 8px;
+  margin-top: 30px;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.report-table th,
+.report-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: right;
+  vertical-align: top;
+}
+
+.report-table th {
+  background: #f7f7f7;
+  width: 35%;
+}
+
+.image-audio-block {
+  margin: 20px 0;
+}
+
+.image-audio-block img {
+  display: block;
+  margin-bottom: 10px;
+  border-radius: 6px;
+}

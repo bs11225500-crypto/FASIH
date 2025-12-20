@@ -1,17 +1,77 @@
-<h2>تفاصيل التقييم</h2>
+{% extends "main/base.html" %}
+{% load static %}
+{% load tz %}
 
-<p><strong>المريض:</strong> {{ assessment.patient }}</p>
-<p><strong>الحالة:</strong> {{ assessment.status }}</p>
-<p><strong>التاريخ:</strong> {{ assessment.created_at }}</p>
+{% block title %}
+تفاصيل التقييم
+{% endblock %}
 
-<h3>الاستبيان</h3>
-<pre>{{ assessment.assessment_data }}</pre>
 
-<h3>التسجيلات</h3>
-<ul>
-  {% for audio in assessment.audio_files %}
-    <li>
-      <audio controls src="{{ audio }}"></audio>
-    </li>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="report-container">
+
+  <h2>تقرير التقييم الأوّلي</h2>
+  <p>
+  تاريخ الإرسال: {{ sent_date }}
+  <br>
+  الوقت: {{ sent_time }}
+
+
+  {% with a=assessment.assessment_data.sections_answers %}
+
+  <h3>الجزء الأول: التاريخ المرضي</h3>
+  <table class="report-table">
+    <tr><th>عمر الطفل</th><td>{{ a.child_age }}</td></tr>
+    <tr><th>هل يفهم كلامه الغرباء؟</th><td>{{ a.strangers_understand }}</td></tr>
+    <tr><th>هل سبق أخذ جلسات تخاطب؟</th><td>{{ a.speech_sessions }}</td></tr>
+    <tr><th>هل سبق وكان لديه سوائل في الأذن؟</th><td>{{ a.ear_fluids }}</td></tr>
+    <tr><th>هل لديه لحميات في الأنف؟</th><td>{{ a.adenoids }}</td></tr>
+    <tr><th>هل لديه تاريخ في التأخر اللغوي؟</th><td>{{ a.language_delay }}</td></tr>
+    <tr><th>هل سبق وتم تشخيصه باضطراب نمائي؟</th><td>{{ a.developmental }}</td></tr>
+
+    {% if a.diagnosis_details %}
+    <tr>
+      <th>تفاصيل التشخيص</th>
+      <td>{{ a.diagnosis_details }}</td>
+    </tr>
+    {% endif %}
+  </table>
+
+  <h3>الجزء الثاني: التقييم</h3>
+  <p><strong>الحروف التي لا يستطيع الطفل نطقها:</strong></p>
+  <ul>
+    {% for letter in a.difficult_letters %}
+      <li>{{ letter }}</li>
+    {% empty %}
+      <li>لم يتم تحديد حروف</li>
+    {% endfor %}
+  </ul>
+
+  <p><strong>وصف الصور صوتيًا:</strong></p>
+  {% for item in assessment.assessment_data.images %}
+    <div class="image-audio-block">
+      <img src="{{ item.image }}" width="280">
+      {% if item.audio %}
+      <audio controls>
+        <source src="/media/{{ item.audio }}" type="audio/webm">
+      </audio>
+      {% else %}
+        <p>لا يوجد تسجيل صوتي</p>
+      {% endif %}
+    </div>
   {% endfor %}
-</ul>
+
+  <h3>الجزء الثالث: فهم وتحديد حجم المشكلة</h3>
+  <table class="report-table">
+    <tr><th>هل يفهم كلام الطفل خارج الأسرة؟</th><td>{{ a.outside_family }}</td></tr>
+    <tr><th>هل يكرر نفس الأخطاء؟</th><td>{{ a.same_errors }}</td></tr>
+    <tr><th>هل يحاول تصحيح النطق؟</th><td>{{ a.tries_correct }}</td></tr>
+  </table>
+
+  {% endwith %}
+</div>
+{% endblock %}
