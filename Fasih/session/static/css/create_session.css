@@ -1,0 +1,85 @@
+.session-hero {
+    min-height: 55vh;
+    padding: 140px 20px 80px;
+    background: linear-gradient(135deg, #679be5, #8fe4b7);
+    text-align: center;
+    color: #ffffff;
+}
+
+.session-hero h1 {
+    font-size: 42px;
+    margin-bottom: 18px;
+}
+
+.session-hero p {
+    max-width: 700px;
+    margin: auto;
+    font-size: 18px;
+    line-height: 1.9;
+    opacity: 0.95;
+}
+
+.session-content {
+    padding: 80px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.session-card {
+    width: 100%;
+    max-width: 520px;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 14px 30px rgba(0,0,0,0.08);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #555;
+}
+
+.form-group input {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #0fa4af;
+    box-shadow: 0 0 0 2px rgba(15,164,175,0.15);
+}
+
+.btn-primary {
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #0fa4af, #14c1cc);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(15,164,175,0.35);
+}
+
+@media (max-width: 768px) {
+    .session-hero h1 {
+        font-size: 32px;
+    }
+}
