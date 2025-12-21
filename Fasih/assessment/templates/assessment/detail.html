@@ -53,7 +53,6 @@
 
   <h3>الجزء الأول: التاريخ المرضي</h3>
   <table class="report-table">
-    <tr><th>عمر الطفل</th><td>{{ a.child_age }}</td></tr>
     <tr><th>هل يفهم كلامه الغرباء؟</th><td>{{ a.strangers_understand }}</td></tr>
     <tr><th>هل سبق أخذ جلسات تخاطب؟</th><td>{{ a.speech_sessions }}</td></tr>
     <tr><th>هل سبق وكان لديه سوائل في الأذن؟</th><td>{{ a.ear_fluids }}</td></tr>
@@ -102,4 +101,64 @@
 
   {% endwith %}
 </div>
+
+{% if assessment.status == "PENDING" %}
+
+<div class="decision-box">
+  <form method="post">
+    {% csrf_token %}
+
+    <button type="submit" name="action" value="accept" class="btn-accept">
+      قبول الحالة
+    </button>
+
+    <button type="button" class="btn-reject" id="openRejectModal">
+      رفض الحالة
+    </button>
+  </form>
+</div>
+
+<!-- Overlay -->
+<div class="modal-overlay" id="rejectOverlay"></div>
+
+<!-- Reject Modal -->
+<div class="reject-modal" id="rejectModal">
+  <form method="post">
+    {% csrf_token %}
+
+    <h3>سبب رفض الحالة</h3>
+
+    <label>
+      <input type="radio" name="reason" value="SPECIALIST_BUSY" required>
+      عذرًا لدى الأخصائي عدد من الحالات حاليًا، اختر أخصائي آخر
+    </label>
+
+    <label>
+      <input type="radio" name="reason" value="NEEDS_INPERSON">
+      الحالة تحتاج تقييم حضوري مباشر
+    </label>
+
+    <label>
+      <input type="radio" name="reason" value="NOT_REQUIRED">
+      الحالة لا تحتاج تدخل أخصائي تخاطب
+    </label>
+
+    <div class="modal-actions">
+      <button type="submit" name="action" value="reject" class="btn-confirm-reject">
+        تأكيد الرفض
+      </button>
+      <button type="button" class="btn-cancel" id="closeRejectModal">
+        إلغاء
+      </button>
+    </div>
+  </form>
+</div>
+
+{% endif %}
+
+{% block extra_js %}
+<script src="{% static 'js/detail.js' %}"></script>
+{% endblock extra_js %}
+
+
 {% endblock %}

@@ -72,6 +72,19 @@ def specialist_patients_dashboard(request):
 
     return render(request, "specialist/specialist_patients_dashboard.html", context)
 
+@login_required
+def specialist_consultations_dashboard(request):
+    specialist = get_object_or_404(Specialist, user=request.user)
+    assessments = Assessment.objects.filter(
+        status="PENDING",
+        specialist=specialist
+    ).select_related("patient", "patient__user")
+
+    return render(request, "specialist/specialist_consultations_dashboard.html", {
+        "assessments": assessments
+    })
+
+
 def choose_specialist(request):
     specialists = Specialist.objects.filter(
         verification_status=Specialist.VerificationStatus.APPROVED

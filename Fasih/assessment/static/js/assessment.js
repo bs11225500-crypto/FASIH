@@ -11,6 +11,63 @@ document.addEventListener("DOMContentLoaded", function () {
     progressText.textContent = `${currentStep + 1} / ${total}`;
     progressFill.style.width = `${((currentStep + 1) / total) * 100}%`;
   }
+  function isStepComplete(stepElement) {
+
+  /* ===== الصفحة الأولى ===== */
+  if (stepElement.querySelector('input[name="strangers_understand"]')) {
+
+    const requiredRadios = [
+      "strangers_understand",
+      "speech_sessions",
+      "ear_fluids",
+      "adenoids",
+      "language_delay",
+      "developmental"
+    ];
+
+    for (let name of requiredRadios) {
+      if (!stepElement.querySelector(`input[name="${name}"]:checked`)) {
+        return false;
+      }
+    }
+
+    const devYes = stepElement.querySelector(
+      'input[name="developmental"][value="نعم"]:checked'
+    );
+    const diagnosis = stepElement.querySelector(
+      'input[data-question-id="diagnosis_details"]'
+    );
+
+    if (devYes && !diagnosis.value.trim()) return false;
+  }
+
+  /* ===== الصفحة الثانية (الحروف) ===== */
+  if (stepElement.querySelector('.letters-grid')) {
+    const checkedLetters = stepElement.querySelectorAll(
+      'input[name="difficult_letters"]:checked'
+    );
+    if (checkedLetters.length === 0) return false;
+  }
+
+  /* ===== الصفحة الثالثة ===== */
+  if (stepElement.querySelector('input[name="outside_family"]')) {
+
+    const requiredRadios = [
+      "outside_family",
+      "same_errors",
+      "tries_correct"
+    ];
+
+    for (let name of requiredRadios) {
+      if (!stepElement.querySelector(`input[name="${name}"]:checked`)) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
 
   function showStep(index) {
     steps.forEach(step => step.classList.remove("active"));
@@ -21,8 +78,34 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll(".next-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       if (currentStep < steps.length - 1) {
+        const currentStepElement = steps[currentStep];
+
+        if (!isStepComplete(currentStepElement)) {
+        alert("⚠️ الرجاء تعبئة جميع الأسئلة");
+        return;
+        }
+        if (currentStep === 1) {
+
+        // تحقق الحروف
+        const selectedLetters = document.querySelectorAll(
+          'input[name="difficult_letters"]:checked'
+        );
+
+        if (selectedLetters.length === 0) {
+          alert("⚠️ الرجاء اختيار حرف واحد على الأقل");
+          return;
+        }
+
+        // تحقق الأصوات
+        if (uploadedAudioPaths.includes(null)) {
+          alert("🎙️ الرجاء تسجيل جميع الأصوات قبل الانتقال");
+          return;
+        }
+      }
+
         currentStep++;
         showStep(currentStep);
+
       }
     });
   });
@@ -38,8 +121,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   showStep(currentStep);
 });
-
-
 
 const images = [
   "/static/img/img1.jpeg",
@@ -212,9 +293,18 @@ const submitBtn = document.getElementById("submitAssessmentBtn");
 if (submitBtn) {
   submitBtn.addEventListener("click", async () => {
 
-    if (uploadedAudioPaths.includes(null)) {
-      alert("⚠️ الرجاء تسجيل جميع الأصوات قبل الإرسال");
-      return;
+    /* ===== تحقق الصفحة الثالثة ===== */
+    const requiredRadios = [
+      "outside_family",
+      "same_errors",
+      "tries_correct"
+    ];
+
+    for (let name of requiredRadios) {
+      if (!document.querySelector(`input[name="${name}"]:checked`)) {
+        alert("⚠️ الرجاء تعبئة جميع الأسئلة ");
+        return;
+      }
     }
 
     const specialistId = document.getElementById("specialist_id").value;
@@ -241,7 +331,6 @@ if (submitBtn) {
 
       if (!res.ok) throw new Error("Submit failed");
 
-      const data = await res.json();
       alert("✅ تم إرسال التقييم بنجاح");
 
     } catch (err) {
@@ -250,4 +339,6 @@ if (submitBtn) {
     }
   });
 }
+
+
 

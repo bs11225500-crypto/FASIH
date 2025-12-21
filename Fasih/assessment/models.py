@@ -30,6 +30,28 @@ class Assessment(models.Model):
         default='PENDING'
     )
 
+    REJECTION_REASONS = [
+        (
+            'SPECIALIST_BUSY',
+            'لدى الأخصائي عدد من الحالات الحالية ولا يمكنه إضافة حالة جديدة في الوقت الحالي، اختر أخصائي آخر'
+        ),
+        (
+            'NEEDS_INPERSON',
+            'الحالة تحتاج تقييم حضوري مباشر'
+        ),
+        (
+            'NOT_REQUIRED',
+            'الحالة لا تحتاج تدخل أخصائي تخاطب في الوقت الحالي'
+        ),
+    ]
+
+    rejection_reason = models.CharField(
+        max_length=120,
+        choices=REJECTION_REASONS,
+        null=True,
+        blank=True
+    )
+
     assessment_data = models.JSONField()
     audio_files = models.JSONField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -1,0 +1,54 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}
+فَصِيح | لوحة الأخصائي
+{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/specialist.css' %}">
+{% block specialist_css %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+<div class="specialist-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="specialist-sidebar">
+
+        <div class="sidebar-logo">
+            <img src="{% static 'img/logo1.png' %}" alt="فصيح">
+        </div>
+
+        <ul class="sidebar-menu">
+
+            <li class="{% if request.resolver_match.url_name == 'specialist_home' %}active{% endif %}">
+                <a href="{% url 'specialist:specialist_home' %}">
+                   لوحة تحكم
+                </a>
+            </li>
+
+            <li class="{% if request.resolver_match.url_name == 'treatment_plan' %}active{% endif %}">
+                <a href="#">
+                    الخطة العلاجية
+                </a>
+            </li>
+
+            <li class="{% if request.resolver_match.url_name == 'create_session' %}active{% endif %}">
+                <a href="#">
+                    إنشاء جلسة
+                </a>
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <main class="specialist-content">
+        <div class="specialist-container">
+            {% block specialist_content %}{% endblock %}
+        </div>
+    </main>
+
+</div>
+{% endblock %}

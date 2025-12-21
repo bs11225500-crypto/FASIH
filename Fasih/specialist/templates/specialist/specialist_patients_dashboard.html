@@ -1,15 +1,15 @@
-{% extends "main/base.html" %}
+{% extends "specialist/base_specialist.html" %}
 {% load static %}
 
 {% block title %}
 فَصِيح | مرضاي
 {% endblock title %}
-
-{% block extra_css %}
+{% block specialist_css %}
 <link rel="stylesheet" href="{% static 'css/specialist_patients_dashboard.css' %}">
-{% endblock extra_css %}
+{% endblock %}
 
-{% block content %}
+
+{% block specialist_content %}
 
 <section class="patients-dashboard">
 
@@ -22,7 +22,6 @@
                 <th>اسم المريض</th>
                 <th>رقم الملف</th>
                 <th>العمر</th>
-                <th>الحالة</th>
                 <th></th>
             </tr>
         </thead>
@@ -34,12 +33,7 @@
                 <td>{{ p.file_number }}</td>
                 <td>{{ p.age }}</td>
                 <td>
-                    <span class="status new">
-                        {{ p.status }}
-                    </span>
-                </td>
-                <td>
-                    <a href="{% url 'specialist:specialist_patients_dashboard' p.id %}" class="view-btn">
+                    <a href="#" class="view-btn">
                         عرض التفاصيل
                     </a>
                 </td>
