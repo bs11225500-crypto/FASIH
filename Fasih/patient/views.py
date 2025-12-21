@@ -1,3 +1,82 @@
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render,redirect
+from .models import Patient
+from accounts.models import User
+from accounts.forms import UserProfileForm, PatientProfileForm
+from django.contrib import messages
 
-# Create your views here.
+
+
+@login_required
+def patient_dashboard(request):
+    user = request.user
+
+    if user.role != User.Role.PATIENT:
+        return redirect('main:home')
+
+    try:
+        patient = user.patient_profile
+    except Patient.DoesNotExist:
+        return redirect('accounts:complete_patient_profile')
+
+    context = {
+        'patient': patient,
+        'user': user,
+
+        # التعديل للمستقبل
+        'has_specialist': False,
+        'has_tasks': False,
+    }
+
+    return render(request, 'patient/dashboard.html', context)
+
+
+@login_required
+def patient_profile(request):
+    user = request.user
+
+    # تأكد أن المستخدم مريض
+    if user.role != User.Role.PATIENT:
+        return redirect('main:home')
+
+    # جلب ملف المريض
+    try:
+        patient = user.patient_profile
+    except Patient.DoesNotExist:
+        return redirect('accounts:complete_patient_profile')
+
+    # تحديد وضع الصفحة (عرض / تعديل)
+    edit_mode = request.GET.get("edit") == "1"
+
+    if request.method == 'POST':
+        user_form = UserProfileForm(
+            request.POST,
+            request.FILES,
+            instance=user
+        )
+        patient_form = PatientProfileForm(
+            request.POST,
+            instance=patient
+        )
+
+        if user_form.is_valid() and patient_form.is_valid():
+            user_form.save()
+            patient_form.save()
+            messages.success(request, "تم تحديث البيانات بنجاح")
+            return redirect('patient:profile')
+
+        messages.error(request, "تأكد من صحة البيانات المدخلة")
+        edit_mode = True  # لو فيه خطأ نرجع لوضع التعديل
+
+    else:
+        user_form = UserProfileForm(instance=user)
+        patient_form = PatientProfileForm(instance=patient)
+
+    context = {
+        'user_form': user_form,
+        'patient_form': patient_form,
+        'patient': patient,
+        'edit_mode': edit_mode,  # ⭐ الجديد
+    }
+
+    return render(request, 'patient/profile.html', context)

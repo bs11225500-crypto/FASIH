@@ -113,7 +113,7 @@ def complete_patient_profile(request):
     if user.role != User.Role.PATIENT:
         return redirect('accounts:choose_role')
 
-    if hasattr(user, 'patient'):
+    if hasattr(user, 'patient_profile'):
         return redirect('main:home')
 
     patient = Patient(user=user)
@@ -133,7 +133,8 @@ def complete_patient_profile(request):
             user_form.save()
             patient_form.save()
             messages.success(request, "تم إكمال بيانات المريض بنجاح")
-            return redirect('main:home')
+            return redirect('patient:dashboard')
+
     else:
         user_form = UserProfileForm(instance=user)
         patient_form = PatientProfileForm()
@@ -399,3 +400,21 @@ def specialist_appeal(request):
         certificate_form = SpecialistCertificateForm()
 
     return render(request,'accounts/specialist_appeal.html',{'specialist': specialist,'user_form': user_form,'specialist_form': specialist_form,'certificate_form': certificate_form,})
+
+@login_required
+def role_dashboard_redirect(request):
+    user = request.user
+
+    if user.is_staff or user.is_superuser:
+        return redirect('admin_panel:dashboard')
+
+    if not user.role:
+        return redirect('accounts:choose_role')
+
+    if user.role == user.Role.PATIENT:
+        return redirect('patient:dashboard')
+
+    if user.role == user.Role.SPECIALIST:
+        return redirect('specialist:specialist_home')
+
+    return redirect('main:home')

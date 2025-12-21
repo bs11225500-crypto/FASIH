@@ -20,6 +20,8 @@ urlpatterns = [
     path('specialist/rejected/',views.specialist_rejected,name='specialist_rejected'),
     path('specialist/appeal/',views.specialist_appeal,name='specialist_appeal'),
     path('specialist/pending/',views.specialist_pending,name='specialist_pending'),
+    path('my-dashboard/', views.role_dashboard_redirect, name='my_dashboard'),
+
 
 ]
 

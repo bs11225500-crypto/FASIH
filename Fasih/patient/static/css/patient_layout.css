@@ -1,0 +1,168 @@
+.patient-layout {
+  display: flex;
+  min-height: calc(100vh - 80px); 
+}
+
+.sidebar {
+  width: 240px;
+  background-color: #2e90a9;
+  color: #fff;
+  padding: 20px;
+
+  margin-top: 100px;   
+  border-radius: 16px;
+}
+
+
+.sidebar-header {
+  margin-bottom: 30px;
+}
+
+.sidebar-nav a {
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.sidebar-nav a:hover {
+  background-color: rgba(255,255,255,0.15);
+}
+
+.patient-content {
+  flex: 1;
+  padding: 30px;
+  background-color: #f7f9fb;
+}
+.sidebar-nav a.active {
+  background-color: rgba(255, 255, 255, 0.25);
+  font-weight: 600;
+}
+
+.sidebar-nav a.active::before {
+  content: "• ";
+}
+/*responsive*/
+@media (max-width: 992px) {
+  .sidebar {
+    width: 200px;
+    padding: 16px;
+    margin-top: 90px;
+  }
+
+  .patient-content {
+    padding: 24px;
+  }
+}
+@media (max-width: 768px) {
+  .patient-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    margin-top: 0;
+    border-radius: 0;
+    padding: 16px 20px;
+  }
+
+  .sidebar-header {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .sidebar-nav a {
+    margin-bottom: 0;
+    padding: 10px 14px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .sidebar-nav a.active::before {
+    content: "";
+  }
+
+  .patient-content {
+    padding: 20px 16px;
+  }
+}
+@media (max-width: 480px) {
+  .sidebar-nav {
+    flex-wrap: wrap;
+  }
+
+  .sidebar-nav a {
+    flex: 1 1 100%;
+    text-align: center;
+  }
+}
+.menu-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  display: none; 
+}
+
+.menu-toggle .material-icons {
+  font-size: 30px;
+  color: #2e90a9;
+}
+.dashboard-top {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.dashboard-menu-btn {
+  background: #eaf4f7;
+  border: none;
+  border-radius: 10px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.dashboard-menu-btn .material-icons {
+  font-size: 24px;
+  color: #2e90a9;
+}
+
+
+@media (max-width: 768px) {
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    height: 100vh;
+    width: 260px;
+    margin-top: 0;
+    border-radius: 0;
+    transition: right 0.3s ease;
+    z-index: 1050;
+  }
+
+  .sidebar.open {
+    right: 0;
+  }
+
+  .patient-layout {
+    flex-direction: column;
+  }
+
+  .patient-content {
+    padding: 20px 16px;
+  }
+}

@@ -1,0 +1,64 @@
+{% extends "patient/base_patient.html" %}
+{% load static %}
+
+
+{% block title %}لوحة التحكم{% endblock %}
+
+{% block patient_css %}
+<link rel="stylesheet" href="{% static 'css/patient_dashboard.css' %}">
+
+{% endblock %}
+
+{% block patient_content %}
+
+<div class="dashboard-container">
+
+  <div class="dashboard-header">
+    
+    <h2>مرحبًا {{ user.get_full_name }}</h2>
+    <p>هذه لوحة التحكم الخاصة بالمريض</p>
+    
+  </div>
+
+  <div class="dashboard-grid">
+
+    <div class="dashboard-card">
+
+    <div class="card-header">
+        <h3>الملف التعريفي</h3>
+    </div>
+
+    <div class="card-body">
+        <ul>
+        <li><strong>رقم الملف:</strong> {{ patient.file_number }}</li>
+        <li><strong>العمر:</strong> {{ patient.age }} سنوات</li>
+        <li><strong>الجنس:</strong> {{ patient.get_gender_display }}</li>
+        </ul>
+
+        <a href="{% url 'patient:profile' %}" class="card-link">
+        عرض الملف
+        </a>
+    </div>
+
+    </div>
+
+
+    <div class="dashboard-card">
+
+    <div class="card-header">
+        <h3>حالة الاستشارة</h3>
+    </div>
+
+    <div class="card-body">
+        <p class="muted">لم يتم اختيار أخصائي بعد</p>
+        <span class="hint">سيتم تفعيل هذه الميزة لاحقًا</span>
+    </div>
+
+    </div>
+
+
+  </div>
+
+</div>
+
+{% endblock %}

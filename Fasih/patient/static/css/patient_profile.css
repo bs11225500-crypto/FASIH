@@ -1,0 +1,115 @@
+
+.profile-container {
+  max-width: 900px;
+  padding: 0 20px;
+}
+
+.patient-content {
+  flex: 1;
+  padding: 40px 30px 30px;
+  margin-top: 100px;              
+  background-color: #f7f9fb;     
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.profile-header h2 {
+  font-size: 26px;
+  margin: 0;
+}
+
+.edit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #0F4C5C;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.edit-btn .material-icons {
+  font-size: 18px;
+}
+
+.profile-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+}
+
+.profile-avatar {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-avatar img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #eef2f5;
+}
+
+.profile-info p {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.profile-form h3 {
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;   
+  align-items: center;
+  gap: 16px;
+  margin-top: 30px;
+}
+
+
+.primary-btn {
+  background: #0F4C5C;
+  color: #fff;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  text-decoration: none;
+  color: #555;
+  padding: 12px 18px;
+}
+.form-group input[type="file"] {
+  padding: 10px;
+  border: 1px dashed #cfd8dc;
+  border-radius: 10px;
+  background: #fafafa;
+  cursor: pointer;
+}

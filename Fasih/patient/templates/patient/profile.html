@@ -1,0 +1,100 @@
+{% extends "patient/base_patient.html" %}
+{% load static %}
+
+{% block title %}الملف الشخصي{% endblock %}
+
+{% block patient_css %}
+<link rel="stylesheet" href="{% static 'css/patient_profile.css' %}">
+{% endblock %}
+
+{% block patient_content %}
+
+<div class="profile-container ">
+  <div class="profile-header">
+    <h2>الملف الشخصي</h2>
+
+
+  </div>
+
+  {% if not edit_mode %}
+  <div class="profile-card">
+    {% if not edit_mode %}
+      <a href="?edit=1" class="edit-btn">
+        <span class="material-icons">edit</span>
+        تعديل
+      </a>
+    {% endif %}
+
+    <div class="profile-avatar">
+      {% if user.profile_image %}
+        <img src="{{ user.profile_image.url }}" alt="صورة الحساب">
+      {% else %}
+        <img src="{% static 'img/default_userprofile_pic.png' %}" alt="صورة افتراضية">
+      {% endif %}
+    </div>
+
+    <div class="profile-info">
+      <p><strong>الاسم:</strong> {{ user.get_full_name }}</p>
+      <p><strong>رقم الملف:</strong> {{ patient.file_number }}</p>
+      <p><strong>العمر:</strong> {{ patient.age }} سنوات</p>
+      <p><strong>الجنس:</strong> {{ patient.get_gender_display }}</p>
+    </div>
+
+  </div>
+  {% endif %}
+
+  {% if edit_mode %}
+  <form method="post" enctype="multipart/form-data" class="profile-card profile-form">
+    {% csrf_token %}
+
+    <h3>تعديل البيانات</h3>
+
+    <div class="profile-avatar edit-avatar">
+      {% if user.profile_image %}
+        <img src="{{ user.profile_image.url }}" alt="صورة الحساب">
+      {% else %}
+        <img src="{% static 'img/default_userprofile_pic.png' %}" alt="صورة افتراضية">
+      {% endif %}
+    </div>
+    <div class="form-group">
+    <label>تغيير صورة الحساب</label>
+    <input type="file" name="profile_image" accept="image/*">
+    </div>
+
+
+    <div class="form-group">
+      <label>الاسم الأول</label>
+      {{ user_form.first_name }}
+    </div>
+
+    <div class="form-group">
+      <label>الاسم الأوسط</label>
+      {{ user_form.middle_name }}
+    </div>
+
+    <div class="form-group">
+      <label>اسم العائلة</label>
+      {{ user_form.last_name }}
+    </div>
+
+    <div class="form-group">
+      <label>تاريخ الميلاد</label>
+      {{ patient_form.birth_date }}
+    </div>
+
+    <div class="form-group">
+      <label>الجنس</label>
+      {{ patient_form.gender }}
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="primary-btn">حفظ</button>
+      <a href="{% url 'patient:profile' %}" class="cancel-btn">إلغاء</a>
+    </div>
+
+  </form>
+  {% endif %}
+
+</div>
+
+{% endblock %}

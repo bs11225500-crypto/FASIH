@@ -1,0 +1,57 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}لوحة المريض{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/patient_layout.css' %}">
+{% block patient_css %}{% endblock %}
+
+{% endblock %}
+
+{% block content %}
+<div class="patient-layout">
+
+
+  <aside class="sidebar">
+    
+    <div class="sidebar-header">
+      <h3>لوحة المريض</h3>
+    </div>
+
+    <nav class="sidebar-nav">
+
+    <a href="{% url 'patient:dashboard' %}"
+        class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+         لوحة التحكم
+    </a>
+
+    <a href="{% url 'patient:profile' %}"
+        class="{% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
+         الملف الشخصي
+    </a>
+
+    <a href="{% url 'accounts:logout' %}">
+         تسجيل الخروج
+    </a>
+
+    </nav>
+
+  </aside>
+
+  <main class="patient-content">
+    {% block patient_content %}{% endblock %}
+  </main>
+
+</div>
+<script>
+  const toggle = document.getElementById("menuToggle");
+  const sidebar = document.querySelector(".sidebar");
+
+  toggle.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+  });
+</script>
+
+
+{% endblock %}

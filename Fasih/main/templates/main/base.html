@@ -32,7 +32,6 @@
             <img src="{% static 'img/logo1.png' %}" alt="فصيح">
         </a>
 
-
         <div class="nav-links">
             <a href="{% url 'main:home' %}">الرئيسية</a>
             <a href="{% url 'main:about' %}">عن فَصِيح</a>
@@ -41,7 +40,26 @@
         <div class="nav-actions">
             {% if user.is_authenticated %}
                 <span class="welcome-text">
-                مرحبًا، {{ user.first_name }} {{ user.last_name }}
+                    <a href="{% url 'accounts:my_dashboard' %}" class="user-greeting">
+
+                    <div class="user-info">
+
+                        <div class="user-avatar">
+                        {% if user.profile_image %}
+                            <img src="{{ user.profile_image.url }}" alt="صورة المستخدم">
+                        {% else %}
+                            <img src="{% static 'img/default_userprofile_pic.png' %}" alt="صورة افتراضية">
+                        {% endif %}
+                        </div>
+
+                        <span class="user-name">
+                        مرحبًا {{ user.get_full_name }}
+                        </span>
+
+                    </div>
+
+                    </a>
+
                 </span>
                 <a href="{% url 'accounts:logout' %}" class="icon-btn logout" title="تسجيل الخروج">
                     <span class="material-icons">logout</span>
