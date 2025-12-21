@@ -55,6 +55,31 @@
     </div>
 
     </div>
+    <div class="dashboard-card">
+
+    <div class="card-header">
+      <h3>مهامي اليوم</h3>
+    </div>
+
+    <div class="card-body">
+
+      {% if today_tasks_count > 0 %}
+        <p>
+          لديك <strong>{{ today_tasks_count }}</strong> مهام لليوم
+        </p>
+
+        <a href="{% url 'tasks:daily_tasks' %}" class="card-link">
+          عرض المهام
+        </a>
+      {% else %}
+        <p class="muted">لا توجد مهام اليوم </p>
+        <span class="hint">سيقوم الأخصائي بإضافة المهام عند بدء الخطة</span>
+      {% endif %}
+
+    </div>
+
+  </div>
+
 
 
   </div>

@@ -1,9 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
+from datetime import date
 from .models import Patient
 from accounts.models import User
 from accounts.forms import UserProfileForm, PatientProfileForm
 from django.contrib import messages
+from task.models import PatientTask
+
 
 
 
@@ -19,13 +22,22 @@ def patient_dashboard(request):
     except Patient.DoesNotExist:
         return redirect('accounts:complete_patient_profile')
 
+    today_tasks_count = PatientTask.objects.filter(
+        patient=patient,
+        due_date=date.today(),
+        status='pending'
+    ).count()
+
     context = {
         'patient': patient,
         'user': user,
 
-        # التعديل للمستقبل
+        # مهام
+        'today_tasks_count': today_tasks_count,
+        'has_tasks': today_tasks_count > 0,
+
+        # نتركها للمستقبل
         'has_specialist': False,
-        'has_tasks': False,
     }
 
     return render(request, 'patient/dashboard.html', context)
@@ -35,17 +47,14 @@ def patient_dashboard(request):
 def patient_profile(request):
     user = request.user
 
-    # تأكد أن المستخدم مريض
     if user.role != User.Role.PATIENT:
         return redirect('main:home')
 
-    # جلب ملف المريض
     try:
         patient = user.patient_profile
     except Patient.DoesNotExist:
         return redirect('accounts:complete_patient_profile')
 
-    # تحديد وضع الصفحة (عرض / تعديل)
     edit_mode = request.GET.get("edit") == "1"
 
     if request.method == 'POST':
@@ -66,8 +75,7 @@ def patient_profile(request):
             return redirect('patient:profile')
 
         messages.error(request, "تأكد من صحة البيانات المدخلة")
-        edit_mode = True  # لو فيه خطأ نرجع لوضع التعديل
-
+        edit_mode = True  
     else:
         user_form = UserProfileForm(instance=user)
         patient_form = PatientProfileForm(instance=patient)
@@ -76,7 +84,7 @@ def patient_profile(request):
         'user_form': user_form,
         'patient_form': patient_form,
         'patient': patient,
-        'edit_mode': edit_mode,  # ⭐ الجديد
+        'edit_mode': edit_mode, 
     }
 
     return render(request, 'patient/profile.html', context)

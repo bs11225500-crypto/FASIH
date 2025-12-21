@@ -1,0 +1,54 @@
+body {
+  font-family: 'Cairo', sans-serif;
+  background-color: #f7f9fc;
+  margin: 0;
+  padding: 0;
+}
+
+.tasks-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  
+}
+.tasks-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+  text-align: center;
+}
+
+.tasks-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 30px;
+}
+
+
+.empty-state {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 40px 30px;
+  max-width: 520px;
+  margin: 0 auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.empty-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.empty-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #34495e;
+  margin-bottom: 8px;
+}
+
+.empty-sub {
+  font-size: 15px;
+  color: #7f8c8d;
+  line-height: 1.6;
+}
