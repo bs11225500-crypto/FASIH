@@ -121,21 +121,45 @@
     </div>
 
     <div class="review-actions">
-        <a
-            href="{% url 'admin_panel:approve_specialist' specialist.id %}"
-            class="btn approve"
-            onclick="return confirmApprove();"
-        >
-            اعتماد
-        </a>
 
-        <a
-            href="{% url 'admin_panel:reject_specialist' specialist.id %}"
-            class="btn reject"
-            onclick="return confirmReject();"
-        >
-            رفض
-        </a>
+        {% if specialist.verification_status == 'PENDING' %}
+            <div class="review-actions">
+                <a
+                    href="{% url 'admin_panel:approve_specialist' specialist.id %}"
+                    class="btn approve"
+                    onclick="return confirmApprove();"
+                >
+                    اعتماد
+                </a>
+
+                <a
+                    href="{% url 'admin_panel:reject_specialist' specialist.id %}"
+                    class="btn reject"
+                    onclick="return confirmReject();"
+                >
+                    رفض
+                </a>
+            </div>
+
+        {% elif specialist.verification_status == 'REJECTED' and appeals and not appeals.0.reviewed %}
+            <div class="review-actions">
+                <a
+                    href="{% url 'admin_panel:approve_specialist' specialist.id %}"
+                    class="btn approve"
+                    onclick="return confirmApprove();"
+                >
+                    اعتماد
+                </a>
+
+                <a
+                    href="{% url 'admin_panel:reject_specialist' specialist.id %}"
+                    class="btn reject"
+                    onclick="return confirmReject();"
+                >
+                    رفض
+                </a>
+            </div>
+        {% endif %}
     </div>
 
 </div>

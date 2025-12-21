@@ -6,52 +6,68 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/patient_layout.css' %}">
 {% block patient_css %}{% endblock %}
-
 {% endblock %}
 
 {% block content %}
-<div class="patient-layout">
 
+<!-- Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <aside class="sidebar">
-    
-    <div class="sidebar-header">
-      <h3>لوحة المريض</h3>
-    </div>
+<!-- زر التوجل (موبايل فقط) -->
+<button id="menuToggle" class="menu-toggle">
+  <span class="material-icons">menu</span>
+</button>
 
-    <nav class="sidebar-nav">
+<!-- Wrapper ينزل المحتوى تحت النافبار -->
+<div class="patient-page">
 
-    <a href="{% url 'patient:dashboard' %}"
-        class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
-         لوحة التحكم
-    </a>
+  <div class="patient-layout">
 
-    <a href="{% url 'patient:profile' %}"
-        class="{% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
-         الملف الشخصي
-    </a>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h3>لوحة المريض</h3>
+      </div>
 
-    <a href="{% url 'accounts:logout' %}">
-         تسجيل الخروج
-    </a>
+      <nav class="sidebar-nav">
+        <a href="{% url 'patient:dashboard' %}"
+           class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+          لوحة التحكم
+        </a>
 
-    </nav>
+        <a href="{% url 'patient:profile' %}"
+           class="{% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
+          الملف الشخصي
+        </a>
 
-  </aside>
+        <a href="{% url 'accounts:logout' %}">
+          تسجيل الخروج
+        </a>
+      </nav>
+    </aside>
 
-  <main class="patient-content">
-    {% block patient_content %}{% endblock %}
-  </main>
+    <!-- Main Content -->
+    <main class="patient-content">
+      {% block patient_content %}{% endblock %}
+    </main>
 
+  </div>
 </div>
+
 <script>
   const toggle = document.getElementById("menuToggle");
   const sidebar = document.querySelector(".sidebar");
+  const overlay = document.getElementById("sidebarOverlay");
 
   toggle.addEventListener("click", () => {
     sidebar.classList.toggle("open");
+    overlay.classList.toggle("show");
+  });
+
+  overlay.addEventListener("click", () => {
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
   });
 </script>
-
 
 {% endblock %}
