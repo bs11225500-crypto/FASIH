@@ -217,14 +217,15 @@ if (submitBtn) {
       return;
     }
 
-   const assessmentData = {
-   sections_answers: collectFormAnswers(),
-   images: images.map((img, index) => ({
-     image: img,
-     audio: uploadedAudioPaths[index]
-  }))
-};
+    const specialistId = document.getElementById("specialist_id").value;
 
+    const assessmentData = {
+      sections_answers: collectFormAnswers(),
+      images: images.map((img, index) => ({
+        image: img,
+        audio: uploadedAudioPaths[index]
+      }))
+    };
 
     try {
       const res = await fetch("/assessment/submit/", {
@@ -233,7 +234,8 @@ if (submitBtn) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          assessment_data: assessmentData
+          assessment_data: assessmentData,
+          specialist_id: specialistId
         })
       });
 
@@ -242,11 +244,10 @@ if (submitBtn) {
       const data = await res.json();
       alert("✅ تم إرسال التقييم بنجاح");
 
-
-
     } catch (err) {
       alert("❌ حدث خطأ أثناء الإرسال");
       console.error(err);
     }
   });
 }
+
