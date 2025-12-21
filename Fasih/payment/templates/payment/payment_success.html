@@ -1,0 +1,26 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}تم الدفع{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/payment_success.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="payment-success-page">
+  <div class="payment-success-card">
+    <h2>
+      تم الدفع بنجاح
+    </h2>
+
+    <p>
+      شكرًا لك، تم إتمام عملية الدفع بنجاح
+    </p>
+
+    <a href="{% url 'main:home' %}" class="success-btn">
+      العودة إلى الصفحة الرئيسية
+    </a>
+  </div>
+</section>
+{% endblock %}

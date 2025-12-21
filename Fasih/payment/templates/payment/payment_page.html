@@ -1,0 +1,47 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}الدفع{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/payment.css' %}">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/moyasar-payment-form@2.2.3/dist/moyasar.css" />
+<script src="https://cdn.jsdelivr.net/npm/moyasar-payment-form@2.2.3/dist/moyasar.umd.min.js"></script>
+
+{% endblock %}
+
+{% block content %}
+
+<section class="payment-page">
+
+    <div class="payment-card">
+
+        <h2>الدفع</h2>
+        <p class="payment-desc">
+            لإكمال الخطة العلاجية، يرجى إدخال بيانات الدفع أدناه
+        </p>
+
+<div class="mysr-form"></div>
+
+<script>
+  Moyasar.init({
+    element: '.mysr-form',
+    amount: 1000,
+    currency: 'SAR',
+    description: 'Coffee Order #1',
+    publishable_api_key: 'pk_test_gmo35EfSYoRXmm1Gieaz8nvWUFm3N1nrr7NjmdM4',
+    callback_url: 'http://127.0.0.1:8000/payment/callback/',
+
+
+    supported_networks: ['visa', 'mastercard', 'mada'],
+    methods: ['creditcard'],
+  });
+</script>
+
+{% endblock %}
+
+    </div>
+
+</section>
+
