@@ -1,0 +1,53 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}اختيار الأخصائي{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/choose_specialist.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="choose-specialist-page">
+
+  <h1 class="page-title">اختاري الأخصائي المناسب </h1>
+
+  <div class="specialists-grid">
+
+    {% for specialist in specialists %}
+    <div class="specialist-card">
+
+      <div class="avatar">
+        <span class="material-icons">person</span>
+      </div>
+
+      <h3 class="name">
+        {{ specialist.user.get_full_name }}
+      </h3>
+
+      <p class="spec">
+        {{ specialist.specialization }}
+      </p>
+
+      <p class="exp">
+        {{ specialist.years_of_experience }} سنوات خبرة
+      </p>
+
+      <a
+        href="{% url 'assessment:form' %}?specialist={{ specialist.id }}"
+        class="choose-btn"
+      >
+        اختر الأخصائي
+      </a>
+
+    </div>
+    {% empty %}
+      <p>لا يوجد أخصائيين معتمدين حالياً</p>
+    {% endfor %}
+
+  </div>
+
+</section>
+
+{% endblock %}

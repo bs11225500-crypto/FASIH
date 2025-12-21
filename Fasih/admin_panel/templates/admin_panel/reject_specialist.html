@@ -7,30 +7,60 @@
 <link rel="stylesheet" href="{% static 'css/review.css' %}">
 {% endblock %}
 
-
 {% block admin_content %}
-<h2>رفض الأخصائي</h2>
+<div class="reject-wrapper">
 
-<p>
-    سبب رفض الأخصائي:
-    <strong>
-        {{ specialist.user.get_full_name|default:specialist.user.username }}
-    </strong>
-</p>
+    <div class="reject-card">
 
-<form method="post">
-    {% csrf_token %}
+        <h2 class="reject-title">رفض الأخصائي</h2>
 
-    <textarea
-        name="reason"
-        rows="5"
-        required
-    ></textarea>
+        <p class="reject-subtitle">
+            يرجى توضيح سبب رفض الأخصائي
+            <strong>
+                {% if specialist.user.get_full_name %}
+                    {{ specialist.user.get_full_name }}
+                {% else %}
+                    {{ specialist.user.username }}
+                {% endif %}
+            </strong>
+        </p>
 
-    <br><br>
+        <form method="post" class="reject-form">
+            {% csrf_token %}
 
-    <button type="submit" class="btn btn-reject">
-        تأكيد الرفض
-    </button>
-</form>
+            <label for="reason">سبب الرفض</label>
+            <textarea
+                name="reason"
+                id="reason"
+                placeholder="اكتب سبب الرفض بشكل واضح..."
+                required
+            ></textarea>
+            <form
+                action="{% url 'admin_panel:reject_specialist' specialist.id %}"
+                method="get"
+                onsubmit="return confirmReject();"
+                style="display:inline-block;"
+            >
+                <button type="submit" class="btn reject">
+                    تأكيد الرفض
+                </button>
+            </form>
+
+                <a href="{% url 'admin_panel:specialist_list' %}" class="btn-cancel">
+                    إلغاء
+                </a>
+            </div>
+        </form>
+
+    </div>
+
+</div>
+<script>
+function confirmReject() {
+    return confirm(
+        "هل أنت متأكد من رفض هذا الأخصائي؟\nلا يمكن التراجع عن هذا الإجراء."
+    );
+}
+</script>
+
 {% endblock %}

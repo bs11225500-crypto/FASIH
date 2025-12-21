@@ -9,15 +9,12 @@
 {% block content %}
 <div class="admin-layout">
 
-    <!-- Sidebar -->
     <aside class="admin-sidebar">
 
-        <!-- Logo -->
         <div class="sidebar-logo">
-            <img src="{% static 'main/img/logo1.png' %}" alt="فصيح">
+            <img src="{% static 'img/logo1.png' %}" alt="فصيح">
         </div>
 
-        <!-- Menu -->
         <ul class="sidebar-menu">
             <li class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
                 <a href="{% url 'admin_panel:dashboard' %}">
@@ -34,7 +31,6 @@
 
     </aside>
 
-    <!-- Content -->
     <main class="admin-content">
         <div class="admin-container">
             {% block admin_content %}{% endblock %}

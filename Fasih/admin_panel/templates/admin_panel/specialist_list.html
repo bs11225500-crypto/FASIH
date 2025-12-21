@@ -1,58 +1,73 @@
 {% extends "admin_panel/base_admin.html" %}
 {% load static %}
 
-
 {% block admin_css %}
 <link rel="stylesheet" href="{% static 'css/specialists.css' %}">
 {% endblock %}
 
-
 {% block admin_content %}
-<h2>الأخصائيون</h2>
+<div class="specialists-wrapper">
 
-<table>
-    <thead>
-        <tr>
-            <th>الاسم</th>
-            <th>التخصص</th>
-            <th>الحالة</th>
-            <th>الإجراء</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for specialist in specialists %}
-        <tr>
-            <td>
-                {{ specialist.user.get_full_name|default:specialist.user.username }}
-            </td>
+    <h2 class="page-title">الأخصائيون</h2>
 
-            <td>{{ specialist.specialization }}</td>
+    <table class="specialists-table">
+        <thead>
+            <tr>
+                <th>الاسم</th>
+                <th>التخصص</th>
+                <th>الحالة</th>
+                <th>الإجراء</th>
+            </tr>
+        </thead>
 
-            <td>
-                <span class="
-                    {% if specialist.verification_status == 'PENDING' %}
-                        status-pending
-                    {% elif specialist.verification_status == 'APPROVED' %}
-                        status-approved
+        <tbody>
+            {% for specialist in specialists %}
+            <tr>
+
+                <td data-label="الاسم">
+                    {% if specialist.user.get_full_name %}
+                        {{ specialist.user.get_full_name }}
                     {% else %}
-                        status-rejected
+                        {{ specialist.user.username }}
                     {% endif %}
-                ">
-                    {{ specialist.get_verification_status_display }}
-                </span>
-            </td>
+                </td>
 
-            <td>
-                <a class="btn" href="{% url 'admin_panel:specialist_review' specialist.id %}">
-                    مراجعة
-                </a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="4">لا يوجد أخصائيون حاليًا</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+                <td data-label="التخصص">
+                    {{ specialist.specialization }}
+                </td>
+
+                <td data-label="الحالة">
+                    <span class="status-badge
+                        {% if specialist.verification_status == 'PENDING' %}
+                            status-pending
+                        {% elif specialist.verification_status == 'APPROVED' %}
+                            status-approved
+                        {% else %}
+                            status-rejected
+                        {% endif %}
+                    ">
+                        {{ specialist.get_verification_status_display }}
+                    </span>
+                </td>
+
+                <td data-label="الإجراء">
+                    <a
+                        class="review-link"
+                        href="{% url 'admin_panel:specialist_review' specialist.id %}">
+                        مراجعة
+                    </a>
+                </td>
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="text-align:center;">
+                    لا يوجد أخصائيون حاليًا
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
 {% endblock %}

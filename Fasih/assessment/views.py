@@ -1,15 +1,32 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from datetime import timedelta
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from .models import Assessment
+from specialist.models import Specialist 
 from patient.models import Patient
 
 
 def assessment_form(request):
-    return render(request, 'assessment/assessment_form.html')
+    specialist_id = request.GET.get("specialist")
+
+    if not specialist_id:
+        return redirect("specialist:choose_specialist")
+
+    specialist = get_object_or_404(
+        Specialist,
+        id=specialist_id,
+        verification_status=Specialist.VerificationStatus.APPROVED
+    )
+
+    return render(request, "assessment/assessment_form.html", {
+        "specialist": specialist
+    })
 
 
 
@@ -23,9 +40,6 @@ def upload_audio(request):
             return JsonResponse({"error": "No audio"}, status=400)
 
         file_name = f"assessment_audio/audio_image_{image_index}.webm"
-
-
-        # يحفظ باستخدام storage (محلي أو R2 حسب settings)
         saved_path = default_storage.save(file_name, ContentFile(audio_file.read()))
 
         return JsonResponse({
@@ -36,20 +50,29 @@ def upload_audio(request):
     return JsonResponse({"error": "Invalid method"}, status=405)
 
 
+@login_required
 @csrf_exempt
 def submit_assessment(request):
     if request.method != "POST":
         return JsonResponse({"error": "Invalid method"}, status=405)
 
     data = json.loads(request.body)
-
-    patient = Patient.objects.get(id=data["patient_id"])
-
+    patient = get_object_or_404(
+        Patient,
+        user=request.user
+    )
+    specialist_id = data.get("specialist_id")
+    specialist = get_object_or_404(
+        Specialist,
+        id=specialist_id,
+        verification_status=Specialist.VerificationStatus.APPROVED
+    )
     assessment = Assessment.objects.create(
-    patient=patient,
-    assessment_data=data["assessment_data"]
-)
-
+        patient=patient,
+        specialist=specialist,
+        assessment_data=data["assessment_data"],
+        audio_files=data["assessment_data"].get("images", [])
+    )
 
     return JsonResponse({
         "status": "success",
@@ -58,9 +81,20 @@ def submit_assessment(request):
 
 
 
-
 def assessment_detail(request, id):
     assessment = get_object_or_404(Assessment, id=id)
-    return render(request, "assessment/detail.html", {
-        "assessment": assessment
-    })
+
+    dt = assessment.created_at
+
+    if timezone.is_naive(dt):
+       
+        dt = dt.replace(tzinfo=timezone.utc)
+
+    dt_riyadh = dt + timedelta(hours=3)
+
+    context = {
+        "assessment": assessment,
+        "sent_date": dt_riyadh.strftime("%Y / %m / %d"),
+        "sent_time": dt_riyadh.strftime("%I:%M %p"),
+    }
+    return render(request, "assessment/detail.html", context)

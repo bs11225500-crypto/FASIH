@@ -55,6 +55,36 @@ function updateImage() {
 }
 
 
+function collectFormAnswers() {
+  const answers = {};
+
+ 
+  document.querySelectorAll("input, textarea").forEach(input => {
+    if (!input.name) return;
+
+    if (input.type === "radio") {
+      if (input.checked) {
+        answers[input.name] = input.value;
+      }
+    } 
+    else if (input.type !== "checkbox") {
+      answers[input.name] = input.value;
+    }
+  });
+
+
+  const selectedLetters = [];
+  document.querySelectorAll('input[name="difficult_letters"]:checked')
+    .forEach(cb => {
+      selectedLetters.push(cb.value);
+    });
+
+  answers["difficult_letters"] = selectedLetters;
+
+  return answers;
+}
+
+
 
 let mediaRecorder;
 let audioChunks = [];
@@ -134,37 +164,12 @@ nextImageBtn.addEventListener("click", async () => {
     recordBtn.disabled = false;
     stopBtn.disabled = true;
 
-  } else {
+} else {
+    recordBtn.disabled = false;  
+    stopBtn.disabled = true;
+    alert("🎉 تم الانتهاء من تسجيل الأصوات، يمكنك الآن إكمال الاستبيان");
+}
 
-    alert("🎉 تم الانتهاء من وصف جميع الصور");
-
-    const assessmentData = {
-        images: images.map((img, index) => ({
-        image: img,
-        answer: document.querySelector(`#answer-${index}`)?.value || "",
-        audio: uploadedAudioPaths[index]
-        }))
-    };
-
-    fetch("/assessment/submit/", {
-        method: "POST",
-        headers: {
-        "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-        patient_id: 1, // مؤقت
-        assessment_data: assessmentData
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        alert("✅ تم حفظ التقييم");
-        console.log(data);
-    })
-    .catch(() => {
-        alert("❌ خطأ أثناء الحفظ");
-    });
-    }
 });
 
 
@@ -200,3 +205,49 @@ async function uploadCurrentAudio() {
     return false;
   }
 }
+
+
+const submitBtn = document.getElementById("submitAssessmentBtn");
+
+if (submitBtn) {
+  submitBtn.addEventListener("click", async () => {
+
+    if (uploadedAudioPaths.includes(null)) {
+      alert("⚠️ الرجاء تسجيل جميع الأصوات قبل الإرسال");
+      return;
+    }
+
+    const specialistId = document.getElementById("specialist_id").value;
+
+    const assessmentData = {
+      sections_answers: collectFormAnswers(),
+      images: images.map((img, index) => ({
+        image: img,
+        audio: uploadedAudioPaths[index]
+      }))
+    };
+
+    try {
+      const res = await fetch("/assessment/submit/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          assessment_data: assessmentData,
+          specialist_id: specialistId
+        })
+      });
+
+      if (!res.ok) throw new Error("Submit failed");
+
+      const data = await res.json();
+      alert("✅ تم إرسال التقييم بنجاح");
+
+    } catch (err) {
+      alert("❌ حدث خطأ أثناء الإرسال");
+      console.error(err);
+    }
+  });
+}
+

@@ -6,9 +6,6 @@ from django.contrib import messages
 
 
 def home(request):
-    return render(request, "main/home.html")
-
-def home(request):
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
         email = request.POST.get('email')

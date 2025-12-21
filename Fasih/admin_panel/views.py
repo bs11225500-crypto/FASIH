@@ -1,8 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from main.email_service import send_email
+from specialist.models import Specialist 
 
-from specialist.models import Specialist
 from .decorators import staff_required
+from django.template.loader import render_to_string
+
 
 
 # Create your views here.
@@ -46,27 +49,52 @@ def specialist_review(request, id):
     specialist = get_object_or_404(
         Specialist.objects
         .select_related('user')
-        .prefetch_related('certificates'),
+        .prefetch_related('certificates', 'appeals'),
         id=id
     )
 
+    appeals = specialist.appeals.order_by('-created_at')
+
     return render(request, 'admin_panel/specialist_review.html', {
-        'specialist': specialist
+        'specialist': specialist,
+        'appeals': appeals,
     })
+
 @staff_required
 def approve_specialist(request, id):
     specialist = get_object_or_404(Specialist, id=id)
 
-    if specialist.verification_status != Specialist.VerificationStatus.PENDING:
-        messages.warning(request, 'تمت مراجعة هذا الأخصائي مسبقًا')
+    if specialist.verification_status == Specialist.VerificationStatus.APPROVED:
+        messages.warning(request, 'الأخصائي معتمد مسبقًا')
         return redirect('admin_panel:specialist_list')
 
     specialist.verification_status = Specialist.VerificationStatus.APPROVED
     specialist.rejection_reason = ''
     specialist.save()
 
+    specialist.appeals.filter(reviewed=False).update(
+        reviewed=True,
+        accepted=True
+    )
+
     messages.success(request, 'تم اعتماد الأخصائي بنجاح')
+
+    send_email(
+        to=specialist.user.email,
+        subject="تم اعتماد طلبك | منصة فصيح",
+        html_content=render_to_string(
+            "accounts/emails/specialist_approved.html",
+            {
+                "name": specialist.user.get_full_name() or specialist.user.username
+            }
+        )
+    )
+
     return redirect('admin_panel:specialist_list')
+
+
+
+
 
 @staff_required
 def reject_specialist(request, id):
@@ -88,6 +116,18 @@ def reject_specialist(request, id):
         specialist.save()
 
         messages.error(request, 'تم رفض الأخصائي')
+        send_email(
+            to=specialist.user.email,
+            subject="حالة طلبك | منصة فصيح",
+            html_content=render_to_string(
+                "accounts/emails/specialist_rejected.html",
+                {
+                    "name": specialist.user.get_full_name() or specialist.user.username,
+                    "reason": specialist.rejection_reason
+                }
+            )
+        )
+
         return redirect('admin_panel:specialist_list')
 
     return render(request, 'admin_panel/reject_specialist.html', {

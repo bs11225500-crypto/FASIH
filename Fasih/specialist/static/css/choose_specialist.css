@@ -1,0 +1,75 @@
+.choose-specialist-page {
+  max-width: 1100px;
+  margin: 60px auto;
+  text-align: center;
+}
+
+.page-title {
+  margin-bottom: 40px;
+  font-weight: 700;
+}
+
+.specialists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+.specialist-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 30px 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+  transition: transform 0.2s ease;
+}
+
+.specialist-card:hover {
+  transform: translateY(-5px);
+}
+
+.avatar {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 15px;
+  background: #f2f4f8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar span {
+  font-size: 36px;
+  color: #666;
+}
+
+.name {
+  margin: 10px 0 5px;
+}
+
+.spec {
+  color: #666;
+  font-size: 14px;
+}
+
+.exp {
+  margin: 10px 0;
+  font-size: 13px;
+  color: #888;
+}
+
+.choose-btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 22px;
+  border-radius: 30px;
+  background: #4f46e5;
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.choose-btn:hover {
+  background: #4338ca;
+}
