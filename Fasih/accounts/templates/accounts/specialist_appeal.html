@@ -19,7 +19,6 @@
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
-            <!-- سبب الاعتراض -->
             <div class="form-group full">
                 <label>سبب الاعتراض</label>
                 <textarea name="reason" rows="4" required
@@ -28,12 +27,10 @@
 
             <hr class="divider">
 
-            <!-- تعديل البيانات -->
             <h3 class="section-title">تعديل البيانات</h3>
 
             <div class="form-grid">
 
-                <!-- بيانات المستخدم -->
                 <div>
                     <label>الاسم الأول</label>
                     {{ user_form.first_name }}
@@ -50,7 +47,6 @@
                 </div>
 
 
-                <!-- بيانات الأخصائي -->
                 <div class="full">
                     <label>التخصص</label>
                     {{ specialist_form.specialization }}
