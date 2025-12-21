@@ -10,7 +10,6 @@ def home(request):
 
 def home(request):
     if request.method == 'POST':
-        # نقدر نستخدم البيانات لاحقًا
         first_name = request.POST.get('first_name')
         email = request.POST.get('email')
         message = request.POST.get('message')

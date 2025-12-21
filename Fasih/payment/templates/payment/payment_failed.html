@@ -1,0 +1,32 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}فشل الدفع{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/payment_failed.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="payment-failed-page">
+  <div class="payment-failed-card">
+    <h2>
+      فشل الدفع
+    </h2>
+
+    <p>
+      للأسف لم تكتمل عملية الدفع، يرجى المحاولة مرة أخرى
+    </p>
+
+    <div class="failed-actions">
+      <a href="{% url 'payment:payment_page' %}" class="retry-btn">
+        إعادة المحاولة
+      </a>
+
+      <a href="{% url 'main:home' %}" class="home-btn">
+        العودة للرئيسية
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}
