@@ -12,6 +12,7 @@
 {% endblock %}
 
 {% block content %}
+
 <div class="report-container">
 
   <h2>تقرير التقييم الأوّلي</h2>
@@ -19,6 +20,33 @@
   تاريخ الإرسال: {{ sent_date }}
   <br>
   الوقت: {{ sent_time }}
+
+  <h3>بيانات المريض</h3>
+    <table class="report-table">
+    <tr>
+        <th>الاسم الكامل</th>
+        <td>
+        {{ assessment.patient.user.first_name }}
+        {{ assessment.patient.user.middle_name }}
+        {{ assessment.patient.user.last_name }}
+        </td>
+    </tr>
+
+    <tr>
+        <th>البريد الإلكتروني</th>
+        <td>{{ assessment.patient.user.email }}</td>
+    </tr>
+
+    <tr>
+        <th>رقم الملف</th>
+        <td>{{ assessment.patient.file_number }}</td>
+    </tr>
+
+    <tr>
+        <th>العمر</th>
+        <td>{{ assessment.patient.age }}</td>
+    </tr>
+    </table>
 
 
   {% with a=assessment.assessment_data.sections_answers %}
