@@ -1,6 +1,7 @@
 .consultations-page {
-  padding: 140px 60px 60px;
+  padding: 30px 60px 60px;
 }
+
 .consultations-table {
   width: 100%;
   border-collapse: collapse;
@@ -43,4 +44,9 @@
 .btn-view:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(58,123,213,0.35);
+}
+@media (max-width: 768px) {
+  .consultations-page {
+    padding: 20px 24px 40px;
+  }
 }
