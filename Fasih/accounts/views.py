@@ -148,10 +148,8 @@ def complete_specialist_profile(request):
     if user.role != User.Role.SPECIALIST:
         return redirect('accounts:choose_role')
 
-    specialist, created = Specialist.objects.get_or_create(user=user,defaults={'verification_status': Specialist.VerificationStatus.PENDING})
+    specialist, created = Specialist.objects.get_or_create(user=user)
 
-    if specialist.verification_status == Specialist.VerificationStatus.PENDING:
-        return redirect('accounts:specialist_pending')
 
 
     if request.method == 'POST':
@@ -302,8 +300,11 @@ def post_login_redirect(request):
         if not specialist:
             return redirect('accounts:complete_specialist_profile')
 
-        if specialist.verification_status == Specialist.VerificationStatus.PENDING:
+        if (specialist.verification_status == Specialist.VerificationStatus.PENDING
+            and specialist.specialistcertificate_set.exists()
+        ):
             return redirect('accounts:specialist_pending')
+
 
         if specialist.verification_status == Specialist.VerificationStatus.REJECTED:
             return redirect('accounts:specialist_rejected')
