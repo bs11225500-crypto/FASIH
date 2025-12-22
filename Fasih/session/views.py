@@ -2,57 +2,80 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from datetime import datetime
-from django.core.exceptions import ValidationError
+from django.utils import timezone
+
+
 from patient.models import Patient
 from .models import Session
-from specialist.models import Specialist
-from datetime import datetime
-
-
-
 
 
 @login_required
-def create_session(request):
-    # السماح للأخصائي فقط
+def create_session(request, file_number):
     if not hasattr(request.user, "specialist"):
         return redirect("main:home")
 
+    patient = get_object_or_404(Patient, file_number=file_number)
+
     if request.method == "POST":
-        file_number = request.POST.get("file_number")
         title = request.POST.get("title")
+        session_type = request.POST.get("session_type")
 
-        try:
-            patient = get_object_or_404(Patient, file_number=file_number)
+        start_time = timezone.make_aware(
+            datetime.fromisoformat(request.POST.get("start_time"))
+        )
+        end_time = timezone.make_aware(
+            datetime.fromisoformat(request.POST.get("end_time"))
+        )
 
-            start_time = datetime.fromisoformat(request.POST.get("start_time"))
-            end_time = datetime.fromisoformat(request.POST.get("end_time"))
+        # جلسة استشارية
+        if session_type == Session.SessionType.INITIAL:
+            status = Session.Status.PROPOSED
 
-            session = Session(
+        # جلسة علاجية
+        elif session_type == Session.SessionType.TREATMENT:
+            from treatment.models import TreatmentPlan
+
+            treatment_plan = TreatmentPlan.objects.filter(
                 patient=patient,
-                specialist=request.user.specialist,
-                title=title,
-                start_time=start_time,
-                end_time=end_time,
-            )
+                status=TreatmentPlan.Status.ACTIVE
+            ).first()
 
-            session.save()  # هنا ينفذ clean()
+            if not treatment_plan:
+                messages.error(
+                    request,
+                    "لا يمكن إنشاء جلسة علاجية قبل اعتماد الخطة العلاجية"
+                )
+                return redirect(request.path)
 
-            messages.success(request, "تم اقتراح الجلسة بنجاح 🕒")
-            return redirect("session:session_detail", session.id)
+            status = Session.Status.CONFIRMED
 
-        except ValidationError as e:
-            messages.error(request, e.message)
+        else:
+            messages.error(request, "نوع جلسة غير صالح")
+            return redirect(request.path)
 
-        except Exception:
-            messages.error(request, "حدث خطأ، تأكدي من البيانات")
+        session = Session.objects.create(
+            patient=patient,
+            specialist=request.user.specialist,
+            title=title,
+            start_time=start_time,
+            end_time=end_time,
+            session_type=session_type,
+            status=status
+        )
 
-    return render(request, "session/create_session.html")
+        messages.success(request, "تم إنشاء الجلسة بنجاح ")
+        return redirect("session:session_detail", session.id)
+
+    return render(
+        request,
+        "session/create_session.html",
+        {
+            "patient": patient
+        }
+    )
 
 
-
-
-
+@login_required
 def session_detail(request, session_id):
     session = get_object_or_404(Session, id=session_id)
 
@@ -66,39 +89,68 @@ def session_detail(request, session_id):
     )
 
 
+
+@login_required
 def join_session(request, session_id):
     session = get_object_or_404(Session, id=session_id)
 
-    if not session.can_join():
+    # لازم الجلسة مؤكدة
+    if session.status != Session.Status.CONFIRMED:
         return render(
             request,
             "session/session_not_started.html",
             {"session": session}
         )
 
-    return render(request, "session/meet.html", {
-        "session": session
-    })
+    # إذا المستخدم أخصائي
+    if hasattr(request.user, "specialist"):
+        session.specialist_joined = True
+        session.save()
 
-        
+        return render(
+            request,
+            "session/meet.html",
+            {"session": session}
+        )
+
+    # إذا المستخدم مريض
+    if hasattr(request.user, "patient"):
+        if not session.specialist_joined:
+            messages.info(
+                request,
+                "يرجى انتظار دخول الأخصائي لبدء الجلسة"
+            )
+            return redirect("patient:sessions")
+
+        return render(
+            request,
+            "session/meet.html",
+            {"session": session}
+        )
+
+    return redirect("main:home")
+
 
 @login_required
 def respond_session(request, session_id):
     session = get_object_or_404(Session, id=session_id)
 
-    if not hasattr(request.user, "patient") or request.user.patient != session.patient:
+    if not hasattr(request.user, "patient_profile"):
+        return redirect("main:home")
+
+    if request.user.patient_profile != session.patient:
         return redirect("main:home")
 
     if session.status != Session.Status.PROPOSED:
         messages.error(request, "تم التعامل مع هذه الجلسة مسبقًا")
-        return redirect("session:session_detail", session.id)
+        return redirect("patient:sessions")
 
     if request.method == "POST":
         action = request.POST.get("action")
 
         if action == "accept":
             session.status = Session.Status.CONFIRMED
-            messages.success(request, "تم تأكيد الجلسة بنجاح ✅")
+            messages.success(request, "تم تأكيد الجلسة بنجاح ")
 
         elif action == "reject":
             session.status = Session.Status.REJECTED
@@ -106,10 +158,8 @@ def respond_session(request, session_id):
             session.patient_suggested_times = request.POST.get("suggested_times")
             messages.info(
                 request,
-                "تم إرسال رفض الموعد واقتراح أوقات بديلة 📝"
+                "تم إرسال رفض الموعد واقتراح أوقات بديلة"
             )
 
         session.save()
-        return redirect("session:session_detail", session.id)
-
-
+        return redirect("patient:sessions")

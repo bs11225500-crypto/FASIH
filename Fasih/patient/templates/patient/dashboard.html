@@ -38,14 +38,55 @@
     </div>
 
     <!-- كارد حالة الاستشارة -->
+    <!-- كارد حالة الاستشارة -->
     <div class="dashboard-card">
       <div class="card-header">
         <h3>حالة الاستشارة</h3>
       </div>
 
       <div class="card-body">
-        <p class="muted">لم يتم اختيار أخصائي بعد</p>
-        <span class="hint">سيتم تفعيل هذه الميزة لاحقًا</span>
+
+        {% if assessment %}
+
+          {% if assessment.status == "PENDING" %}
+            <p class="status pending">
+              ⏳ استشارتك قيد المراجعة
+            </p>
+            <span class="hint">
+              سيقوم الأخصائي بمراجعة الاستبيان قريبًا
+            </span>
+
+          {% elif assessment.status == "ACCEPTED" %}
+            <p class="status accepted">
+              ✅ تم قبول الاستشارة
+            </p>
+            <span class="hint">
+              سيتم تحديد الجلسة الاستشارية الأولى
+            </span>
+
+          {% elif assessment.status == "REJECTED" %}
+            <p class="status rejected">
+              ❌ تم رفض الاستشارة
+            </p>
+
+            {% if assessment.rejection_reason %}
+              <span class="hint">
+                السبب: {{ assessment.get_rejection_reason_display }}
+              </span>
+            {% endif %}
+
+          {% endif %}
+
+        {% else %}
+          <p class="muted">
+            لم يتم طلب استشارة بعد
+          </p>
+
+          <a href="{% url 'specialist:choose_specialist' %}" class="card-link">
+            طلب استشارة
+          </a>
+        {% endif %}
+
       </div>
     </div>
 
@@ -104,6 +145,24 @@
         {% endif %}
       </div>
     </div>
+    <div class="dashboard-card">
+      <div class="card-header">
+        <h3>الخطة العلاجية</h3>
+      </div>
+
+      <div class="card-body">
+        {% if treatment_plan %}
+          <p>الحالة: {{ treatment_plan.get_status_display }}</p>
+
+          <a href="{% url 'patient:treatment_plan' %}" class="card-link">
+            عرض الخطة
+          </a>
+        {% else %}
+          <p class="muted">لا توجد خطة علاجية بعد</p>
+        {% endif %}
+      </div>
+    </div>
+
 
   </div>
 </div>

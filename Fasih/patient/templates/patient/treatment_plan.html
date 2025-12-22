@@ -1,0 +1,114 @@
+{% extends "patient/base_patient.html" %}
+{% load static %}
+
+{% block title %}الخطة العلاجية{% endblock %}
+
+{% block patient_css %}
+<link rel="stylesheet" href="{% static 'css/patient_treatment_plan.css' %}">
+{% endblock %}
+
+{% block patient_content %}
+
+<div class="treatment-container">
+
+  <!-- Header -->
+  <div class="page-header">
+    <h2>الخطة العلاجية</h2>
+    <p class="page-subtitle">
+      متابعة الخطة العلاجية الخاصة بحالتك
+    </p>
+  </div>
+
+  {% if treatment_plan %}
+
+    <!-- ====== في حال وجود خطة ====== -->
+    <div class="dashboard-card treatment-card">
+
+      <div class="treatment-section">
+        <h4>التشخيص</h4>
+        <p>{{ treatment_plan.diagnosis }}</p>
+      </div>
+
+      <div class="treatment-section">
+        <h4>الهدف طويل المدى</h4>
+        <p>{{ treatment_plan.long_term_goal }}</p>
+      </div>
+
+      <div class="treatment-meta">
+        <div>
+          <span>مدة الخطة</span>
+          <strong>{{ treatment_plan.duration_weeks }} أسابيع</strong>
+        </div>
+
+        <div>
+          <span>حالة الخطة</span>
+          <strong class="status {{ treatment_plan.status|lower }}">
+            {{ treatment_plan.get_status_display }}
+          </strong>
+        </div>
+      </div>
+
+      <div class="treatment-section">
+        <h4>الأهداف قصيرة المدى</h4>
+
+        <ul class="goals-list">
+          {% for goal in treatment_plan.short_term_goals.all %}
+            <li>
+              <span>{{ goal.description }}</span>
+              <small>{{ goal.target_accuracy }}%</small>
+            </li>
+          {% empty %}
+            <li class="muted">لا توجد أهداف قصيرة المدى</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      {% if treatment_plan.status != "ACTIVE" %}
+        <div class="treatment-alert">
+          يرجى إتمام الدفع لتفعيل الخطة العلاجية
+        </div>
+      {% endif %}
+
+    </div>
+
+  {% else %}
+
+    <!-- ====== Empty State (كارد مركزي) ====== -->
+    <div class="treatment-empty-wrapper">
+      <div class="treatment-empty-card">
+
+        {% if not assessment %}
+          <h3>لم تبدأ الخطة العلاجية بعد</h3>
+
+          <p>
+            لم تقومي باختيار أخصائي بعد، لذلك لا توجد خطة علاجية.
+          </p>
+
+          <p class="hint">
+            لبدء رحلتك العلاجية، يرجى اختيار أخصائي وتعبئة استبيان الاستشارة الأولى.
+          </p>
+
+          <a href="{% url 'specialist:choose_specialist' %}" class="primary-btn">
+            اختيار أخصائي
+          </a>
+
+        {% else %}
+          <h3>بانتظار الأخصائي</h3>
+
+          <p>
+            تم إرسال الاستبيان بنجاح، ولم يقم الأخصائي بإنشاء الخطة العلاجية بعد.
+          </p>
+
+          <p class="hint">
+            ستظهر الخطة هنا بعد مراجعة الاستبيان والجلسة الاستشارية الأولى.
+          </p>
+        {% endif %}
+
+      </div>
+    </div>
+
+  {% endif %}
+
+</div>
+
+{% endblock %}

@@ -43,7 +43,10 @@
           class="{% if request.resolver_match.url_name == 'sessions' %}active{% endif %}">
           جلساتي
         </a>
-
+        <a href="{% url 'patient:treatment_plan' %}"
+          class="{% if request.resolver_match.url_name == 'treatment_plan' %}active{% endif %}">
+          الخطة العلاجية
+        </a>
 
         <a href="{% url 'task:daily_tasks' %}"
           class="{% if request.resolver_match.url_name == 'daily_tasks' %}active{% endif %}">

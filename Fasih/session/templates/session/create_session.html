@@ -1,7 +1,7 @@
 {% extends "main/base.html" %}
 {% load static %}
 
-{% block title %}إنشاء جلسة علاج{% endblock %}
+{% block title %}إنشاء جلسة{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/create_session.css' %}">
@@ -10,9 +10,9 @@
 {% block content %}
 
 <section class="session-hero">
-    <h1>إنشاء جلسة علاج</h1>
+    <h1>إنشاء جلسة</h1>
     <p>
-        قم بإنشاء جلسة علاجية جديدة وربطها بالمريض باستخدام رقم الملف
+        إنشاء جلسة استشارية أو علاجية 
     </p>
 </section>
 
@@ -22,21 +22,39 @@
         <form method="post">
             {% csrf_token %}
 
+            <!-- نوع الجلسة -->
+            <div class="form-group">
+                <label>نوع الجلسة</label>
+                <select name="session_type" required>
+                    <option value="">-- اختر نوع الجلسة --</option>
+                    <option value="INITIAL">جلسة استشارية (أولى)</option>
+                    <option value="TREATMENT">جلسة علاجية</option>
+                </select>
+            </div>
+
+            <!-- عنوان الجلسة -->
             <div class="form-group">
                 <label>عنوان الجلسة</label>
                 <input type="text" name="title" required>
             </div>
 
+            <!-- رقم ملف المريض (للعرض فقط) -->
             <div class="form-group">
                 <label>رقم ملف المريض</label>
-                <input type="text" name="file_number" placeholder="P-000123" required>
+                <input
+                    type="text"
+                    value="{{ patient.file_number }}"
+                    readonly
+                >
             </div>
 
+            <!-- وقت البداية -->
             <div class="form-group">
                 <label>وقت بداية الجلسة</label>
                 <input type="datetime-local" name="start_time" required>
             </div>
 
+            <!-- وقت النهاية -->
             <div class="form-group">
                 <label>وقت نهاية الجلسة</label>
                 <input type="datetime-local" name="end_time" required>

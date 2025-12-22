@@ -11,101 +11,183 @@
 
 <div class="sessions-container">
 
-{% if not pending_sessions and not confirmed_sessions %}
-
-  <!-- Empty State -->
-  <div class="empty-state">
-    <h3>لا توجد جلسات حاليًا</h3>
-
-    {% if not has_specialist %}
-      <p class="muted">
-        لم تقم باختيار أخصائي بعد.<br>
-        يرجى اختيار أخصائي لطلب جلسة استشارة مجانية.
-      </p>
-
-    {% elif not has_completed_initial_session %}
-      <p class="muted">
-        لا توجد جلسات حاليًا.<br>
-        ستظهر جلسة الاستشارة المجانية بعد موافقة الأخصائي.
-      </p>
-
-    {% else %}
-      <p class="muted">
-        تم الانتهاء من جلسة الاستشارة.<br>
-        ستظهر الجلسات العلاجية بعد اعتماد الخطة العلاجية والدفع.
-      </p>
-    {% endif %}
-
-  </div>
-
-{% else %}
-
+  <!-- Header -->
   <div class="page-header">
     <h2>جلساتي</h2>
-    <p>عرض جميع الجلسات المجدولة لك</p>
+    <p class="page-subtitle">متابعة الجلسات الاستشارية والعلاجية</p>
   </div>
 
-  <!-- جلسات بانتظار الموافقة -->
+  {# ================= EMPTY STATE ================= #}
+  {% if not consultation_sessions and not therapy_sessions %}
+    <div class="sessions-empty-wrapper">
+      <div class="sessions-empty-card">
+
+        {% if not assessment %}
+          <h3>لا توجد جلسات حاليًا</h3>
+          <p class="hint">
+            يرجى اختيار أخصائي وتعبئة استبيان الاستشارة الأولى.
+          </p>
+
+        {% elif assessment.status == "PENDING" %}
+          <h3>بانتظار موافقة الأخصائي</h3>
+          <p class="hint">
+            سيتم تحديد الجلسة الاستشارية قريبًا.
+          </p>
+
+        {% elif assessment.status == "REJECTED" %}
+          <h3>تم رفض الاستشارة</h3>
+          <p class="hint">
+            {{ assessment.get_rejection_reason_display }}
+          </p>
+        {% endif %}
+
+      </div>
+    </div>
+
+  {% else %}
+
+  {# ================= الجلسة الاستشارية ================= #}
+  {% if consultation_sessions %}
   <section class="sessions-section">
-    <h3>جلسات بانتظار موافقتك</h3>
+    <h3 class="section-title">الجلسة الاستشارية</h3>
 
-    {% if pending_sessions %}
-      {% for session in pending_sessions %}
-        <div class="session-card pending">
+    {% for session in consultation_sessions %}
+      <div class="consultation-card clean">
+
+        <!-- Header -->
+        <div class="consultation-header">
           <h4>{{ session.title }}</h4>
-          <p>🕒 {{ session.start_time }}</p>
+          <span class="time">
+            {{ session.start_time|date:"Y-m-d" }}
+            {{ session.start_time|time:"H:i" }}
+          </span>
+        </div>
 
-          <form method="post" action="{% url 'session:respond_session' session.id %}">
-            {% csrf_token %}
-            <button name="action" value="accept" class="btn-success">
+        <!-- ===== بانتظار المريض ===== -->
+        {% if session.status == "PROPOSED" %}
+        <form method="post" action="{% url 'session:respond_session' session.id %}">
+          {% csrf_token %}
+
+          <div class="actions">
+            <button type="submit"
+                    name="action"
+                    value="accept"
+                    class="btn-accept">
               أوافق
             </button>
-          </form>
 
-          <form method="post" action="{% url 'session:respond_session' session.id %}">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="reject">
-
-            <textarea name="reason" placeholder="سبب الرفض"></textarea>
-            <textarea name="suggested_times" placeholder="أوقات تناسبك"></textarea>
-
-            <button type="submit" class="btn-danger">
+            <button type="button"
+                    class="btn-reject-outline"
+                    onclick="toggleReject('{{ session.id }}')">
               لا يناسبني
             </button>
-          </form>
-        </div>
-      {% endfor %}
-    {% else %}
-      <p class="muted">لا توجد جلسات بانتظار الموافقة.</p>
-    {% endif %}
-  </section>
+          </div>
 
-  <!-- جلسات مؤكدة -->
-  <section class="sessions-section">
-    <h3>الجلسات المؤكدة</h3>
+          <!-- سبب الرفض -->
+          <div id="reject-box-{{ session.id }}" class="reject-box">
+            <textarea name="reason"
+                      placeholder="سبب عدم مناسبة الموعد"></textarea>
 
-    {% if confirmed_sessions %}
-      {% for session in confirmed_sessions %}
-        <div class="session-card confirmed">
-          <h4>{{ session.title }}</h4>
-          <p> {{ session.start_time }}</p>
+            <textarea name="suggested_times"
+                      placeholder="أوقات مقترحة (اختياري)"></textarea>
+
+            <button type="submit"
+                    name="action"
+                    value="reject"
+                    class="btn-reject">
+              إرسال الرفض
+            </button>
+          </div>
+        </form>
+
+        <!-- ===== مؤكدة ===== -->
+        {% elif session.status == "CONFIRMED" %}
+          <div class="status confirmed">
+            تم تأكيد الجلسة
+          </div>
 
           {% if session.can_join %}
-            <a href="{% url 'session:join_session' session.id %}" class="btn-primary">
-              دخول الجلسة
-            </a>
+            {% if not session.specialist_joined %}
+              <span class="muted">
+                ⏳ بانتظار دخول الأخصائي
+              </span>
+            {% else %}
+              <a href="{% url 'session:join_session' session.id %}"
+                 class="btn-primary">
+                دخول الجلسة
+              </a>
+            {% endif %}
           {% else %}
-            <span class="muted">⏳ لم يحن وقت الجلسة بعد</span>
+            <span class="muted">
+              ⏳ لم يحن وقت الجلسة بعد
+            </span>
+          {% endif %}
+
+        <!-- ===== مرفوضة ===== -->
+        {% elif session.status == "REJECTED" %}
+          <div class="status rejected">
+            تم رفض الجلسة
+          </div>
+
+          {% if session.patient_response_reason %}
+            <p class="reject-reason">
+              <strong>سبب الرفض:</strong>
+              {{ session.patient_response_reason }}
+            </p>
+          {% endif %}
+        {% endif %}
+
+      </div>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  {# ================= الجلسات العلاجية ================= #}
+  <section class="sessions-section">
+    <h3 class="section-title">الجلسات العلاجية</h3>
+
+    {% if can_access_therapy_sessions and therapy_sessions %}
+      {% for session in therapy_sessions %}
+        <div class="therapy-card">
+          <h4>{{ session.title }}</h4>
+          <p>🗓 {{ session.start_time }}</p>
+
+          {% if session.can_join %}
+            {% if not session.specialist_joined %}
+              <span class="muted">
+                ⏳ بانتظار دخول الأخصائي
+              </span>
+            {% else %}
+              <a href="{% url 'session:join_session' session.id %}"
+                 class="btn-primary">
+                دخول الجلسة
+              </a>
+            {% endif %}
+          {% else %}
+            <span class="muted">
+              ⏳ لم يحن وقت الجلسة بعد
+            </span>
           {% endif %}
         </div>
       {% endfor %}
     {% else %}
-      <p class="muted">لا توجد جلسات مؤكدة حاليًا.</p>
+      <p class="muted">
+        ستظهر الجلسات العلاجية بعد اعتماد الخطة العلاجية.
+      </p>
     {% endif %}
   </section>
 
-{% endif %}
+  {% endif %}
 
 </div>
+
+<script>
+function toggleReject(id) {
+  const box = document.getElementById("reject-box-" + id);
+  if (box) {
+    box.classList.toggle("show");
+  }
+}
+</script>
 
 {% endblock %}

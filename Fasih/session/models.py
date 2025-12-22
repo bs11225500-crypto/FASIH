@@ -4,6 +4,8 @@ from specialist.models import Specialist
 import uuid
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+import uuid
+
 
 
 
@@ -64,6 +66,8 @@ class Session(models.Model):
         blank=True,
         null=True
     )
+    specialist_joined = models.BooleanField(default=False)
+
 
 
     created_at = models.DateTimeField(auto_now_add=True)

@@ -1,23 +1,71 @@
 {% extends "main/base.html" %}
+{% load static %}
 
 {% block title %}تفاصيل الجلسة{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/session_detail.css' %}">
+{% endblock %}
+
 {% block content %}
-<section class="session-detail">
 
-    <h2>{{ session.title }}</h2>
+<div class="session-detail-container">
 
-    <p> البداية: {{ session.start_time }}</p>
-    <p> النهاية: {{ session.end_time }}</p>
-    <p> الحالة: {{ session.get_status_display }}</p>
+  <div class="page-header">
+    <h2>تفاصيل الجلسة</h2>
+    <p class="page-subtitle">معلومات الجلسة وحالتها الحالية</p>
+  </div>
+
+  <div class="session-card">
+
+    <div class="session-row">
+      <span class="label">نوع الجلسة</span>
+      <span class="value">{{ session.get_session_type_display }}</span>
+    </div>
+
+    <div class="session-row">
+      <span class="label">تاريخ الجلسة</span>
+      <span class="value">{{ session.start_time|date:"Y-m-d" }}</span>
+    </div>
+
+    <div class="session-row">
+      <span class="label">وقت البداية</span>
+      <span class="value">{{ session.start_time|time:"H:i" }}</span>
+    </div>
+
+    <div class="session-row">
+      <span class="label">وقت النهاية</span>
+      <span class="value">{{ session.end_time|time:"H:i" }}</span>
+    </div>
+
+    <div class="session-row">
+      <span class="label">حالة الجلسة</span>
+      <span class="status-badge {{ session.status|lower }}">
+        {{ session.get_status_display }}
+      </span>
+    </div>
+
+  </div>
+
+  <div class="session-actions">
 
     {% if can_join %}
-        <a href="{% url 'session:join_session' session.id %}" class="btn-primary">
-            دخول الجلسة
+        <div class="session-start-wrapper">
+        <a href="{% url 'session:join_session' session.id %}"
+            class="start-session-btn">
+            <span class="icon">▶</span>
+            بدء الجلسة
         </a>
+        </div>
+
     {% else %}
-        <p style="color:#888;">⏳ لا يمكن دخول الجلسة الآن</p>
+      <span class="muted">
+        ⏳ لا يمكن دخول الجلسة الآن
+      </span>
     {% endif %}
 
-</section>
+  </div>
+
+</div>
+
 {% endblock %}

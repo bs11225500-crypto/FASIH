@@ -1,0 +1,100 @@
+/* ================================
+   Treatment Plan Page
+   ================================ */
+
+.treatment-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding-bottom: 40px;
+}
+
+/* ---------- Header ---------- */
+
+.page-header {
+  margin-bottom: 32px;
+}
+
+.page-header h2 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #222;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: #777;
+}
+
+/* ---------- Main Card ---------- */
+
+.treatment-card {
+  padding: 28px;
+}
+
+.treatment-section {
+  margin-bottom: 24px;
+}
+
+.treatment-section h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+/* ---------- Empty State (Centered Card) ---------- */
+
+
+.treatment-empty-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* 👇 التحكم بالارتفاع */
+  min-height: auto;
+
+  /* 👇 هذا اللي يرفع الكارد لفوق */
+  margin-top: 40px;
+}
+
+
+.treatment-empty-card {
+  background: #fff;
+  padding: 40px 32px;
+  border-radius: 20px;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+.treatment-empty-card h3 {
+  font-size: 22px;
+  margin-bottom: 16px;
+  color: #222;
+}
+
+.treatment-empty-card p {
+  font-size: 15px;
+  color: #444;
+  margin-bottom: 10px;
+  line-height: 1.7;
+}
+
+.treatment-empty-card .hint {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.treatment-empty-card .primary-btn {
+  display: inline-block;
+  padding: 12px 28px;
+  background-color: #4f8ea1;
+  color: #fff;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+}

@@ -112,3 +112,156 @@
   background: #fafafa;
   cursor: pointer;
 }
+.assessment-info {
+  margin-top: 16px;
+}
+
+.assessment-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.assessment-row:last-child {
+  border-bottom: none;
+}
+
+.assessment-row .label {
+  font-weight: 600;
+  color: #333;
+}
+
+.assessment-row .value {
+  color: #555;
+  max-width: 60%;
+  text-align: left;
+}
+
+.profile-card h3 {
+  margin-bottom: 12px;
+}
+.status {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.status.pending {
+  color: #c47a00;
+}
+
+.status.accepted {
+  color: #2e8b57;
+}
+
+.status.rejected {
+  color: #c0392b;
+}
+/* ===== Assessment Card ===== */
+.profile-card h3 {
+  margin-bottom: 6px;
+}
+
+.profile-card h4 {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #2f5f73;
+}
+
+.profile-card hr {
+  margin: 24px 0;
+  border: none;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* ===== Text rows ===== */
+.profile-card p {
+  margin: 6px 0;
+  line-height: 1.8;
+}
+
+.profile-card p strong {
+  color: #333;
+}
+
+/* ===== Assessment Media ===== */
+.assessment-media {
+  margin-top: 16px;
+  padding: 12px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 420px;
+}
+
+.assessment-media img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.assessment-media audio {
+  width: 100%;
+}
+
+/* ===== Status ===== */
+.status-label {
+  margin-top: 16px;
+  font-weight: 600;
+}
+
+.status.pending {
+  color: #d97706;
+}
+
+.status.accepted {
+  color: #16a34a;
+}
+
+.status.rejected {
+  color: #dc2626;
+}
+/* يجعل نتائج الاستبيان جزء واضح داخل نفس الكارد */
+.profile-card + .profile-card {
+  margin-top: 32px;
+}
+
+/* عنوان نتائج الاستبيان */
+.profile-card h3 {
+  margin-bottom: 8px;
+}
+
+/* وصف تحت العنوان */
+.profile-card > p {
+  margin-bottom: 24px;
+  color: #6b7280;
+}
+
+/* تقسيم داخلي بين أقسام الاستبيان */
+.profile-card hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 28px 0;
+}
+
+/* مسافات مريحة للنصوص */
+.profile-card p {
+  margin: 8px 0;
+  line-height: 1.8;
+}
+
+/* الصور + الصوت */
+.profile-card img {
+  max-width: 420px;
+  border-radius: 12px;
+  margin-top: 12px;
+}
+
+.profile-card audio {
+  width: 420px;
+  margin-top: 8px;
+}

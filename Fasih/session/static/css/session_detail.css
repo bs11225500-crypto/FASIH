@@ -1,0 +1,89 @@
+.session-detail-container {
+  max-width: 720px;
+  margin: 120px auto 40px; /* ⬅️ زودنا المسافة من فوق */
+}
+
+.session-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.session-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.session-row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  color: #666;
+  font-weight: 500;
+}
+
+.value {
+  font-weight: 600;
+}
+
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.status-badge.proposed {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-badge.confirmed {
+  background: #d4edda;
+  color: #155724;
+}
+
+.session-actions {
+  margin-top: 24px;
+  text-align: center;
+}
+.session-start-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.start-session-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 14px 36px;
+  border-radius: 14px;
+
+  background: linear-gradient(135deg, #5aa6b1, #7fc7b2);
+  color: #fff;
+
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+
+  box-shadow: 0 10px 24px rgba(90, 166, 177, 0.35);
+  transition: all 0.25s ease;
+}
+
+.start-session-btn .icon {
+  font-size: 18px;
+}
+
+.start-session-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(90, 166, 177, 0.45);
+}
+
+.start-session-btn:active {
+  transform: scale(0.97);
+}

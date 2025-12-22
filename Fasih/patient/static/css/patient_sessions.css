@@ -163,3 +163,150 @@
     padding: 16px;
   }
 }
+/* ===== Empty State Card (مثل الخطة العلاجية) ===== */
+
+.sessions-empty-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.sessions-empty-card {
+  background: #fff;
+  padding: 40px 32px;
+  border-radius: 20px;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+.sessions-empty-card h3 {
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+
+.sessions-empty-card p {
+  font-size: 15px;
+  margin-bottom: 8px;
+  line-height: 1.7;
+}
+
+.sessions-empty-card .hint {
+  display: block;
+  font-size: 14px;
+  color: #777;
+  margin-top: 6px;
+}
+
+.sessions-empty-card .primary-btn {
+  display: inline-block;
+  margin-top: 22px;
+  padding: 12px 28px;
+  border-radius: 30px;
+  background-color: #4f8ea1;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+}
+/* كارد الاستشارة */
+.consultation-card.clean {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+  border-right: 5px solid #4fa3b8; /* لون هوية */
+  max-width: 620px;
+}
+
+/* الهيدر */
+.consultation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.consultation-header h4 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.consultation-header .time {
+  font-size: 14px;
+  color: #777;
+}
+
+/* الأزرار */
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.btn-accept {
+  background: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-reject-outline {
+  background: transparent;
+  border: 1px solid #e57373;
+  color: #e57373;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* صندوق الرفض */
+.reject-box {
+  display: none;
+  margin-top: 12px;
+}
+
+.reject-box.show {
+  display: block;
+}
+
+.reject-box textarea {
+  width: 100%;
+  min-height: 80px;
+  margin-bottom: 8px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-family: inherit;
+}
+
+.btn-reject {
+  background: #e57373;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.reject-box {
+  display: none;
+  margin-top: 12px;
+}
+
+.reject-box.show {
+  display: block;
+}
+
+/* ✨ الحل */
+.actions {
+  position: relative;
+  z-index: 2;
+}
+
+.reject-box {
+  position: relative;
+  z-index: 1;
+}

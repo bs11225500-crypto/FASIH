@@ -9,21 +9,20 @@
 
 {% block patient_content %}
 
-<div class="profile-container ">
+<div class="profile-container">
+
   <div class="profile-header">
     <h2>الملف الشخصي</h2>
-
-
   </div>
 
+  {# ===== بطاقة بيانات المريض ===== #}
   {% if not edit_mode %}
   <div class="profile-card">
-    {% if not edit_mode %}
-      <a href="?edit=1" class="edit-btn">
-        <span class="material-icons">edit</span>
-        تعديل
-      </a>
-    {% endif %}
+
+    <a href="?edit=1" class="edit-btn">
+      <span class="material-icons">edit</span>
+      تعديل
+    </a>
 
     <div class="profile-avatar">
       {% if user.profile_image %}
@@ -43,6 +42,7 @@
   </div>
   {% endif %}
 
+  {# ===== نموذج التعديل ===== #}
   {% if edit_mode %}
   <form method="post" enctype="multipart/form-data" class="profile-card profile-form">
     {% csrf_token %}
@@ -51,16 +51,16 @@
 
     <div class="profile-avatar edit-avatar">
       {% if user.profile_image %}
-        <img src="{{ user.profile_image.url }}" alt="صورة الحساب">
+        <img src="{{ user.profile_image.url }}">
       {% else %}
-        <img src="{% static 'img/default_userprofile_pic.png' %}" alt="صورة افتراضية">
+        <img src="{% static 'img/default_userprofile_pic.png' %}">
       {% endif %}
     </div>
-    <div class="form-group">
-    <label>تغيير صورة الحساب</label>
-    <input type="file" name="profile_image" accept="image/*">
-    </div>
 
+    <div class="form-group">
+      <label>تغيير صورة الحساب</label>
+      <input type="file" name="profile_image" accept="image/*">
+    </div>
 
     <div class="form-group">
       <label>الاسم الأول</label>
@@ -94,6 +94,98 @@
 
   </form>
   {% endif %}
+
+  {# ===== عرض الاستبيان (صح – بدون JSON) ===== #}
+  {% if assessment %}
+  <div class="profile-card">
+
+    <h3>نتائج الاستبيان الأولي</h3>
+    <p class="muted">تم تعبئة هذا الاستبيان قبل بدء الجلسات العلاجية</p>
+
+    {% with a=assessment.assessment_data.sections_answers %}
+
+    <div class="assessment-section">
+      <h4>التاريخ الصحي</h4>
+      <p><strong>يفهمه الغرباء:</strong> {{ a.strangers_understand }}</p>
+      <p><strong>جلسات تخاطب سابقة:</strong> {{ a.speech_sessions }}</p>
+      <p><strong>تأخر لغوي:</strong> {{ a.language_delay }}</p>
+      <p><strong>اضطراب نمائي:</strong> {{ a.developmental }}</p>
+    </div>
+
+    <hr>
+
+    <div class="assessment-section">
+      <h4>النطق والملاحظة</h4>
+      <p><strong>يكرر نفس الأخطاء:</strong> {{ a.same_errors }}</p>
+      <p><strong>يحاول تصحيح النطق:</strong> {{ a.tries_correct }}</p>
+
+      <p>
+        <strong>الحروف الصعبة:</strong>
+        {% for letter in a.difficult_letters %}
+          <span class="badge">{{ letter }}</span>
+        {% empty %}
+          <span class="muted">لم يتم تحديد حروف</span>
+        {% endfor %}
+      </p>
+    </div>
+
+    <hr>
+
+    <div class="assessment-section">
+      <h4>تسجيلات التقييم</h4>
+
+      {% for item in assessment.assessment_data.images %}
+        <div class="audio-row">
+          <img src="{{ item.image }}" alt="صورة التمرين">
+          {% if item.audio %}
+            <audio controls src="/media/{{ item.audio }}"></audio>
+          {% else %}
+            <span class="muted">لا يوجد تسجيل صوتي</span>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    {% endwith %}
+
+    <p class="assessment-status">
+      حالة الاستبيان: {{ assessment.get_status_display }}
+    </p>
+
+  </div>
+  {% else %}
+  <div class="profile-card muted">
+    لم يتم تعبئة استبيان الاستشارة الأولى بعد.
+  </div>
+  {% endif %}
+
+  {# ===== حالة الاستشارة ===== #}
+  <div class="profile-card">
+    <h3>حالة الاستشارة</h3>
+
+    {% if assessment %}
+      {% if assessment.status == "PENDING" %}
+        <p class="status pending">⏳ استشارتك قيد المراجعة</p>
+
+      {% elif assessment.status == "ACCEPTED" %}
+        <p class="status accepted">✅ تم قبول الاستشارة</p>
+        <span class="hint">سيتم التواصل معك لتحديد الجلسة الاستشارية الأولى</span>
+
+      {% elif assessment.status == "REJECTED" %}
+        <p class="status rejected">❌ تم رفض الاستشارة</p>
+        {% if assessment.rejection_reason %}
+          <span class="hint">
+            سبب الرفض: {{ assessment.get_rejection_reason_display }}
+          </span>
+        {% endif %}
+      {% endif %}
+    {% else %}
+      <p class="muted">لم يتم طلب استشارة بعد.</p>
+      <a href="{% url 'specialist:choose_specialist' %}" class="card-link">
+        طلب استشارة
+      </a>
+    {% endif %}
+  </div>
 
 </div>
 
