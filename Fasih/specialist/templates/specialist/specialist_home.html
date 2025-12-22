@@ -1,20 +1,20 @@
-{% extends "main/base.html" %}
+{% extends "specialist/base_specialist.html" %}
 {% load static %}
 
 {% block title %}
 فَصِيح | لوحة الأخصائي
 {% endblock title %}
 
-{% block extra_css %}
+{% block specialist_css %}
 <link rel="stylesheet" href="{% static 'css/specialist_home.css' %}">
-{% endblock extra_css %}
+{% endblock specialist_css %}
 
-{% block content %}
+{% block specialist_content %}
 
 <section class="specialist-home">
 
     <div class="welcome">
-        <h1>مرحبًا👋</h1>
+        <h1>مرحبًا 👋</h1>
     </div>
 
     <div class="cards-grid">
@@ -42,11 +42,11 @@
             <span class="material-icons">assignment</span>
             <h3>طلبات استشارة جديدة</h3>
             <p class="number">{{ new_consultations_count }}</p>
-            <a href="#" class="card-btn">مراجعة الطلبات</a>
+            <a href="{% url 'specialist:specialist_consultations_dashboard' %}" class="card-btn">مراجعة الطلبات</a>
         </div>
 
     </div>
 
 </section>
 
-{% endblock %}
+{% endblock specialist_content %}

@@ -27,23 +27,18 @@
     background: #f5f7fb;
 }
 
-.status {
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.status.new {
-    background: #eef4ff;
-    color: #3A7BD5;
-}
-
 .view-btn {
     padding: 8px 16px;
-    background: #3A7BD5;
-    color: #fff;
+    border-radius: 20px;
     text-decoration: none;
-    border-radius: 6px;
     font-size: 13px;
+    font-weight: 600;
+
+    background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
+    color: #ffffff;
+    border: none;
+}
+
+.view-btn:hover {
+    opacity: 0.9;
 }

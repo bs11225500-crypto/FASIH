@@ -81,13 +81,35 @@ def submit_assessment(request):
 
 
 
+@login_required
 def assessment_detail(request, id):
     assessment = get_object_or_404(Assessment, id=id)
+    specialist = request.user.specialist
+
+    if request.method == "POST":
+        action = request.POST.get("action")
+
+        if action == "accept":
+            assessment.status = "ACCEPTED"
+            assessment.specialist = specialist
+            assessment.rejection_reason = None
+            assessment.save()
+            return redirect("specialist:specialist_patients_dashboard")
+
+     
+        elif action == "reject":
+            reason = request.POST.get("reason")
+
+            if reason:
+                assessment.status = "REJECTED"
+                assessment.rejection_reason = reason
+                assessment.save()
+            return redirect("specialist:specialist_consultations_dashboard")
+
 
     dt = assessment.created_at
 
     if timezone.is_naive(dt):
-       
         dt = dt.replace(tzinfo=timezone.utc)
 
     dt_riyadh = dt + timedelta(hours=3)
@@ -97,4 +119,5 @@ def assessment_detail(request, id):
         "sent_date": dt_riyadh.strftime("%Y / %m / %d"),
         "sent_time": dt_riyadh.strftime("%I:%M %p"),
     }
+
     return render(request, "assessment/detail.html", context)

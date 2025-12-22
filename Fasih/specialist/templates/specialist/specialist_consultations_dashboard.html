@@ -1,0 +1,59 @@
+{% extends "specialist/base_specialist.html" %}
+{% load static %}
+
+{% block title %}الاستشارات{% endblock %}
+
+{% block specialist_css %}
+<link rel="stylesheet" href="{% static 'css/specialist_consultations_dashboard.css' %}">
+{% endblock specialist_css %}
+
+{% block specialist_content %}
+
+<div class="consultations-page">
+
+  <h2>الاستشارات الجديدة</h2>
+
+  {% if assessments %}
+  <table class="consultations-table">
+    <thead>
+      <tr>
+        <th>اسم المريض</th>
+        <th>البريد الإلكتروني</th>
+        <th>الجنس</th>
+        <th>الاستبيان</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for assessment in assessments %}
+      <tr>
+        <td>
+          {{ assessment.patient.user.first_name }}
+          {{ assessment.patient.user.last_name }}
+        </td>
+        <td>{{ assessment.patient.user.email }}</td>
+        <td>{{ assessment.patient.get_gender_display }}</td>
+      
+        <td>
+          <a
+            href="{% url 'assessment:assessment_detail' assessment.id %}"
+            
+            class="btn-view"
+          >
+            عرض الاستبيان
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% else %}
+  <p class="empty-state">
+    لا توجد استشارات حاليًا
+  </p>
+  {% endif %}
+
+</div>
+
+{% endblock %}
