@@ -10,31 +10,33 @@
 <div class="goal-wrapper">
     <div class="goal-card">
 
-        <h1 class="page-title">إضافة هدف قصير</h1>
+        <h1 class="page-title">تفاصيل الخطة العلاجية</h1>
 
-        <form method="post">
-            {% csrf_token %}
+        <!-- معلومات الخطة -->
+        <div class="plan-info">
+            <p><strong>التشخيص:</strong> {{ plan.diagnosis }}</p>
+            <p><strong>وصف المشكلة:</strong> {{ plan.problem_description }}</p>
+            <p><strong>الهدف العام:</strong> {{ plan.long_term_goal }}</p>
+        </div>
 
-            <div class="form-group">
-                <label>وصف الهدف</label>
-                <textarea name="description" rows="4" required></textarea>
-            </div>
+        <!-- زر إضافة هدف -->
+        <a href="{% url 'treatment:add_short_term_goal' plan.id %}"
+           class="primary-btn">
+            إضافة هدف قصير
+        </a>
 
-            <div class="form-group">
-                <label>نسبة الإتقان المطلوبة (%)</label>
-                <input type="number" name="target_accuracy" required>
-            </div>
-<div class="action-buttons">
-    <button type="submit" class="primary-btn">
-        حفظ الهدف
-    </button>
+        <!-- عرض الأهداف القصيرة -->
+        {% if plan.short_term_goals.all %}
+        <ul class="goals-list">
+            {% for goal in plan.short_term_goals.all %}
+                <li>
+                    {{ goal.description }} — {{ goal.target_accuracy }}%
+                </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
 
-    <a href="{% url 'treatment:treatment_plan_detail' plan.id %}"
-       class="primary-btn secondary-btn">
-        الرجوع إلى الخطة
-    </a>
-</div>
-
+    </div>
 </div>
 
 {% endblock %}
