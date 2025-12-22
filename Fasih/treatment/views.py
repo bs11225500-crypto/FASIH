@@ -2,8 +2,27 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import TreatmentPlan, ShortTermGoal, ProgressReport
 from patient.models import Patient
 from specialist.models import Specialist
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
+def treatment_patients(request):
+    specialist = get_object_or_404(Specialist, user=request.user)
+
+    patients = Patient.objects.filter(
+        assessments__specialist=specialist,
+        assessments__status='ACCEPTED'
+    ).distinct()
+
+    context = {
+        "patients": patients
+    }
+
+    return render(
+        request,
+        "treatment/treatment_patients.html",
+        context
+    )
 
 def create_treatment_plan(request, file_number):
     patient = get_object_or_404(Patient, file_number=file_number)

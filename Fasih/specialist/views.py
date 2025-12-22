@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from patient.models import Patient
-from specialist.models import Specialist
+from specialist.models import Specialist, SpecialistCertificate
 from accounts.models import User
 from assessment.models import Assessment
+from accounts.models import User
+from accounts.forms import UserProfileForm, SpecialistProfileForm
+from django.contrib import messages
 
 
 @login_required
@@ -95,4 +98,94 @@ def choose_specialist(request):
     }
 
     return render(request, "specialist/choose_specialist.html", context)
+
+@login_required
+def specialist_profile(request):
+    user = request.user
+
+    # تأكد أن المستخدم أخصائي
+    if user.role != User.Role.SPECIALIST:
+        return redirect('main:home')
+
+    # جلب ملف الأخصائي
+    try:
+        specialist = Specialist.objects.get(user=user)
+
+    except Specialist.DoesNotExist:
+        return redirect('main:home')
+
+    # وضع التعديل
+    edit_mode = request.GET.get("edit") == "1"
+
+    if request.method == 'POST':
+        user_form = UserProfileForm(
+            request.POST,
+            request.FILES,
+            instance=user
+        )
+        specialist_form = SpecialistProfileForm(
+            request.POST,
+            instance=specialist
+        )
+
+        if user_form.is_valid() and specialist_form.is_valid():
+            user_form.save()
+            specialist_form.save()
+            messages.success(request, "تم تحديث البيانات بنجاح")
+            return redirect('specialist:specialist_profile')
+
+        messages.error(request, "تأكد من صحة البيانات المدخلة")
+        edit_mode = True
+
+    else:
+        user_form = UserProfileForm(instance=user)
+        specialist_form = SpecialistProfileForm(instance=specialist)
+
+    context = {
+        'user': user,
+        'specialist': specialist,
+        'user_form': user_form,
+        'specialist_form': specialist_form,
+        'edit_mode': edit_mode,
+    }
+    if not user_form.is_valid():
+        print("USER FORM ERRORS:", user_form.errors)
+
+    if not specialist_form.is_valid():
+        print("SPECIALIST FORM ERRORS:", specialist_form.errors)
+
+
+    return render(request, 'specialist/specialist_profile.html', context)
+
+
+
+@login_required
+def add_certificate(request):
+
+    if request.user.role != User.Role.SPECIALIST:
+        return redirect("main:home")
+
+    specialist = get_object_or_404(Specialist, user=request.user)
+
+    if request.method == "POST":
+        form = SpecialistCertificate(request.POST, request.FILES)
+
+        if form.is_valid():
+            certificate = form.save(commit=False)
+            certificate.specialist = specialist
+            certificate.save()
+
+            messages.success(request, "تمت إضافة الشهادة بنجاح")
+            return redirect("specialist:specialist_profile")
+
+    else:
+        form = SpecialistCertificate()
+
+    return render(
+        request,
+        "specialist/add_certificate.html",
+        {"form": form}
+    )
+
+
 

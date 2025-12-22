@@ -1,0 +1,126 @@
+{% extends "specialist/base_specialist.html" %}
+{% load static %}
+
+{% block title %}الملف الشخصي{% endblock %}
+
+{% block specialist_css %}
+<link rel="stylesheet" href="{% static 'css/specialist_profile.css' %}">
+{% endblock specialist_css %}
+
+{% block specialist_content %}
+
+<div class="profile-container">
+
+  <!-- HEADER -->
+  <div class="profile-header">
+    <h2>الملف الشخصي</h2>
+
+    {% if not edit_mode %}
+    <a href="?edit=1" class="edit-btn">
+      <span class="material-icons">edit</span>
+      تعديل
+    </a>
+    {% endif %}
+  </div>
+
+  <!-- ===== VIEW MODE ===== -->
+  {% if not edit_mode %}
+  <div class="profile-card">
+
+    <div class="profile-avatar">
+      {% if user.profile_image %}
+        <img src="{{ user.profile_image.url }}" alt="صورة الحساب">
+      {% else %}
+        <img src="{% static 'img/default_userprofile_pic.png' %}">
+      {% endif %}
+    </div>
+
+    <div class="profile-info">
+      <p><strong>الاسم:</strong> {{ user.get_full_name }}</p>
+      <p><strong>البريد الإلكتروني:</strong> {{ user.email }}</p>
+      <p><strong>التخصص:</strong> {{ specialist.specialization }}</p>
+      <p><strong>سنوات الخبرة:</strong> {{ specialist.years_of_experience }} سنوات</p>
+      <p><strong>رقم الرخصة:</strong> {{ specialist.license_number }}</p>
+    </div>
+
+    <hr>
+
+    <p>
+      <strong>حالة الاعتماد:</strong>
+      {% if specialist.verification_status == "APPROVED" %}
+        <span class="status approved">معتمد</span>
+      {% elif specialist.verification_status == "PENDING" %}
+        <span class="status pending">قيد المراجعة</span>
+      {% else %}
+        <span class="status rejected">مرفوض</span>
+      {% endif %}
+    </p>
+
+    {% if specialist.verification_status == "REJECTED" and specialist.rejection_reason %}
+      <p><strong>سبب الرفض:</strong> {{ specialist.rejection_reason }}</p>
+    {% endif %}
+
+  </div>
+  {% endif %}
+
+  <!-- ===== EDIT MODE ===== -->
+  {% if edit_mode %}
+  <form method="post" enctype="multipart/form-data" class="profile-card profile-form">
+    {% csrf_token %}
+
+    <h3>تعديل البيانات</h3>
+
+    <div class="profile-avatar">
+      {% if user.profile_image %}
+        <img src="{{ user.profile_image.url }}">
+      {% else %}
+        <img src="{% static 'img/default_userprofile_pic.png' %}">
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label>تغيير صورة الحساب</label>
+      <input type="file" name="profile_image" accept="image/*">
+    </div>
+
+    <div class="form-group">
+      <label>الاسم الأول</label>
+      {{ user_form.first_name }}
+    </div>
+
+    <div class="form-group">
+      <label>الاسم الأوسط</label>
+      {{ user_form.middle_name }}
+    </div>
+
+    <div class="form-group">
+      <label>اسم العائلة</label>
+      {{ user_form.last_name }}
+    </div>
+
+    <div class="form-group">
+      <label>التخصص</label>
+      {{ specialist_form.specialization }}
+    </div>
+
+    <div class="form-group">
+      <label>سنوات الخبرة</label>
+      {{ specialist_form.years_of_experience }}
+    </div>
+
+    <div class="form-group">
+      <label>رقم الرخصة</label>
+      {{ specialist_form.license_number }}
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="primary-btn">حفظ</button>
+      <a href="{% url 'specialist:specialist_profile' %}" class="cancel-btn">إلغاء</a>
+    </div>
+
+  </form>
+  {% endif %}
+
+</div>
+
+{% endblock %}

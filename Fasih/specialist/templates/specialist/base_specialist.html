@@ -27,12 +27,19 @@
                    لوحة تحكم
                 </a>
             </li>
+            <li class="{% if request.resolver_match.url_name == 'specialist_profile' %}active{% endif %}">
+                <a href="{% url 'specialist:specialist_profile' %}">
+                الملف الشخصي
+                </a>
+            </li>
 
             <li class="{% if request.resolver_match.url_name == 'treatment_plan' %}active{% endif %}">
-                <a href="#">
+                <a href="{% url 'treatment:treatment_patients' %}">
                     الخطة العلاجية
                 </a>
             </li>
+            
+           
 
             <li class="{% if request.resolver_match.url_name == 'create_session' %}active{% endif %}">
                 <a href="#">
