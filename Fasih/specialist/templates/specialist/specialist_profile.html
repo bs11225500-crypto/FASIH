@@ -14,18 +14,20 @@
   <!-- HEADER -->
   <div class="profile-header">
     <h2>الملف الشخصي</h2>
-
-    {% if not edit_mode %}
-    <a href="?edit=1" class="edit-btn">
-      <span class="material-icons">edit</span>
-      تعديل
-    </a>
-    {% endif %}
   </div>
+
 
   <!-- ===== VIEW MODE ===== -->
   {% if not edit_mode %}
   <div class="profile-card">
+
+    {% if not edit_mode %}
+    <a href="?edit=1" class="edit-btn inside-card">
+      <span class="material-icons">edit</span>
+      تعديل
+    </a>
+    {% endif %}
+
 
     <div class="profile-avatar">
       {% if user.profile_image %}

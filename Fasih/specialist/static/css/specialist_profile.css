@@ -1,4 +1,4 @@
-/* specialist_profile.css */
+
 .profile-container {
   max-width: 900px;
   padding: 0 20px;
@@ -16,7 +16,28 @@
   border-radius: 18px;
   padding: 30px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+  position: relative;
 }
+.edit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #0F4C5C;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.edit-btn .material-icons {
+  font-size: 18px;
+}
+
+.edit-btn.inside-card {
+  position: absolute;
+  top: 20px;
+  right: 20px;  
+}
+
 
 .profile-avatar {
   text-align: center;
@@ -33,3 +54,5 @@
 .status.approved { color: green; }
 .status.pending { color: orange; }
 .status.rejected { color: red; }
+
+

@@ -1,4 +1,4 @@
-/* ===== Layout ===== */
+
 .specialist-layout {
   display: flex;
   min-height: calc(100vh - 80px);
@@ -13,14 +13,21 @@
   padding: 20px;
   border-radius: 16px;
 }
+.sidebar-header {
+  margin-bottom: 30px;
+}
+
+.sidebar-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
 .sidebar-menu {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-
-
-/* ===== Menu ===== */
 .sidebar-menu a {
   display: block;
   color: #fff;
@@ -30,12 +37,10 @@
   margin-bottom: 10px;
 }
 
-/* Hover */
 .sidebar-menu a:hover {
   background-color: rgba(255,255,255,0.15);
 }
 
-/* Active */
 .sidebar-menu li.active a {
   background-color: rgba(255, 255, 255, 0.25);
   font-weight: 600;
@@ -46,14 +51,14 @@
 }
 
 
-/* ===== Content ===== */
+
 .specialist-content {
   flex: 1;
   padding: 30px;
   background-color: #f7f9fb;
 }
 
-/* ===== Responsive ===== */
+
 @media (max-width: 992px) {
   .specialist-sidebar {
     width: 200px;
