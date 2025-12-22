@@ -32,11 +32,24 @@
                 <td>{{ p.name }}</td>
                 <td>{{ p.file_number }}</td>
                 <td>{{ p.age }}</td>
-                <td>
-                    <a href="#" class="view-btn">
-                        عرض التفاصيل
+                <td class="actions">
+                    <a href="{% url 'assessment:assessment_detail' p.id %}"
+                        class="btn btn-assessment">
+                        الاستبيان
+                    </a>
+
+                    <a href="{% url 'session:create_session' %}?patient={{ p.id }}"
+                        class="btn btn-session">
+                        انشاء جلسة
+                    </a>
+
+                    <a href="{% url 'treatment:create_treatment_plan' p.file_number %}"
+                        class="btn btn-plan">
+                        انشاء خطة
                     </a>
                 </td>
+
+
             </tr>
             {% endfor %}
         </tbody>

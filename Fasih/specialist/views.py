@@ -123,7 +123,7 @@ def specialist_profile(request):
             return redirect('specialist:specialist_profile')
         else:
             messages.error(request, "تأكد من صحة البيانات المدخلة")
-            edit_mode = True   # ⭐ هنا السر
+            edit_mode = True   
     else:
         user_form = UserProfileForm(instance=user)
         specialist_form = SpecialistProfileForm(instance=specialist)

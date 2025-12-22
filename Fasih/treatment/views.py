@@ -43,9 +43,10 @@ def create_treatment_plan(request, file_number):
         )
 
         return redirect(
-            "treatment:treatment_plan_detail",
+            "treatment:add_short_term_goal",
             plan_id=plan.id
         )
+
 
     return render(
         request,
@@ -62,11 +63,17 @@ def treatment_plan_detail(request, plan_id):
         "plan": treatment_plan
     })
 
-
+@login_required
 def add_short_term_goal(request, plan_id):
+    print("METHOD:", request.method)
+    print("POST DATA:", request.POST)
+
     treatment_plan = get_object_or_404(TreatmentPlan, id=plan_id)
+    
 
     if request.method == "POST":
+       
+        print(request.POST)
         ShortTermGoal.objects.create(
             treatment_plan=treatment_plan,
             description=request.POST.get("description"),

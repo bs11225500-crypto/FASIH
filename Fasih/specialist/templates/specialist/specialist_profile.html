@@ -11,13 +11,11 @@
 
 <div class="profile-container">
 
-  <!-- HEADER -->
   <div class="profile-header">
     <h2>الملف الشخصي</h2>
   </div>
 
 
-  <!-- ===== VIEW MODE ===== -->
   {% if not edit_mode %}
   <div class="profile-card">
 
@@ -65,7 +63,7 @@
   </div>
   {% endif %}
 
-  <!-- ===== EDIT MODE ===== -->
+  
   {% if edit_mode %}
   <form method="post" enctype="multipart/form-data" class="profile-card profile-form">
     {% csrf_token %}

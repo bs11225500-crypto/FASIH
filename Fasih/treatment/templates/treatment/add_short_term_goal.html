@@ -7,12 +7,12 @@
 
 {% block specialist_content %}
 
-<div class="treatment-card-wrapper">
-    <div class="treatment-card">
+<div class="goal-page">
+    <div class="goal-card">
 
-        <h1 class="page-title">إضافة هدف قصير</h1>
+        <h1>إضافة هدف قصير</h1>
 
-        <form method="post">
+        <form method="post" action="{% url 'treatment:add_short_term_goal' plan.id %}">
             {% csrf_token %}
 
             <div class="form-group">
@@ -25,14 +25,14 @@
                 <input type="number" name="target_accuracy" required>
             </div>
 
-            <button type="submit" class="primary-btn">
+            <button type="submit" class="submit-btn">
                 حفظ الهدف
             </button>
         </form>
 
         <a href="{% url 'treatment:treatment_plan_detail' plan.id %}"
            class="back-link">
-            ← الرجوع إلى الخطة
+            الرجوع إلى الخطة
         </a>
 
     </div>
