@@ -1,6 +1,4 @@
-.patients-dashboard {
-    padding: 140px 60px 60px;
-}
+
 
 .page-title {
     font-size: 26px;
@@ -27,18 +25,43 @@
     background: #f5f7fb;
 }
 
-.view-btn {
-    padding: 8px 16px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 600;
-
-    background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
-    color: #ffffff;
-    border: none;
+.actions {
+  display: flex;
+  gap: 40px;
+  padding-right: 70px;
 }
 
-.view-btn:hover {
-    opacity: 0.9;
+.actions .btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+.btn-assessment {
+  background: linear-gradient(135deg, #3A7BD5, #5f9cff);
+}
+
+.btn-assessment:hover {
+  box-shadow: 0 6px 16px rgba(58,123,213,0.35);
+  transform: translateY(-2px);
+}
+.btn-session {
+  background: linear-gradient(135deg, #27ae60, #6dd5a5);
+}
+
+.btn-session:hover {
+  box-shadow: 0 6px 16px rgba(39,174,96,0.35);
+  transform: translateY(-2px);
+}
+.btn-plan {
+  background: linear-gradient(135deg, #f39c12, #f7c873);
+}
+
+.btn-plan:hover {
+  box-shadow: 0 6px 16px rgba(243,156,18,0.35);
+  transform: translateY(-2px);
 }
