@@ -1,128 +1,88 @@
-/* =========================
-   RESET & BASE
-========================= */
-body {
-    margin: 0;
-    font-family: "Segoe UI", Tahoma, sans-serif;
-    background: #f4f6f8; /* رمادي فاتح جدًا */
-    direction: rtl;
-}
-
-/* =========================
-   PAGE WRAPPER
-========================= */
-.plan-page {
-    min-height: 100vh;
+.goal-wrapper {
     display: flex;
-    align-items: center;     /* بالنص عمودي */
-    justify-content: center; /* بالنص أفقي */
-    padding: 40px 20px;
+    justify-content: center;
+    padding: 140px 20px 60px;
 }
 
-/* =========================
-   MAIN CARD
-========================= */
-.plan-card {
-    background: #ffffff;
+.goal-card {
     width: 100%;
-    max-width: 850px;
-    border-radius: 20px;
-    padding: 40px 45px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    max-width: 620px;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 40px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
 }
 
-/* =========================
-   TITLES
-========================= */
-.plan-card h1 {
-    font-size: 30px;
-    font-weight: 800;
-    color: #2e2e3a;
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-.section-title {
-    font-size: 18px;
+.page-title {
+    font-size: 26px;
     font-weight: 700;
-    color: #0fa4af;
-    margin-bottom: 8px;
+    margin-bottom: 30px;
+    text-align: right;
 }
 
-.section-content {
-    font-size: 15px;
-    color: #444;
-    line-height: 1.9;
+.form-group {
+    margin-bottom: 22px;
 }
 
-/* Divider */
-.divider {
-    height: 1px;
-    background: #e6e6e6;
-    margin: 22px 0;
-}
-
-/* =========================
-   INFO ROW
-========================= */
-.info-row {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-bottom: 25px;
-}
-
-.info-box {
-    flex: 1;
-    min-width: 220px;
-    background: #f7fbfc;
-    border-radius: 14px;
-    padding: 16px;
-    border: 1px solid #d9eff2;
-}
-
-.info-box span {
-    font-size: 13px;
-    color: #6b6b85;
-}
-
-.info-box strong {
+.form-group label {
     display: block;
-    font-size: 15px;
-    margin-top: 6px;
-    color: #2e2e3a;
-}
-
-/* =========================
-   BUTTON
-========================= */
-.action-btn {
-    display: inline-block;
-    margin-top: 30px;
-    padding: 12px 32px;
-    border-radius: 999px;
-    background: linear-gradient(135deg, #3a7bd5, #7ed6a7);
-    color: #ffffff;
+    margin-bottom: 8px;
+    font-weight: 600;
     font-size: 14px;
-    font-weight: 700;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid #dfe6ec;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #3A7BD5;
+    box-shadow: 0 0 0 3px rgba(58,123,213,0.12);
+}
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 30px;
+}
+
+.primary-btn,
+.secondary-btn {
+    min-width: 220px;          
+    height: 52px;              
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 32px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+
+    background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1;
     text-decoration: none;
-    transition: 0.25s ease;
+
+    font-family: "Cairo", sans-serif;
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.action-btn:hover {
+.primary-btn:hover,
+.secondary-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(58, 123, 213, 0.35);
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-@media (max-width: 768px) {
-    .plan-card {
-        padding: 28px;
-    }
-
-    .plan-card h1 {
-        font-size: 24px;
-    }
+    box-shadow: 0 8px 20px rgba(58,123,213,0.35);
 }

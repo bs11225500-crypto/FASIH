@@ -1,0 +1,67 @@
+.treatment-card-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 120px 60px 60px;
+}
+
+.treatment-card {
+    width: 100%;
+    max-width: 1000px;
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 40px 45px;
+
+    box-shadow: 0 14px 34px rgba(0,0,0,0.06);
+}
+
+.page-title {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.patients-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.patients-table th,
+.patients-table td {
+    padding: 16px 20px;
+    text-align: right;
+}
+
+.patients-table thead {
+    background: #f5f7fb;
+}
+
+.patients-table tbody tr:not(:last-child) {
+    border-bottom: 1px solid #eee;
+}
+
+.view-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+
+    background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
+    color: #ffffff;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.empty-state h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    font-size: 14px;
+    color: #777;
+}

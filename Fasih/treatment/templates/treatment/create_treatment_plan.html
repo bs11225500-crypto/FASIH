@@ -1,20 +1,16 @@
+{% extends "specialist/base_specialist.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-    <meta charset="UTF-8">
-    <title>إنشاء خطة علاجية</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'css/create.css' %}">
+{% block specialist_css %}
+<link rel="stylesheet" href="{% static 'css/create.css' %}">
+{% endblock %}
 
-</head>
-<body>
+{% block specialist_content %}
 
-<div class="treatment-fullscreen">
+<div class="treatment-card-wrapper">
     <div class="treatment-card">
 
-        <h2>إنشاء خطة علاجية</h2>
+        <h2 class="page-title">إنشاء خطة علاجية</h2>
 
         <div class="patient-info">
             <p><strong>المريض:</strong> {{ patient.user.get_full_name }}</p>
@@ -40,7 +36,7 @@
             </div>
 
             <div class="section">
-                <div class="section-title">الخطة الزمنية</div>
+                <div class="section-title">تاريخ بداية الخطة</div>
                 <input type="date" name="start_date" required>
             </div>
 
@@ -49,11 +45,12 @@
                 <input type="number" name="duration_weeks" required>
             </div>
 
-            <button type="submit"> إنشاء الخطة</button>
+            <button type="submit" class="primary-btn">
+                إنشاء الخطة
+            </button>
         </form>
 
     </div>
 </div>
 
-</body>
-</html>
+{% endblock %}
