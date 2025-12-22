@@ -1,0 +1,111 @@
+{% extends "patient/base_patient.html" %}
+{% load static %}
+
+{% block title %}جلساتي{% endblock %}
+
+{% block patient_css %}
+<link rel="stylesheet" href="{% static 'css/patient_sessions.css' %}">
+{% endblock %}
+
+{% block patient_content %}
+
+<div class="sessions-container">
+
+{% if not pending_sessions and not confirmed_sessions %}
+
+  <!-- Empty State -->
+  <div class="empty-state">
+    <h3>لا توجد جلسات حاليًا</h3>
+
+    {% if not has_specialist %}
+      <p class="muted">
+        لم تقم باختيار أخصائي بعد.<br>
+        يرجى اختيار أخصائي لطلب جلسة استشارة مجانية.
+      </p>
+
+    {% elif not has_completed_initial_session %}
+      <p class="muted">
+        لا توجد جلسات حاليًا.<br>
+        ستظهر جلسة الاستشارة المجانية بعد موافقة الأخصائي.
+      </p>
+
+    {% else %}
+      <p class="muted">
+        تم الانتهاء من جلسة الاستشارة.<br>
+        ستظهر الجلسات العلاجية بعد اعتماد الخطة العلاجية والدفع.
+      </p>
+    {% endif %}
+
+  </div>
+
+{% else %}
+
+  <div class="page-header">
+    <h2>جلساتي</h2>
+    <p>عرض جميع الجلسات المجدولة لك</p>
+  </div>
+
+  <!-- جلسات بانتظار الموافقة -->
+  <section class="sessions-section">
+    <h3>جلسات بانتظار موافقتك</h3>
+
+    {% if pending_sessions %}
+      {% for session in pending_sessions %}
+        <div class="session-card pending">
+          <h4>{{ session.title }}</h4>
+          <p>🕒 {{ session.start_time }}</p>
+
+          <form method="post" action="{% url 'session:respond_session' session.id %}">
+            {% csrf_token %}
+            <button name="action" value="accept" class="btn-success">
+              أوافق
+            </button>
+          </form>
+
+          <form method="post" action="{% url 'session:respond_session' session.id %}">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="reject">
+
+            <textarea name="reason" placeholder="سبب الرفض"></textarea>
+            <textarea name="suggested_times" placeholder="أوقات تناسبك"></textarea>
+
+            <button type="submit" class="btn-danger">
+              لا يناسبني
+            </button>
+          </form>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="muted">لا توجد جلسات بانتظار الموافقة.</p>
+    {% endif %}
+  </section>
+
+  <!-- جلسات مؤكدة -->
+  <section class="sessions-section">
+    <h3>الجلسات المؤكدة</h3>
+
+    {% if confirmed_sessions %}
+      {% for session in confirmed_sessions %}
+        <div class="session-card confirmed">
+          <h4>{{ session.title }}</h4>
+          <p> {{ session.start_time }}</p>
+
+          {% if session.can_join %}
+            <a href="{% url 'session:join_session' session.id %}" class="btn-primary">
+              دخول الجلسة
+            </a>
+          {% else %}
+            <span class="muted">⏳ لم يحن وقت الجلسة بعد</span>
+          {% endif %}
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="muted">لا توجد جلسات مؤكدة حاليًا.</p>
+    {% endif %}
+  </section>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

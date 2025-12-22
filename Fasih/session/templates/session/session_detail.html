@@ -1,52 +1,23 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ session.title }} | فصيح</title>
+{% extends "main/base.html" %}
 
-    <script src="https://meet.jit.si/external_api.js"></script>
+{% block title %}تفاصيل الجلسة{% endblock %}
 
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Cairo', sans-serif;
-            background: #f4f7fb;
-        }
+{% block content %}
+<section class="session-detail">
 
-        .session-header {
-            padding: 14px;
-            text-align: center;
-            background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
-            color: #fff;
-            font-weight: 600;
-        }
+    <h2>{{ session.title }}</h2>
 
-        #meet {
-            width: 100%;
-            height: calc(100vh - 56px);
-        }
-    </style>
-</head>
-<body>
+    <p> البداية: {{ session.start_time }}</p>
+    <p> النهاية: {{ session.end_time }}</p>
+    <p> الحالة: {{ session.get_status_display }}</p>
 
-<div class="session-header">
-    {{ session.title }} – جلسة نطق عبر فصيح
-</div>
+    {% if can_join %}
+        <a href="{% url 'session:join_session' session.id %}" class="btn-primary">
+            دخول الجلسة
+        </a>
+    {% else %}
+        <p style="color:#888;">⏳ لا يمكن دخول الجلسة الآن</p>
+    {% endif %}
 
-<div id="meet"></div>
-
-<script>
-    const domain = "meet.jit.si";
-    const options = {
-        roomName: "{{ session.room_name }}",
-        parentNode: document.querySelector('#meet'),
-        width: "100%",
-        height: "100%",
-    };
-
-    const api = new JitsiMeetExternalAPI(domain, options);
-</script>
-
-</body>
-</html>
+</section>
+{% endblock %}

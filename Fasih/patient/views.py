@@ -6,7 +6,7 @@ from accounts.models import User
 from accounts.forms import UserProfileForm, PatientProfileForm
 from django.contrib import messages
 from task.models import PatientTask
-
+from session.models import Session
 
 
 
@@ -28,6 +28,22 @@ def patient_dashboard(request):
         status='pending'
     ).count()
 
+    # جلسات بانتظار موافقة المريض
+    pending_sessions = patient.sessions.filter(
+        status=Session.Status.PROPOSED
+    ).order_by("start_time")
+
+    # جلسات مؤكدة
+    confirmed_sessions = patient.sessions.filter(
+        status=Session.Status.CONFIRMED
+    ).order_by("start_time")
+
+    # هل لدى المريض أي جلسات)
+    has_sessions = pending_sessions.exists() or confirmed_sessions.exists()
+
+    # أقرب جلسة مؤكدة 
+    next_session = confirmed_sessions.first() if confirmed_sessions.exists() else None
+
     context = {
         'patient': patient,
         'user': user,
@@ -36,11 +52,19 @@ def patient_dashboard(request):
         'today_tasks_count': today_tasks_count,
         'has_tasks': today_tasks_count > 0,
 
+        # جلسات
+        'pending_sessions': pending_sessions,
+        'confirmed_sessions': confirmed_sessions,
+        'has_sessions': has_sessions,
+        'next_session': next_session,
+
         # نتركها للمستقبل
         'has_specialist': False,
     }
 
     return render(request, 'patient/dashboard.html', context)
+
+
 
 
 @login_required
@@ -88,3 +112,41 @@ def patient_profile(request):
     }
 
     return render(request, 'patient/profile.html', context)
+
+
+@login_required
+def patient_sessions(request):
+    user = request.user
+
+    if user.role != User.Role.PATIENT:
+        return redirect('main:home')
+
+    patient = user.patient_profile
+
+    pending_sessions = patient.sessions.filter(
+        status=Session.Status.PROPOSED
+    ).order_by("start_time")
+
+    confirmed_sessions = patient.sessions.filter(
+        status=Session.Status.CONFIRMED
+    ).order_by("start_time")
+
+    # هل اختار أخصائي (طلب استشارة)
+    has_specialist = patient.sessions.exists()
+
+    # هل أنهى الجلسة الاستشارية المجانية
+    has_completed_initial_session = patient.sessions.filter(
+        session_type=Session.SessionType.INITIAL,
+        status=Session.Status.COMPLETED
+    ).exists()
+
+    return render(
+        request,
+        "patient/sessions.html",
+        {
+            "pending_sessions": pending_sessions,
+            "confirmed_sessions": confirmed_sessions,
+            "has_specialist": has_specialist,
+            "has_completed_initial_session": has_completed_initial_session,
+        }
+    )

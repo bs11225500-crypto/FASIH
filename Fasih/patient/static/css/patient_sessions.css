@@ -1,0 +1,165 @@
+/* =========================
+   صفحة جلساتي – فصيح
+   ========================= */
+
+.sessions-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Header */
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.page-header p {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* Empty State */
+.empty-state {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 40px 24px;
+  text-align: center;
+  border: 1px dashed #d1d5db;
+}
+
+.empty-state h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.empty-state .muted {
+  color: #6b7280;
+  line-height: 1.7;
+}
+
+/* Sections */
+.sessions-section {
+  margin-bottom: 32px;
+}
+
+.sessions-section h3 {
+  font-size: 18px;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+/* Session Card */
+.session-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1px solid #e5e7eb;
+  transition: box-shadow 0.2s ease;
+}
+
+.session-card:hover {
+  box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+}
+
+.session-card h4 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.session-card p {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+/* حالات الجلسات */
+.session-card.pending {
+  border-right: 4px solid #facc15; /* أصفر */
+}
+
+.session-card.confirmed {
+  border-right: 4px solid #22c55e; /* أخضر */
+}
+
+/* Buttons */
+.btn-primary {
+  display: inline-block;
+  padding: 8px 18px;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  background: #1e40af;
+}
+
+.btn-success {
+  background: #22c55e;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-success:hover {
+  background: #16a34a;
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  background: #dc2626;
+}
+
+/* Forms داخل الكارد */
+.session-card form {
+  margin-top: 8px;
+}
+
+.session-card textarea {
+  width: 100%;
+  min-height: 60px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  padding: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  margin-bottom: 8px;
+  resize: vertical;
+}
+
+/* Muted text */
+.muted {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sessions-container {
+    padding: 0 8px;
+  }
+
+  .session-card {
+    padding: 16px;
+  }
+}

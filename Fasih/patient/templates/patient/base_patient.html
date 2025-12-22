@@ -39,6 +39,12 @@
            class="{% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
           الملف الشخصي
         </a>
+        <a href="{% url 'patient:sessions' %}"
+          class="{% if request.resolver_match.url_name == 'sessions' %}active{% endif %}">
+          جلساتي
+        </a>
+
+
         <a href="{% url 'task:daily_tasks' %}"
           class="{% if request.resolver_match.url_name == 'daily_tasks' %}active{% endif %}">
           مهامي

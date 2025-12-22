@@ -1,11 +1,9 @@
+{% extends "main/base.html" %}
+
+{% block title %}الجلسة لم تبدأ{% endblock %}
+
+{% block content %}
 <h2>{{ session.title }}</h2>
-
 <p>⏳ الجلسة لم تبدأ بعد</p>
-
-<p>
-    متبقي تقريبًا
-    <strong>{{ minutes }}</strong>
-    دقيقة على بدء الجلسة
-</p>
-
 <p>يرجى الانتظار حتى موعد الجلسة</p>
+{% endblock %}

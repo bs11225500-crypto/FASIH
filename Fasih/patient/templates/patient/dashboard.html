@@ -1,12 +1,10 @@
 {% extends "patient/base_patient.html" %}
 {% load static %}
 
-
 {% block title %}لوحة التحكم{% endblock %}
 
 {% block patient_css %}
 <link rel="stylesheet" href="{% static 'css/patient_dashboard.css' %}">
-
 {% endblock %}
 
 {% block patient_content %}
@@ -14,76 +12,100 @@
 <div class="dashboard-container">
 
   <div class="dashboard-header">
-    
     <h2>مرحبًا {{ user.get_full_name }}</h2>
     <p>هذه لوحة التحكم الخاصة بالمريض</p>
-    
   </div>
 
   <div class="dashboard-grid">
 
+    <!-- كارد الملف التعريفي -->
     <div class="dashboard-card">
-
-    <div class="card-header">
+      <div class="card-header">
         <h3>الملف التعريفي</h3>
-    </div>
+      </div>
 
-    <div class="card-body">
+      <div class="card-body">
         <ul>
-        <li><strong>رقم الملف:</strong> {{ patient.file_number }}</li>
-        <li><strong>العمر:</strong> {{ patient.age }} سنوات</li>
-        <li><strong>الجنس:</strong> {{ patient.get_gender_display }}</li>
+          <li><strong>رقم الملف:</strong> {{ patient.file_number }}</li>
+          <li><strong>العمر:</strong> {{ patient.age }} سنوات</li>
+          <li><strong>الجنس:</strong> {{ patient.get_gender_display }}</li>
         </ul>
 
         <a href="{% url 'patient:profile' %}" class="card-link">
-        عرض الملف
+          عرض الملف
         </a>
+      </div>
     </div>
 
-    </div>
-
-
+    <!-- كارد حالة الاستشارة -->
     <div class="dashboard-card">
-
-    <div class="card-header">
+      <div class="card-header">
         <h3>حالة الاستشارة</h3>
-    </div>
+      </div>
 
-    <div class="card-body">
+      <div class="card-body">
         <p class="muted">لم يتم اختيار أخصائي بعد</p>
         <span class="hint">سيتم تفعيل هذه الميزة لاحقًا</span>
+      </div>
     </div>
 
-    </div>
+    <!-- كارد مهامي اليوم -->
     <div class="dashboard-card">
+      <div class="card-header">
+        <h3>مهامي اليوم</h3>
+      </div>
 
-    <div class="card-header">
-      <h3>مهامي اليوم</h3>
+      <div class="card-body">
+        {% if today_tasks_count > 0 %}
+          <p>
+            لديك <strong>{{ today_tasks_count }}</strong> مهام لليوم
+          </p>
+
+          <a href="{% url 'tasks:daily_tasks' %}" class="card-link">
+            عرض المهام
+          </a>
+        {% else %}
+          <p class="muted">لا توجد مهام اليوم</p>
+          <span class="hint">سيقوم الأخصائي بإضافة المهام عند بدء الخطة</span>
+        {% endif %}
+      </div>
     </div>
 
-    <div class="card-body">
-
-      {% if today_tasks_count > 0 %}
-        <p>
-          لديك <strong>{{ today_tasks_count }}</strong> مهام لليوم
-        </p>
-
-        <a href="{% url 'tasks:daily_tasks' %}" class="card-link">
-          عرض المهام
-        </a>
-      {% else %}
-        <p class="muted">لا توجد مهام اليوم </p>
-        <span class="hint">سيقوم الأخصائي بإضافة المهام عند بدء الخطة</span>
+    <!-- كارد جلساتي -->
+    <div class="dashboard-card
+      {% if next_session and not next_session.can_join %}
+        session-upcoming
       {% endif %}
+    ">
+      <div class="card-header">
+        <h3>جلساتي</h3>
+      </div>
 
+      <div class="card-body">
+        {% if not has_sessions %}
+          <p class="muted">لا توجد جلسات مجدولة حاليًا</p>
+          <span class="hint">سيقوم الأخصائي بجدولة الجلسات لاحقًا</span>
+
+        {% elif next_session and not next_session.can_join %}
+          <p>لديك جلسة قادمة</p>
+          <p class="muted">🕒 {{ next_session.start_time }}</p>
+
+          <a href="{% url 'patient:sessions' %}" class="card-link">
+            عرض الجلسات
+          </a>
+
+        {% elif next_session and next_session.can_join %}
+          <p>جلسة جارية الآن</p>
+
+          <a href="{% url 'session:join_session' next_session.id %}"
+             class="card-link">
+            دخول الجلسة
+          </a>
+        {% endif %}
+      </div>
     </div>
 
   </div>
-
-
-
-  </div>
-
 </div>
 
 {% endblock %}
