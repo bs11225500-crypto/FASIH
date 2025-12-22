@@ -1,66 +1,40 @@
+{% extends "specialist/base_specialist.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-    <meta charset="UTF-8">
-    <title>الخطة العلاجية</title>
-        <link rel="stylesheet" href="{% static 'css/plan_detail.css' %}">
 
-</head>
-<body>
+{% block specialist_css %}
+<link rel="stylesheet" href="{% static 'css/plan_detail.css' %}">
+{% endblock %}
 
-<section class="home-hero">
+{% block specialist_content %}
 
-   
-<div class="plan-page">
-    <div class="plan-card">
+<div class="goal-wrapper">
+    <div class="goal-card">
 
-        <h1>الخطة العلاجية</h1>
+        <h1 class="page-title">إضافة هدف قصير</h1>
 
-        <div class="info-row">
-            <div class="info-box">
-                <span>رقم ملف المريض</span>
-                <strong>{{ plan.patient.file_number }}</strong>
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>وصف الهدف</label>
+                <textarea name="description" rows="4" required></textarea>
             </div>
 
-            <div class="info-box">
-                <span>مدة الخطة</span>
-                <strong>{{ plan.duration_weeks }} أسابيع</strong>
+            <div class="form-group">
+                <label>نسبة الإتقان المطلوبة (%)</label>
+                <input type="number" name="target_accuracy" required>
             </div>
-        </div>
+<div class="action-buttons">
+    <button type="submit" class="primary-btn">
+        حفظ الهدف
+    </button>
 
-        <div class="divider"></div>
-
-        <div>
-            <div class="section-title">التشخيص</div>
-            <div class="section-content">{{ plan.diagnosis }}</div>
-        </div>
-
-        <div class="divider"></div>
-
-        <div>
-            <div class="section-title">وصف المشكلة</div>
-            <div class="section-content">{{ plan.problem_description }}</div>
-        </div>
-
-        <div class="divider"></div>
-
-        <div>
-            <div class="section-title">الهدف طويل المدى</div>
-            <div class="section-content">{{ plan.long_term_goal }}</div>
-        </div>
-
-        <a href="{% url 'treatment:add_short_term_goal' plan.id %}" class="action-btn">
-            إضافة هدف قصير
-        </a>
-
-    </div>
+    <a href="{% url 'treatment:treatment_plan_detail' plan.id %}"
+       class="primary-btn secondary-btn">
+        الرجوع إلى الخطة
+    </a>
 </div>
 
+</div>
 
-    </div>
-
-</section>
-
-</body>
-</html>
+{% endblock %}

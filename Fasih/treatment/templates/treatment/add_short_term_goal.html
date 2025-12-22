@@ -1,44 +1,41 @@
+{% extends "specialist/base_specialist.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-    <meta charset="UTF-8">
-    <title>إضافة هدف قصير</title>
-        <link rel="stylesheet" href="{% static 'css/short_goal.css' %}">
 
-</head>
-<body>
-<div class="goal-page">
-    <div class="goal-card">
+{% block specialist_css %}
+<link rel="stylesheet" href="{% static 'css/short_goal.css' %}">
+{% endblock %}
 
-        <h1>إضافة هدف قصير</h1>
+{% block specialist_content %}
+
+<div class="treatment-card-wrapper">
+    <div class="treatment-card">
+
+        <h1 class="page-title">إضافة هدف قصير</h1>
 
         <form method="post">
             {% csrf_token %}
 
             <div class="form-group">
                 <label>وصف الهدف</label>
-                <textarea name="description"></textarea>
+                <textarea name="description" required></textarea>
             </div>
 
             <div class="form-group">
                 <label>نسبة الإتقان المطلوبة (%)</label>
-                <input type="number" name="target_accuracy">
+                <input type="number" name="target_accuracy" required>
             </div>
 
-            <button type="submit" class="submit-btn">
+            <button type="submit" class="primary-btn">
                 حفظ الهدف
             </button>
         </form>
 
-        <a href="{% url 'treatment:treatment_plan_detail' plan.id %}" class="back-link">
+        <a href="{% url 'treatment:treatment_plan_detail' plan.id %}"
+           class="back-link">
             ← الرجوع إلى الخطة
         </a>
 
     </div>
 </div>
 
-</div>
-
-</body>
-</html>
+{% endblock %}
