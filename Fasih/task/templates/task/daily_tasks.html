@@ -1,0 +1,25 @@
+{% extends "patient/base_patient.html" %}
+{% load static %}
+
+{% block title %}مهامي اليوم{% endblock %}
+
+{% block patient_css %}
+<link rel="stylesheet" href="{% static 'css/tasks/daily_tasks.css' %}">
+{% endblock %}
+
+{% block patient_content %}
+<div class="tasks-page">
+
+  <h1 class="tasks-title">مهامي اليوم</h1>
+
+  {% if tasks %}
+  {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">🌱</div>
+      <p class="empty-title">لا توجد مهام اليوم</p>
+      <p class="empty-sub">سيقوم الأخصائي بإضافة المهام قريبًا</p>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

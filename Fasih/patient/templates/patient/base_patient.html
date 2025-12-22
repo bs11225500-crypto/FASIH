@@ -39,10 +39,16 @@
            class="{% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
           الملف الشخصي
         </a>
+        <a href="{% url 'task:daily_tasks' %}"
+          class="{% if request.resolver_match.url_name == 'daily_tasks' %}active{% endif %}">
+          مهامي
+        </a>
+
 
         <a href="{% url 'accounts:logout' %}">
           تسجيل الخروج
         </a>
+
       </nav>
     </aside>
 
