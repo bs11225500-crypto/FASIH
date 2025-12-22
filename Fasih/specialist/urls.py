@@ -9,5 +9,10 @@ urlpatterns = [
     path("specialist_patients_dashboard/", views.specialist_patients_dashboard, name="specialist_patients_dashboard"),
     path("specialist_consultations_dashboard/",views.specialist_consultations_dashboard,name="specialist_consultations_dashboard"),
     path("choose-specialist/", views.choose_specialist, name="choose_specialist"),
+    path("specialist_profile/", views.specialist_profile, name="specialist_profile"),
+    path("certificates/add/",views.add_certificate,name="add_certificate"),
+   
+
+    
 ]
 

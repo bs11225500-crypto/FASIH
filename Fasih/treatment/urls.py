@@ -9,7 +9,7 @@ from .views import add_short_term_goal
 app_name = 'treatment'
 
 urlpatterns = [
-    
+        path("patients/",views.treatment_patients,name="treatment_patients"),
         path( "create/<str:file_number>/",create_treatment_plan,name="create_treatment_plan"),
         path("plan/<int:plan_id>/",treatment_plan_detail, name="treatment_plan_detail" ),
         path("plan/<int:plan_id>/goals/add/", add_short_term_goal, name="add_short_term_goal"),
