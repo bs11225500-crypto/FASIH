@@ -1,0 +1,82 @@
+/* =========================
+   CREATE TREATMENT PLAN
+========================= */
+
+.treatment-fullscreen {
+    min-height: 100vh;
+    padding: 120px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e8f7f6, #f4fbff);
+}
+
+.treatment-card {
+    max-width: 850px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 40px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+}
+
+.treatment-card h2 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #0fa4af;
+    font-weight: 700;
+}
+
+.patient-info {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #4a6f73;
+    font-size: 15px;
+}
+
+.section {
+    margin-bottom: 28px;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #3A7BD5;
+}
+
+input,
+textarea {
+    width: 100%;
+    background: #f7fbfc;
+    border: 1px solid #cfe6e8;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 15px;
+    outline: none;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #0fa4af;
+    box-shadow: 0 0 0 3px rgba(15, 164, 175, 0.15);
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(15, 164, 175, 0.35);
+}

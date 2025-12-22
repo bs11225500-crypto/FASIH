@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>الخطة العلاجية</title>
+        <link rel="stylesheet" href="{% static 'css/plan_detail.css' %}">
+
+</head>
+<body>
+
+<section class="home-hero">
+
+   
+<div class="plan-page">
+    <div class="plan-card">
+
+        <h1>الخطة العلاجية</h1>
+
+        <div class="info-row">
+            <div class="info-box">
+                <span>رقم ملف المريض</span>
+                <strong>{{ plan.patient.file_number }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>مدة الخطة</span>
+                <strong>{{ plan.duration_weeks }} أسابيع</strong>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div>
+            <div class="section-title">التشخيص</div>
+            <div class="section-content">{{ plan.diagnosis }}</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div>
+            <div class="section-title">وصف المشكلة</div>
+            <div class="section-content">{{ plan.problem_description }}</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div>
+            <div class="section-title">الهدف طويل المدى</div>
+            <div class="section-content">{{ plan.long_term_goal }}</div>
+        </div>
+
+        <a href="{% url 'treatment:add_short_term_goal' plan.id %}" class="action-btn">
+            إضافة هدف قصير
+        </a>
+
+    </div>
+</div>
+
+
+    </div>
+
+</section>
+
+</body>
+</html>
