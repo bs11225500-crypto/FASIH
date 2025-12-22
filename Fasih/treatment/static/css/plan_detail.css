@@ -1,0 +1,128 @@
+/* =========================
+   RESET & BASE
+========================= */
+body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    background: #f4f6f8; /* رمادي فاتح جدًا */
+    direction: rtl;
+}
+
+/* =========================
+   PAGE WRAPPER
+========================= */
+.plan-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;     /* بالنص عمودي */
+    justify-content: center; /* بالنص أفقي */
+    padding: 40px 20px;
+}
+
+/* =========================
+   MAIN CARD
+========================= */
+.plan-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 850px;
+    border-radius: 20px;
+    padding: 40px 45px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* =========================
+   TITLES
+========================= */
+.plan-card h1 {
+    font-size: 30px;
+    font-weight: 800;
+    color: #2e2e3a;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0fa4af;
+    margin-bottom: 8px;
+}
+
+.section-content {
+    font-size: 15px;
+    color: #444;
+    line-height: 1.9;
+}
+
+/* Divider */
+.divider {
+    height: 1px;
+    background: #e6e6e6;
+    margin: 22px 0;
+}
+
+/* =========================
+   INFO ROW
+========================= */
+.info-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.info-box {
+    flex: 1;
+    min-width: 220px;
+    background: #f7fbfc;
+    border-radius: 14px;
+    padding: 16px;
+    border: 1px solid #d9eff2;
+}
+
+.info-box span {
+    font-size: 13px;
+    color: #6b6b85;
+}
+
+.info-box strong {
+    display: block;
+    font-size: 15px;
+    margin-top: 6px;
+    color: #2e2e3a;
+}
+
+/* =========================
+   BUTTON
+========================= */
+.action-btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 12px 32px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #3a7bd5, #7ed6a7);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.25s ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(58, 123, 213, 0.35);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+    .plan-card {
+        padding: 28px;
+    }
+
+    .plan-card h1 {
+        font-size: 24px;
+    }
+}

@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>إنشاء خطة علاجية</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/create.css' %}">
+
+</head>
+<body>
+
+<div class="treatment-fullscreen">
+    <div class="treatment-card">
+
+        <h2>إنشاء خطة علاجية</h2>
+
+        <div class="patient-info">
+            <p><strong>المريض:</strong> {{ patient.user.get_full_name }}</p>
+            <p><strong>رقم الملف:</strong> {{ patient.file_number }}</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="section">
+                <div class="section-title">التشخيص</div>
+                <input type="text" name="diagnosis" required>
+            </div>
+
+            <div class="section">
+                <div class="section-title">وصف المشكلة</div>
+                <textarea name="problem_description" rows="4" required></textarea>
+            </div>
+
+            <div class="section">
+                <div class="section-title">الهدف العام</div>
+                <textarea name="long_term_goal" rows="3" required></textarea>
+            </div>
+
+            <div class="section">
+                <div class="section-title">الخطة الزمنية</div>
+                <input type="date" name="start_date" required>
+            </div>
+
+            <div class="section">
+                <div class="section-title">مدة الخطة (بالأسابيع)</div>
+                <input type="number" name="duration_weeks" required>
+            </div>
+
+            <button type="submit"> إنشاء الخطة</button>
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>
