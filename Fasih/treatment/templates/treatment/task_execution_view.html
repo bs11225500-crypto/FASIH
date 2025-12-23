@@ -1,0 +1,30 @@
+{% extends "specialist/base_specialist.html" %}
+{% load static %}
+
+{% block specialist_content %}
+
+<div class="goal-wrapper">
+    <div class="goal-card">
+
+        <h2 class="page-title">تسجيل تنفيذ المهمة</h2>
+
+        <p><strong>اسم المهمة:</strong> {{ task.task_name }}</p>
+        <p><strong>الحرف:</strong> {{ task.target_letter }}</p>
+
+        {% if task.execution_video_url %}
+            <video controls width="100%" style="margin-top:20px;">
+                <source src="{{ task.execution_video_url }}" type="video/webm">
+                المتصفح لا يدعم تشغيل الفيديو
+            </video>
+        {% else %}
+            <p>لا يوجد تسجيل لهذه المهمة</p>
+        {% endif %}
+
+        <a href="javascript:history.back()" class="secondary-btn" style="margin-top:20px;">
+            رجوع
+        </a>
+
+    </div>
+</div>
+
+{% endblock %}

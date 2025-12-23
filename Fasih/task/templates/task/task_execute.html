@@ -1,0 +1,78 @@
+{% extends "patient/base_patient.html" %}
+{% load static %}
+
+{% block title %}تنفيذ التمرين{% endblock %}
+
+{% block patient_css %}
+<link rel="stylesheet" href="{% static 'css/task_execute.css' %}">
+{% endblock %}
+
+{% block patient_content %}
+
+<div class="execute-wrapper">
+
+    <div class="execute-card">
+
+        <h2 class="execute-title">
+            تنفيذ التمرين
+        </h2>
+
+        <p class="execute-subtitle">
+            سيتم تسجيل صوتك وصورتك للتأكد من نطق التمرين بشكل صحيح
+        </p>
+
+        <!-- معاينة الكاميرا -->
+        <div class="camera-box">
+            <video id="camera" autoplay muted></video>
+        </div>
+
+        <!-- أزرار التحكم -->
+        <div class="controls">
+
+            <button id="startBtn" class="btn start" onclick="startRecording()">
+                ▶️ ابدأ التسجيل
+            </button>
+
+            <button id="stopBtn" class="btn stop" onclick="stopRecording()" style="display:none;">
+                ⏹️ إيقاف
+            </button>
+
+            <button id="retryBtn" class="btn retry" onclick="retryRecording()" style="display:none;">
+                🔄 إعادة المحاولة
+            </button>
+             <!-- زر الإنهاء -->
+            <button class="btn finish" onclick="finishTask()" id="finishBtn" style="display:none;">
+                ✅ إنهاء التمرين
+            </button>
+
+        </div>
+
+
+        <p id="status" class="status-text"></p>
+
+
+        <p class="hint">
+            حاول نطق التمرين بوضوح كما في الفيديو السابق
+        </p>
+
+    </div>
+   
+
+</div>
+
+
+
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const FINISH_TASK_URL = "{% url 'task:finish_task' task.id %}";
+  const TASKS_URL = "{% url 'task:daily_tasks' %}";
+  const CSRF_TOKEN = "{{ csrf_token }}";
+</script>
+
+
+
+<script src="{% static 'js/task_execute.js' %}"></script>
+{% endblock extra_js %}

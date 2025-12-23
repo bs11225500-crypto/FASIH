@@ -40,6 +40,11 @@
 
                                 <span class="task-name">
                                     {{ task.task_name }}
+                                    <div style="font-size:12px;color:red;">
+                                        status={{ task.status }} |
+                                        video={{ task.execution_video_url }}
+                                    </div>
+
                                 </span>
 
                                 <span class="task-status">
@@ -52,10 +57,21 @@
                                 </span>
 
                                 <span class="task-actions">
+
                                     <a href="{% url 'treatment:edit_daily_task' task.id %}" title="تعديل">
                                         <span class="material-icons">edit</span>
                                     </a>
+
+                                    {% if task.status == "COMPLETED" and task.execution_video_url %}
+                                        <a href="{% url 'treatment:view_task_execution' task.id %}"
+                                        title="عرض تسجيل المريض"
+                                        style="margin-right:8px;">
+                                            <span class="material-icons">play_circle</span>
+                                        </a>
+                                    {% endif %}
+
                                 </span>
+
 
                             </li>
                         {% endfor %}

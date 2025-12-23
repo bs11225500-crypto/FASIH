@@ -4,6 +4,7 @@ from patient.models import Patient
 from specialist.models import Specialist
 from django.contrib.auth.decorators import login_required
 from datetime import date, timedelta, datetime
+from django.http import HttpResponseForbidden
 
 
 
@@ -17,15 +18,29 @@ def treatment_patients(request):
         assessments__status='ACCEPTED'
     ).distinct()
 
-    context = {
-        "patients": patients
-    }
+    patient_plans = []
+
+    for patient in patients:
+        plan = TreatmentPlan.objects.filter(
+            patient=patient,
+            specialist=specialist
+        ).order_by("-created_at").first()
+
+        if plan:  
+            patient_plans.append({
+                "patient": patient,
+                "plan": plan
+            })
 
     return render(
         request,
         "treatment/treatment_patients.html",
-        context
+        {
+            "patient_plans": patient_plans
+        }
     )
+
+
 @login_required
 def create_treatment_plan(request, file_number):
     patient = get_object_or_404(Patient, file_number=file_number)
@@ -108,7 +123,7 @@ def edit_daily_task(request, task_id):
 
     if request.method == "POST":
         task.task_name = request.POST.get("task_name")
-        task.status = request.POST.get("status")
+      
         task.save()
 
         return redirect(
@@ -129,7 +144,8 @@ def add_daily_task(request, day_id):
     if request.method == "POST":
         DailyTask.objects.create(
             daily_plan=day,
-            task_name=request.POST.get("task_name")
+            task_name=request.POST.get("task_name"),
+            target_letter=request.POST.get("target_letter")
         )
         return redirect(
             "treatment:treatment_plan_detail",
@@ -139,4 +155,20 @@ def add_daily_task(request, day_id):
     return render(request, "treatment/add_daily_task.html", {
         "day": day
     })
+
+
+
+@login_required
+def view_task_execution(request, task_id):
+    task = get_object_or_404(DailyTask, id=task_id)
+    specialist = get_object_or_404(Specialist, user=request.user)
+
+    if task.daily_plan.treatment_plan.specialist != specialist:
+        return HttpResponseForbidden("غير مصرح لك")
+
+    return render(
+        request,
+        "treatment/task_execution_view.html",
+        {"task": task}
+    )
 

@@ -1,0 +1,55 @@
+{% extends "patient/base_patient.html" %}
+{% load static %}
+
+{% block title %}عرض التمرين{% endblock %}
+
+{% block patient_css %}
+<link rel="stylesheet" href="{% static 'css/task_preview.css' %}">
+{% endblock %}
+
+{% block patient_content %}
+
+<div class="task-preview-wrapper">
+
+    <div class="task-preview-card">
+
+        <h2 class="task-title">
+            تمرين نطق الحرف
+        </h2>
+
+        <p class="task-letter">
+            {{ task.task_name }}
+        </p>
+
+        <div class="video-box">
+            <video controls playsinline>
+                <source src="{{ video_url }}" type="video/mp4">
+                المتصفح لا يدعم تشغيل الفيديو
+            </video>
+        </div>
+
+        <p class="task-hint">
+            شاهد المقطع جيدًا، ثم اضغط التالي لبدء تنفيذ التمرين
+        </p>
+
+        {% if task.status == "COMPLETED" %}
+
+            <div class="completed-box">
+                 تم تنفيذ هذه المهمة مسبقًا
+            </div>
+
+        {% else %}
+
+            <a href="{% url 'task:task_execute' task.id %}" class="primary-btn large">
+                التالي
+            </a>
+
+        {% endif %}
+
+
+
+    </div>
+
+</div>
+
+{% endblock %}

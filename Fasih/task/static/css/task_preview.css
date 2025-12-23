@@ -1,0 +1,67 @@
+.task-preview-wrapper {
+  min-height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.task-preview-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 520px;
+  border-radius: 20px;
+  padding: 30px 26px 34px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+.task-title {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.task-letter {
+  font-size: 18px;
+  font-weight: 600;
+  color: #3A7BD5;
+  margin-bottom: 20px;
+}
+
+.video-box {
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  margin-bottom: 18px;
+}
+
+.video-box video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.task-hint {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 22px;
+}
+
+
+.primary-btn.large {
+  display: inline-block;
+  padding: 14px 40px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
+  color: #fff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.primary-btn.large:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(58,123,213,0.35);
+}
