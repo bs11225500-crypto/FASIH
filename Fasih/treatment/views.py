@@ -3,7 +3,8 @@ from .models import TreatmentPlan, ShortTermGoal, ProgressReport, DailyPlan, Dai
 from patient.models import Patient
 from specialist.models import Specialist
 from django.contrib.auth.decorators import login_required
-from datetime import date
+from datetime import date, timedelta, datetime
+
 
 
 
@@ -25,30 +26,43 @@ def treatment_patients(request):
         "treatment/treatment_patients.html",
         context
     )
-
+@login_required
 def create_treatment_plan(request, file_number):
     patient = get_object_or_404(Patient, file_number=file_number)
     specialist = get_object_or_404(Specialist, user=request.user)
 
     if request.method == "POST":
+        start_date = datetime.strptime(
+            request.POST.get("start_date"),
+            "%Y-%m-%d"
+        ).date()
+
         plan = TreatmentPlan.objects.create(
             patient=patient,
             specialist=specialist,
             diagnosis=request.POST.get("diagnosis"),
             problem_description=request.POST.get("problem_description"),
-            long_term_goal=request.POST.get("long_term_goal"),
-            start_date=request.POST.get("start_date"),
-            duration_weeks=request.POST.get("duration_weeks"),
+            start_date=start_date,                     
+            duration_weeks=int(request.POST.get("duration_weeks")),
             sessions_per_week=request.POST.get("sessions_per_week") or None,
             session_duration_minutes=request.POST.get("session_duration_minutes") or None,
             status="ACTIVE"
         )
 
+        total_days = plan.duration_weeks * 7
+
+        for i in range(total_days):
+            current_date = start_date + timedelta(days=i)
+            DailyPlan.objects.create(
+                treatment_plan=plan,
+                date=current_date,
+                day_name=current_date.strftime("%A")
+            )
+
         return redirect(
-            "treatment:add_short_term_goal",
+            "treatment:treatment_plan_detail",
             plan_id=plan.id
         )
-
 
     return render(
         request,
@@ -88,33 +102,25 @@ def add_short_term_goal(request, plan_id):
     })
 
 
-
-
 @login_required
-def add_daily_plan(request, plan_id):
-    plan = get_object_or_404(TreatmentPlan, id=plan_id)
-    if DailyPlan.objects.filter(
-        treatment_plan=plan,
-        date=request.POST.get("date")
-        ).exists():
-            return render(request, "treatment/add_daily_plan.html", {
-                "plan": plan,
-                "error": "هذا اليوم مضاف مسبقًا"
-            })
-
+def edit_daily_task(request, task_id):
+    task = get_object_or_404(DailyTask, id=task_id)
 
     if request.method == "POST":
-        DailyPlan.objects.create(
-            treatment_plan=plan,
-            date=request.POST.get("date"),
-            day_name=request.POST.get("day_name"),
-            goal_of_day=request.POST.get("goal_of_day")
-        )
-        return redirect("treatment:treatment_plan_detail", plan_id=plan.id)
+        task.task_name = request.POST.get("task_name")
+        task.status = request.POST.get("status")
+        task.save()
 
-    return render(request, "treatment/add_daily_plan.html", {
-        "plan": plan
+        return redirect(
+            "treatment:treatment_plan_detail",
+            plan_id=task.daily_plan.treatment_plan.id
+        )
+
+    return render(request, "treatment/edit_daily_task.html", {
+        "task": task
     })
+
+
 
 @login_required
 def add_daily_task(request, day_id):
@@ -134,16 +140,3 @@ def add_daily_task(request, day_id):
         "day": day
     })
 
-@login_required
-def today_tasks(request):
-    patient = request.user.patient
-    today = date.today()
-
-    daily_plan = DailyPlan.objects.filter(
-        treatment_plan__patient=patient,
-        date=today
-    ).first()
-
-    return render(request, "patient/today_tasks.html", {
-        "daily_plan": daily_plan
-    })

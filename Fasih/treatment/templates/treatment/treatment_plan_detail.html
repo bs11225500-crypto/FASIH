@@ -16,30 +16,11 @@
         <div class="plan-info">
             <p><strong>التشخيص:</strong> {{ plan.diagnosis }}</p>
             <p><strong>وصف المشكلة:</strong> {{ plan.problem_description }}</p>
-            <p><strong>الهدف العام:</strong> {{ plan.long_term_goal }}</p>
+        
         </div>
 
-        <!-- زر إضافة هدف -->
-        <a href="{% url 'treatment:add_short_term_goal' plan.id %}"
-           class="primary-btn">
-            إضافة هدف قصير
-        </a>
-
-        <!-- عرض الأهداف القصيرة -->
-        {% if plan.short_term_goals.all %}
-        <ul class="goals-list">
-            {% for goal in plan.short_term_goals.all %}
-                <li>
-                    {{ goal.description }} — {{ goal.target_accuracy }}%
-                </li>
-            {% endfor %}
-        </ul>
-        {% endif %}
+        
         <h2>الأيام داخل الخطة</h2>
-
-        <a href="{% url 'treatment:add_daily_plan' plan.id %}" class="primary-btn">
-            إضافة يوم
-        </a>
 
         {% if plan.daily_plans.all %}
             {% for day in plan.daily_plans.all %}
@@ -49,35 +30,77 @@
                         (الأسبوع {{ day.week_number }})
                     </h3>
 
-                    <p><strong>هدف اليوم:</strong> {{ day.goal_of_day }}</p>
-
                     <a href="{% url 'treatment:add_daily_task' day.id %}">
                         إضافة مهمة
                     </a>
 
                     {% if day.tasks.all %}
-                        <ul>
-                            {% for task in day.tasks.all %}
-                                <li>
+                       <ul class="task-list">
+                        {% for task in day.tasks.all %}
+                            <li class="task-item">
+
+                                <span class="task-name">
                                     {{ task.task_name }}
+                                </span>
+
+                                <span class="task-status">
                                     {% if task.status == "COMPLETED" %}
-                                        ✅
+                                        <span class="material-icons status-done">check_circle</span>
                                     {% elif task.status == "NOT_COMPLETED" %}
-                                        ❌
-                                    {% else %}
-                                        ⏳
+                                        <span class="material-icons status-failed">cancel</span>
                                     {% endif %}
-                                </li>
-                            {% endfor %}
-                        </ul>
+
+                                </span>
+
+                                <!-- ✏️ أيقونة التعديل -->
+                                <span class="task-actions">
+                                    <a href="{% url 'treatment:edit_daily_task' task.id %}" title="تعديل">
+                                        <span class="material-icons">edit</span>
+                                    </a>
+                                </span>
+
+                            </li>
+                        {% endfor %}
+                    </ul>
+
                     {% else %}
                         <p>لا توجد مهام بعد</p>
                     {% endif %}
                 </div>
             {% endfor %}
         {% else %}
-            <p>لم يتم إضافة أيام بعد</p>
+            <p>لم يتم إنشاء الأيام بعد</p>
         {% endif %}
+
+        <hr class="section-divider">
+
+        {% if plan.short_term_goals.exists %}
+
+            <!-- عرض الهدف العلاجي -->
+            <ul class="goals-list">
+                {% for goal in plan.short_term_goals.all %}
+                    <li>
+                        {{ goal.description }} — {{ goal.target_accuracy }}%
+                    </li>
+                {% endfor %}
+            </ul>
+
+        {% else %}
+
+            <!-- زر إضافة الهدف -->
+            <div class="final-goal-section">
+                <p class="final-goal-hint">
+                    بعد انتهاء الجلسات اليومية، أضف الهدف العلاجي النهائي للمريض
+                </p>
+
+                <a href="{% url 'treatment:add_short_term_goal' plan.id %}"
+                class="primary-btn final-goal-btn">
+                    إضافة الهدف العلاجي
+                </a>
+            </div>
+
+        {% endif %}
+
 
 
     </div>
