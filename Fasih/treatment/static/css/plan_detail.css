@@ -1,20 +1,25 @@
-/* =========================
-   WRAPPER & MAIN CARD
-========================= */
-
 .goal-wrapper {
+    min-height: 100vh;
     display: flex;
     justify-content: center;
-    padding: 140px 20px 60px;
+    align-items: flex-start;
+    padding: 5px 20px 60px;
 }
+
+
+
 
 .goal-card {
     width: 100%;
-    max-width: 860px; /* أوسع عشان العرض */
+    max-width: 860px; 
     background: #ffffff;
     border-radius: 18px;
     padding: 40px;
     box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    margin: 0 auto;
+    border: 1.5px solid #78a3db; 
+
+
 }
 
 .page-title {
@@ -24,15 +29,13 @@
     text-align: right;
 }
 
-/* =========================
-   PLAN SUMMARY (Diagnosis etc.)
-========================= */
-
 .plan-summary-card {
     background: #f9fafb;
     border-radius: 16px;
     padding: 24px;
     margin-bottom: 30px;
+        border: 1.5px solid #85aae2; 
+
 }
 
 .summary-item {
@@ -51,16 +54,14 @@
     color: #222;
 }
 
-/* =========================
-   DAY CARD
-========================= */
 
 .day-card {
     background: #ffffff;
     border-radius: 16px;
     padding: 20px;
     margin-bottom: 20px;
-    border: 1px solid #eef2f6;
+    border: 1.5px solid #dbeafe;
+
 }
 
 .day-header {
@@ -83,9 +84,6 @@
     font-size: 13px;
 }
 
-/* =========================
-   TASK LIST
-========================= */
 
 .task-list {
     list-style: none;
@@ -127,9 +125,6 @@
     opacity: 0.7;
 }
 
-/* =========================
-   BUTTONS
-========================= */
 
 .primary-btn {
     min-width: 180px;
@@ -154,9 +149,6 @@
     box-shadow: 0 8px 20px rgba(58,123,213,0.35);
 }
 
-/* =========================
-   SECTION DIVIDER
-========================= */
 
 .section-divider {
     margin: 36px 0;

@@ -1,10 +1,12 @@
 .treatment-fullscreen {
     min-height: 100vh;
-    padding: 120px 20px;
+    padding: 110px 20px 60px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, #e8f7f6, #f4fbff);
+
+
 }
 
 .treatment-card {
@@ -14,13 +16,17 @@
     border-radius: 22px;
     padding: 40px;
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+    border: 1.5px solid #abcaf2; 
+    margin: 0 auto;       
+    text-align: center;
+
 }
 
 .treatment-card h2 {
     text-align: center;
     font-size: 28px;
     margin-bottom: 30px;
-    color: #0fa4af;
+    color: #030303;
     font-weight: 700;
 }
 
@@ -33,6 +39,9 @@
 
 .section {
     margin-bottom: 28px;
+    border: 1.5px solid #dbeafe;
+    border-radius: 16px;
+    padding: 18px;
 }
 
 .section-title {
@@ -46,7 +55,7 @@ input,
 textarea {
     width: 100%;
     background: #f7fbfc;
-    border: 1px solid #cfe6e8;
+    border: 1px solid #dbeafe; 
     border-radius: 12px;
     padding: 12px 14px;
     font-size: 15px;

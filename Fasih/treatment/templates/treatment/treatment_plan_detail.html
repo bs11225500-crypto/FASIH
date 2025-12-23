@@ -12,7 +12,6 @@
 
         <h1 class="page-title">تفاصيل الخطة العلاجية</h1>
 
-        <!-- معلومات الخطة -->
         <div class="plan-info">
             <p><strong>التشخيص:</strong> {{ plan.diagnosis }}</p>
             <p><strong>وصف المشكلة:</strong> {{ plan.problem_description }}</p>
@@ -52,7 +51,6 @@
 
                                 </span>
 
-                                <!-- ✏️ أيقونة التعديل -->
                                 <span class="task-actions">
                                     <a href="{% url 'treatment:edit_daily_task' task.id %}" title="تعديل">
                                         <span class="material-icons">edit</span>
@@ -76,7 +74,6 @@
 
         {% if plan.short_term_goals.exists %}
 
-            <!-- عرض الهدف العلاجي -->
             <ul class="goals-list">
                 {% for goal in plan.short_term_goals.all %}
                     <li>
@@ -87,7 +84,6 @@
 
         {% else %}
 
-            <!-- زر إضافة الهدف -->
             <div class="final-goal-section">
                 <p class="final-goal-hint">
                     بعد انتهاء الجلسات اليومية، أضف الهدف العلاجي النهائي للمريض
