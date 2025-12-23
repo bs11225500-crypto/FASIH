@@ -15,9 +15,7 @@ urlpatterns = [
         path("plan/<int:plan_id>/goals/add/", add_short_term_goal, name="add_short_term_goal"),
         path("day/<int:day_id>/task/add/", views.add_daily_task,name="add_daily_task"),
         path("task/edit/<int:task_id>/", views.edit_daily_task,name="edit_daily_task"),
-       
-
-
+        path("task/<int:task_id>/execution/",views.view_task_execution,name="view_task_execution"),
 
 ]
 

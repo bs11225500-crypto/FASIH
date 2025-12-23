@@ -3,8 +3,8 @@
 
 {% block specialist_css %}
 <link rel="stylesheet" href="{% static 'css/treatment_patients.css' %}">
-
 {% endblock %}
+
 {% block specialist_content %}
 
 <div class="treatment-card-wrapper">
@@ -12,24 +12,40 @@
 
         <h1 class="page-title">الخطط العلاجية</h1>
 
-        {% if patients %}
-        <table class="patients-table">
+        {% if patient_plans %}
+        <table class="sessions-table">
             <thead>
                 <tr>
                     <th>اسم المريض</th>
                     <th>رقم الملف</th>
-                    <th></th>
+                    <th>حالة الخطة</th>
+                    <th>التفاصيل</th>
                 </tr>
             </thead>
             <tbody>
-                {% for patient in patients %}
+                {% for item in patient_plans %}
                 <tr>
-                    <td>{{ patient.user.get_full_name }}</td>
-                    <td>{{ patient.file_number }}</td>
-                    <td>
-                        <a class="view-btn"
-                           href="{% url 'treatment:create_treatment_plan' patient.file_number %}">
-                            إنشاء / عرض الخطة
+                    <td data-label="اسم المريض">
+                        {{ item.patient.user.get_full_name }}
+                    </td>
+
+                    <td data-label="رقم الملف">
+                        {{ item.patient.file_number }}
+                    </td>
+
+                    <td data-label="حالة الخطة">
+                        <span class="status 
+                            {% if item.plan.status == 'ACTIVE' %}confirmed
+                            {% elif item.plan.status == 'COMPLETED' %}proposed
+                            {% else %}rejected{% endif %}">
+                            {{ item.plan.get_status_display }}
+                        </span>
+                    </td>
+
+                    <td data-label="التفاصيل">
+                        <a class="details-btn"
+                           href="{% url 'treatment:treatment_plan_detail' item.plan.id %}">
+                            عرض التفاصيل
                         </a>
                     </td>
                 </tr>
@@ -38,8 +54,8 @@
         </table>
         {% else %}
             <div class="empty-state">
-                <h3>لا يوجد مرضى حالياً</h3>
-                <p>سيتم عرض المرضى هنا عند إضافتهم</p>
+                <h3>لا توجد خطط علاجية حالياً</h3>
+                <p>سيتم عرض الخطط هنا عند إنشائها</p>
             </div>
         {% endif %}
 

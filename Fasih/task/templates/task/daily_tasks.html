@@ -1,25 +1,86 @@
 {% extends "patient/base_patient.html" %}
 {% load static %}
 
-{% block title %}مهامي اليوم{% endblock %}
+{% block title %}مهامي{% endblock %}
 
 {% block patient_css %}
-<link rel="stylesheet" href="{% static 'css/tasks/daily_tasks.css' %}">
+<link rel="stylesheet" href="{% static 'css/daily_tasks.css' %}">
 {% endblock %}
 
 {% block patient_content %}
 <div class="tasks-page">
 
-  <h1 class="tasks-title">مهامي اليوم</h1>
+    <h1 class="tasks-title">مهامي</h1>
+    <p class="tasks-subtitle">المهام ضمن خطتك العلاجية</p>
 
-  {% if tasks %}
-  {% else %}
-    <div class="empty-state">
-      <div class="empty-icon">🌱</div>
-      <p class="empty-title">لا توجد مهام اليوم</p>
-      <p class="empty-sub">سيقوم الأخصائي بإضافة المهام قريبًا</p>
-    </div>
-  {% endif %}
+    {% if not plan %}
+        <!-- لا توجد خطة -->
+        <div class="empty-state">
+            <p>لا توجد خطة علاجية حالياً</p>
+        </div>
+
+    {% elif not daily_plans %}
+        <!-- توجد خطة لكن بدون أيام -->
+        <div class="empty-state">
+            <p>لا توجد مهام بعد</p>
+        </div>
+
+    {% else %}
+        <div class="days-grid">
+
+        {% for day in daily_plans %}
+            <div class="day-section">
+
+                <div class="day-header">
+                    {{ day.day_name }} – {{ day.date }}
+                </div>
+
+                {% if day.tasks.exists %}
+                <table class="tasks-table compact">
+                    <thead>
+                        <tr>
+                            <th>اسم المهمة</th>
+                            <th>الإجراء</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for task in day.tasks.all %}
+                        <tr>
+                            <td>{{ task.task_name }}</td>
+                            <td>
+                                <a href="{% url 'task:task_preview' task.id %}"
+                                class="btn-task">
+                                عرض التمرين
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="no-tasks-day">لا توجد مهام في هذا اليوم</div>
+                {% endif %}
+
+            </div>
+        {% endfor %}
+
+        </div>
+
+    {% endif %}
 
 </div>
+<div class="pagination">
+
+    {% if daily_plans.has_previous %}
+        <a href="?page={{ daily_plans.previous_page_number }}">السابق</a>
+    {% endif %}
+
+    <span>صفحة {{ daily_plans.number }} من {{ daily_plans.paginator.num_pages }}</span>
+
+    {% if daily_plans.has_next %}
+        <a href="?page={{ daily_plans.next_page_number }}">التالي</a>
+    {% endif %}
+
+</div>
+
 {% endblock %}

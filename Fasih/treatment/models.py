@@ -11,7 +11,6 @@ class TreatmentPlan(models.Model):
         COMPLETED = "COMPLETED", "مكتملة"
         CANCELED = "CANCELED", "ملغاة"
 
-    # العلاقات
     patient = models.ForeignKey(
         Patient,
         on_delete=models.CASCADE,
@@ -24,7 +23,7 @@ class TreatmentPlan(models.Model):
         related_name="treatment_plans"
     )
 
-    # البيانات العامة
+
     diagnosis = models.CharField(max_length=255)
     start_date = models.DateField()
     duration_weeks = models.PositiveIntegerField()
@@ -35,11 +34,10 @@ class TreatmentPlan(models.Model):
         default=Status.DRAFT
     )
 
-    # المشكلة والهدف
+  
     problem_description = models.TextField()
 
 
-    # إعدادات الجلسات (اختيارية)
     sessions_per_week = models.PositiveIntegerField(
         null=True,
         blank=True
@@ -50,7 +48,7 @@ class TreatmentPlan(models.Model):
         blank=True
     )
 
-    # متابعة عامة
+   
     progress_summary = models.TextField(blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -91,6 +89,7 @@ class DailyPlan(models.Model):
     def week_number(self):
         delta = (self.date - self.treatment_plan.start_date).days
         return (delta // 7) + 1
+    
 class DailyTask(models.Model):
     daily_plan = models.ForeignKey(
         DailyPlan,
@@ -99,6 +98,10 @@ class DailyTask(models.Model):
     )
 
     task_name = models.CharField(max_length=255)
+    target_letter = models.CharField(
+        max_length=1,
+        help_text="الحرف المستهدف في المهمة"
+    )
 
     class Status(models.TextChoices):
         COMPLETED = "COMPLETED", "تمت"
@@ -109,6 +112,16 @@ class DailyTask(models.Model):
         choices=Status.choices,
         null=True,
         blank=True
+    )
+  
+    execution_video_url = models.URLField(
+        blank=True,
+        null=True
+    )
+
+    completed_at = models.DateTimeField(
+        blank=True,
+        null=True
     )
 
 # بدون تاسك حاليًا  
