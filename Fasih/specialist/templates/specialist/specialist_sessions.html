@@ -1,0 +1,84 @@
+{% extends "specialist/base_specialist.html" %}
+{% load static %}
+
+{% block title %}الجلسات المجدولة{% endblock %}
+
+{% block specialist_css %}
+<link rel="stylesheet" href="{% static 'css/specialist_sessions.css' %}">
+{% endblock %}
+
+{% block specialist_content %}
+
+<h1 class="page-title">الجلسات المجدولة</h1>
+
+<table class="sessions-table">
+
+  <thead>
+    <tr>
+      <th>اسم المريض</th>
+      <th>رقم الملف</th>
+      <th>نوع الجلسة</th>
+      <th>التاريخ</th>
+      <th>الوقت</th>
+      <th>الحالة</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for session in sessions %}
+    <tr>
+
+      <td data-label="اسم المريض">
+        {{ session.patient.user.get_full_name }}
+      </td>
+
+      <td data-label="رقم الملف">
+        {{ session.patient.file_number }}
+      </td>
+
+      <td data-label="نوع الجلسة">
+        {{ session.get_session_type_display }}
+      </td>
+
+      <td data-label="التاريخ">
+        {{ session.start_time|date:"Y-m-d" }}
+      </td>
+
+      <td data-label="الوقت">
+        {{ session.start_time|time:"H:i" }} -
+        {{ session.end_time|time:"H:i" }}
+      </td>
+
+      <td data-label="الحالة">
+        <span class="status {{ session.status|lower }}">
+          {{ session.get_status_display }}
+        </span>
+      </td>
+
+      <td data-label="">
+        {% if session.id %}
+          <a href="{% url 'session:session_detail' session.id %}"
+             class="details-btn">
+            عرض
+          </a>
+        {% else %}
+          —
+        {% endif %}
+      </td>
+
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="7" class="empty">
+        لا توجد جلسات مجدولة
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+
+</table>
+
+
+
+{% endblock %}

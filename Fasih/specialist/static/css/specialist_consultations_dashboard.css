@@ -2,6 +2,7 @@
   padding: 30px 60px 60px;
 }
 
+
 .consultations-table {
   width: 100%;
   border-collapse: collapse;
@@ -32,7 +33,7 @@
 .btn-view {
   background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
   color: #ffffff;
-  padding: 10px 20px;
+  padding: 10px 22px;
   border-radius: 999px;
   text-decoration: none;
   font-size: 14px;
@@ -45,8 +46,53 @@
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(58,123,213,0.35);
 }
+
+
+
 @media (max-width: 768px) {
+
   .consultations-page {
-    padding: 20px 24px 40px;
+    padding: 20px 20px 40px;
+  }
+
+  .consultations-table thead {
+    display: none;
+  }
+
+  .consultations-table,
+  .consultations-table tbody,
+  .consultations-table tr,
+  .consultations-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .consultations-table tr {
+    background: #fff;
+    margin-bottom: 18px;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    padding: 14px 16px;
+  }
+
+  .consultations-table td {
+    border: none;
+    padding: 8px 0;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .consultations-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #555;
+  }
+
+  .btn-view {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
   }
 }

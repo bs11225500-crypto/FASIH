@@ -1,0 +1,9 @@
+<h2>إضافة مهمة ليوم {{ day.day_name }}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label>اسم المهمة</label>
+    <input type="text" name="task_name" required>
+
+    <button type="submit">حفظ المهمة</button>
+</form>

@@ -1,8 +1,9 @@
-
 .profile-container {
   max-width: 900px;
   padding: 0 20px;
+  margin: 0 auto;
 }
+
 
 .profile-header {
   display: flex;
@@ -56,3 +57,253 @@
 .status.rejected { color: red; }
 
 
+.certificates-section {
+  margin-top: 25px;
+}
+
+.certificates-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.certificates-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.certificate-item {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 15px;
+  font-size: 14px;
+}
+
+.certificate-item a {
+  color: #0F4C5C;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.empty-text {
+  color: #777;
+  font-size: 14px;
+}
+.certificate-btn {
+  color: #0F4C5C;
+  font-weight: 600;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.certificate-btn .material-icons {
+  font-size: 18px;
+}
+
+.certificate-btn:hover {
+  text-decoration: underline;
+}
+
+
+
+/*  Add Certificate  */
+.add-certificate-card {
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+
+/* form */
+.certificate-form {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.primary-btn {
+  padding: 12px 30px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
+  color: #fff;
+
+  font-weight: 600;
+  font-size: 14px;
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.primary-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(58, 123, 213, 0.35);
+}
+
+.cancel-btn {
+  padding: 12px 28px;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  background: #f8f9fb;
+  color: #555;
+
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background: #f0f0f0;
+}
+
+
+.certificate-actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 12px;
+}
+
+.btn-cert {
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cert.edit {
+  background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
+  color: #fff;
+}
+
+.btn-cert.edit:hover {
+  box-shadow: 0 6px 14px rgba(58, 123, 213, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-cert.delete {
+  background: #f8f9fb;
+  color: #e74c3c;
+  border: 1px solid #e0e0e0;
+}
+
+.btn-cert.delete:hover {
+  background: #ffecec;
+}
+
+@media (max-width: 768px) {
+
+  .profile-container {
+    padding: 0 12px;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .profile-card {
+    padding: 22px 16px;
+  }
+
+  .edit-btn.inside-card {
+    position: static;
+    margin-bottom: 10px;
+  }
+
+  .profile-avatar img {
+    width: 110px;
+    height: 110px;
+  }
+
+  .certificates-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .certificate-item {
+    padding: 14px;
+    font-size: 13px;
+  }
+
+  .certificate-actions {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .btn-cert {
+    flex: 1;
+    text-align: center;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .primary-btn,
+  .cancel-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

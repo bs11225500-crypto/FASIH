@@ -133,6 +133,7 @@ let currentImageIndex = 0;
 
 function updateImage() {
   document.getElementById("currentImage").src = images[currentImageIndex];
+  
 }
 
 
@@ -199,7 +200,9 @@ navigator.mediaDevices.getUserMedia({ audio: true })
       audioPreview.style.display = "block";
 
       statusText.textContent = `✅ تم تسجيل الصوت للصورة ${currentImageIndex + 1}`;
+      recordBtn.disabled = true;   // اقفل بدء التسجيل
       redoBtn.disabled = false;
+      
     };
   })
   .catch(() => {
@@ -225,6 +228,7 @@ redoBtn.addEventListener("click", () => {
   audioPreview.style.display = "none";
   statusText.textContent = "🔄 يمكنك إعادة التسجيل";
   redoBtn.disabled = true;
+  recordBtn.disabled = false;
 });
 
 
@@ -332,6 +336,7 @@ if (submitBtn) {
       if (!res.ok) throw new Error("Submit failed");
 
       alert("✅ تم إرسال التقييم بنجاح");
+      
 
     } catch (err) {
       alert("❌ حدث خطأ أثناء الإرسال");

@@ -77,6 +77,39 @@ class ShortTermGoal(models.Model):
     def __str__(self):
         return self.description
 
+class DailyPlan(models.Model):
+    treatment_plan = models.ForeignKey(
+        TreatmentPlan,
+        on_delete=models.CASCADE,
+        related_name="daily_plans"
+    )
+
+    date = models.DateField()
+    day_name = models.CharField(max_length=20)
+    goal_of_day = models.TextField(blank=True)
+
+    def week_number(self):
+        delta = (self.date - self.treatment_plan.start_date).days
+        return (delta // 7) + 1
+class DailyTask(models.Model):
+    daily_plan = models.ForeignKey(
+        DailyPlan,
+        on_delete=models.CASCADE,
+        related_name="tasks"
+    )
+
+    task_name = models.CharField(max_length=255)
+
+    class Status(models.TextChoices):
+        COMPLETED = "COMPLETED", "تمت"
+        NOT_COMPLETED = "NOT_COMPLETED", "لم تتم"
+
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        null=True,
+        blank=True
+    )
 
 # بدون تاسك حاليًا  
 class ProgressReport(models.Model):

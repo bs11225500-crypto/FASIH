@@ -45,6 +45,66 @@
 
     <hr>
 
+    <div class="certificates-section">
+      <div class="certificates-header">
+        <h3>الشهادات</h3>
+
+        {% if specialist.verification_status == "APPROVED" %}
+          <a href="{% url 'specialist:add_certificate' %}" class="edit-btn certificate-btn">
+            <span class="material-icons">workspace_premium</span>
+            إضافة شهادة
+          </a>
+        {% endif %}
+      </div>
+
+      {% if certificates %}
+        <div class="certificates-list">
+          {% for cert in certificates %}
+          
+            <div class="certificate-item">
+              <strong>{{ cert.title }}</strong>
+
+              {% if cert.description %}
+                <p>{{ cert.description }}</p>
+              {% endif %}
+
+              <small>تاريخ الإصدار: {{ cert.issue_date }}</small>
+
+              {% if cert.expiry_date %}
+                <br>
+                <small>تاريخ الانتهاء: {{ cert.expiry_date }}</small>
+              {% endif %}
+
+              {% if cert.certificate_file %}
+                <br>
+                <a href="{{ cert.certificate_file.url }}" target="_blank">
+                  عرض الشهادة
+                </a>
+              {% endif %}
+              <!-- تعديل حذف شهاده -->
+            
+              <div class="certificate-actions">
+                <a href="{% url 'specialist:edit_certificate' cert.id %}"
+                  class="btn-cert edit">
+                  تعديل
+                </a>
+
+                <a href="{% url 'specialist:delete_certificate' cert.id %}"
+                  class="btn-cert delete"
+                  onclick="return confirm('هل أنت متأكد من حذف الشهادة؟');">
+                  حذف
+                </a>
+              </div>
+
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="empty-text">لا توجد شهادات مضافة.</p>
+      {% endif %}
+    </div>
+    <hr>
+
+
     <p>
       <strong>حالة الاعتماد:</strong>
       {% if specialist.verification_status == "APPROVED" %}

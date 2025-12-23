@@ -1,75 +1,243 @@
+
 .choose-specialist-page {
+  position: relative;
+  min-height: 100vh;
+  padding: 140px 20px 80px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(103, 155, 229, 0.12),
+    rgba(143, 228, 183, 0.18)
+  );
+
+  overflow: hidden;
+}
+
+
+.choose-specialist-container {
   max-width: 1100px;
-  margin: 60px auto;
+  margin: 0 auto;
   text-align: center;
+  position: relative;
+  z-index: 1;
 }
 
 .page-title {
-  margin-bottom: 40px;
+  text-align: center;
+  margin-bottom: 50px;
   font-weight: 700;
+  color: #1e54a0;
 }
+
 
 .specialists-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 260px));
   gap: 25px;
+  justify-content: center;   
 }
 
 .specialist-card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 30px 20px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
-  transition: transform 0.2s ease;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 30px 20px 26px;
+  box-shadow: 0 14px 30px rgba(0,0,0,0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 340px;
 }
 
 .specialist-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  box-shadow: 0 22px 45px rgba(0,0,0,0.12);
 }
 
+
 .avatar {
-  width: 70px;
-  height: 70px;
-  margin: 0 auto 15px;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 16px;
   background: #f2f4f8;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .avatar span {
-  font-size: 36px;
+  font-size: 38px;
   color: #666;
 }
 
 .name {
-  margin: 10px 0 5px;
+  margin: 10px 0 6px;
+  font-size: 16px;
 }
 
 .spec {
-  color: #666;
   font-size: 14px;
+  color: #555;
+  margin-bottom: 6px;
 }
 
 .exp {
-  margin: 10px 0;
   font-size: 13px;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+
+.cert-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 auto;
+  font-size: 13px;
+  color: #555;
+}
+
+.cert-list li {
+  margin-bottom: 4px;
+}
+
+.more-cert {
+  font-size: 12px;
   color: #888;
 }
 
+
 .choose-btn {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 10px 22px;
-  border-radius: 30px;
-  background: #4f46e5;
+  margin-top: 22px;
+  padding: 11px 28px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
   color: #fff;
   text-decoration: none;
   font-size: 14px;
-  transition: background 0.2s ease;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .choose-btn:hover {
-  background: #4338ca;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(58,123,213,0.35);
+}
+
+
+.bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.choose-specialist-container {
+  position: relative;
+  z-index: 2;
+}
+
+.bg-circle-1 {
+  width: 380px;
+  height: 380px;
+  background: rgba(143, 228, 183, 0.18);
+  top: -60px;        
+  right: -220px;     
+}
+
+.bg-circle-2 {
+  width: 300px;
+  height: 300px;
+  background: rgba(103, 155, 229, 0.18); 
+  bottom: 100px;
+  left: -150px;
+}
+
+
+@media (max-width: 992px) {
+
+  .choose-specialist-page {
+    padding: 120px 20px 60px;
+  }
+
+  .page-title {
+    margin-bottom: 35px;
+    font-size: 24px;
+  }
+
+  .specialists-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+
+  .specialist-card {
+    min-height: auto;
+    padding: 26px 18px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .choose-specialist-page {
+    padding: 110px 16px 50px;
+  }
+
+  .page-title {
+    font-size: 22px;
+    margin-bottom: 30px;
+  }
+
+  .specialists-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .specialist-card {
+    padding: 24px 16px;
+  }
+
+  .avatar {
+    width: 70px;
+    height: 70px;
+  }
+
+  .name {
+    font-size: 15px;
+  }
+
+  .spec {
+    font-size: 13px;
+  }
+
+  .exp {
+    font-size: 12px;
+  }
+
+  .choose-btn {
+    width: 100%;
+    text-align: center;
+    padding: 12px 0;
+  }
+
+  
+  .bg-circle-1 {
+    width: 240px;
+    height: 240px;
+    top: -120px;
+    right: -160px;
+  }
+
+  .bg-circle-2 {
+    width: 200px;
+    height: 200px;
+    bottom: 60px;
+    left: -120px;
+  }
 }

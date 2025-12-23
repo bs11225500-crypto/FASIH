@@ -1,0 +1,108 @@
+.sessions-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+}
+
+.sessions-table th,
+.sessions-table td {
+  padding: 14px 16px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.sessions-table thead {
+  background: #f1f5f9;
+  font-weight: 600;
+}
+
+.sessions-table tr:not(:last-child) {
+  border-bottom: 1px solid #eee;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status.proposed {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status.confirmed {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status.rejected {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.details-btn {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
+  color: #fff;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+
+@media (max-width: 768px) {
+
+  .sessions-table thead {
+    display: none;
+  }
+
+  .sessions-table,
+  .sessions-table tbody,
+  .sessions-table tr,
+  .sessions-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .sessions-table tr {
+    margin-bottom: 16px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    padding: 12px;
+  }
+
+  .sessions-table td {
+    text-align: right;
+    padding: 10px 8px;
+    font-size: 13px;
+    border-bottom: 1px solid #eee;
+    position: relative;
+  }
+
+  .sessions-table td:last-child {
+    border-bottom: none;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .sessions-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #555;
+    display: block;
+    margin-bottom: 4px;
+    font-size: 12px;
+  }
+
+  .details-btn {
+    display: inline-block;
+    width: 100%;
+    padding: 8px 0;
+  }
+}

@@ -1,0 +1,14 @@
+<form method="post">
+    {% csrf_token %}
+
+    <label>التاريخ</label>
+    <input type="date" name="date" required>
+
+    <label>اسم اليوم</label>
+    <input type="text" name="day_name" placeholder="مثال: الثلاثاء" required>
+
+    <label>هدف اليوم</label>
+    <textarea name="goal_of_day"></textarea>
+
+    <button type="submit">حفظ اليوم</button>
+</form>
