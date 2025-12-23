@@ -1,3 +1,7 @@
+/* =========================
+   WRAPPER & MAIN CARD
+========================= */
+
 .goal-wrapper {
     display: flex;
     justify-content: center;
@@ -6,7 +10,7 @@
 
 .goal-card {
     width: 100%;
-    max-width: 620px;
+    max-width: 860px; /* أوسع عشان العرض */
     background: #ffffff;
     border-radius: 18px;
     padding: 40px;
@@ -16,73 +20,146 @@
 .page-title {
     font-size: 26px;
     font-weight: 700;
-    margin-bottom: 30px;
+    margin-bottom: 28px;
     text-align: right;
 }
 
-.form-group {
-    margin-bottom: 22px;
+/* =========================
+   PLAN SUMMARY (Diagnosis etc.)
+========================= */
+
+.plan-summary-card {
+    background: #f9fafb;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 30px;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    font-size: 14px;
-}
-
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    padding: 14px 16px;
-    border-radius: 12px;
-    border: 1px solid #dfe6ec;
-    font-size: 14px;
-    outline: none;
-    transition: 0.2s;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-    border-color: #3A7BD5;
-    box-shadow: 0 0 0 3px rgba(58,123,213,0.12);
-}
-.action-buttons {
+.summary-item {
     display: flex;
-    justify-content: center;
-    gap: 18px;
-    margin-top: 30px;
+    gap: 12px;
+    margin-bottom: 10px;
 }
 
-.primary-btn,
-.secondary-btn {
-    min-width: 220px;          
-    height: 52px;              
+.summary-item .label {
+    font-weight: 600;
+    color: #666;
+    min-width: 120px;
+}
 
+.summary-item .value {
+    color: #222;
+}
+
+/* =========================
+   DAY CARD
+========================= */
+
+.day-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #eef2f6;
+}
+
+.day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.day-title {
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.week-badge {
+    background: #eef2ff;
+    color: #3A7BD5;
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+}
+
+/* =========================
+   TASK LIST
+========================= */
+
+.task-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 12px;
+}
+
+.task-row {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 12px;
+    padding: 10px 6px;
+    border-bottom: 1px solid #f0f3f6;
+}
 
-    padding: 0 32px;
+.task-row:last-child {
+    border-bottom: none;
+}
+
+.task-name {
+    flex: 1;
+    font-size: 14px;
+}
+
+.task-status .done {
+    color: #4CAF50;
+}
+
+.task-status .pending {
+    color: #bbb;
+}
+
+.edit-task {
+    color: #3A7BD5;
+    text-decoration: none;
+}
+
+.edit-task:hover {
+    opacity: 0.7;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.primary-btn {
+    min-width: 180px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 28px;
     border-radius: 999px;
     border: none;
     cursor: pointer;
-
     background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
     color: #ffffff;
-
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
-    line-height: 1;
     text-decoration: none;
-
-    font-family: "Cairo", sans-serif;
-
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.primary-btn:hover,
-.secondary-btn:hover {
+.primary-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(58,123,213,0.35);
+}
+
+/* =========================
+   SECTION DIVIDER
+========================= */
+
+.section-divider {
+    margin: 36px 0;
+    border: none;
+    border-top: 1px solid #eef2f6;
 }

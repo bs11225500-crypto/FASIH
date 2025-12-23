@@ -37,7 +37,7 @@ class TreatmentPlan(models.Model):
 
     # المشكلة والهدف
     problem_description = models.TextField()
-    long_term_goal = models.TextField()
+
 
     # إعدادات الجلسات (اختيارية)
     sessions_per_week = models.PositiveIntegerField(

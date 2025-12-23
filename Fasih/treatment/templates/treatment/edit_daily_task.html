@@ -6,22 +6,25 @@
 {% endblock %}
 
 {% block specialist_content %}
+
 <div class="treatment-card-wrapper">
     <div class="treatment-card">
 
-        <h2 class="page-title">إضافة مهمة</h2>
+        <h2 class="page-title">تعديل المهمة</h2>
 
         <form method="post">
             {% csrf_token %}
 
             <label>اسم المهمة</label>
-            <input type="text" name="task_name" required>
+            <input type="text" name="task_name"
+                   value="{{ task.task_name }}" required>
 
             <button type="submit" class="primary-btn">
-                حفظ المهمة
+                حفظ التعديل
             </button>
         </form>
 
     </div>
 </div>
+
 {% endblock %}
