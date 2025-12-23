@@ -7,7 +7,7 @@
 body {
     font-family: 'Cairo', sans-serif;
     background: #f6f5fa;
-    padding-bottom: 80px;
+   
 }
 
 /* NAVBAR */
@@ -95,15 +95,12 @@ body {
 
 /* FOOTER */
 .main-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
+    position: static;   
     width: 100%;
 
     background: linear-gradient(135deg, #7ED6A7, #679be5);
     padding: 20px;
     text-align: center;
-    z-index: 999;
 }
 
 

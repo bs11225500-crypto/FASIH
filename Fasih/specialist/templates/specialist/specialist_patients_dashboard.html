@@ -4,16 +4,32 @@
 {% block title %}
 فَصِيح | مرضاي
 {% endblock title %}
+
 {% block specialist_css %}
 <link rel="stylesheet" href="{% static 'css/specialist_patients_dashboard.css' %}">
 {% endblock %}
-
 
 {% block specialist_content %}
 
 <section class="patients-dashboard">
 
     <h1 class="page-title">مرضاي</h1>
+
+    <form method="GET" class="patients-search">
+        <input
+            type="text"
+            name="q"
+            placeholder="ابحث باسم المريض أو رقم الملف"
+            value="{{ request.GET.q }}"
+        >
+        <button type="submit">بحث</button>
+    </form>
+
+    {% if query %}
+        <a href="{% url 'specialist:specialist_patients_dashboard' %}" class="reset-search">
+            عرض جميع المرضى
+        </a>
+    {% endif %}
 
     {% if patients %}
     <table class="patients-table">
@@ -29,27 +45,25 @@
         <tbody>
             {% for p in patients %}
             <tr>
-                <td>{{ p.name }}</td>
-                <td>{{ p.file_number }}</td>
-                <td>{{ p.age }}</td>
-                <td class="actions">
-                    <a href="{% url 'assessment:assessment_detail' p.id %}"
-                        class="btn btn-assessment">
+                <td data-label="اسم المريض">{{ p.name }}</td>
+
+                <td data-label="رقم الملف">{{ p.file_number }}</td>
+
+                <td data-label="العمر">{{ p.age }}</td>
+
+                <td data-label="الإجراءات" class="actions">
+                    <a href="{% url 'assessment:assessment_detail' p.id %}" class="action-link">
                         الاستبيان
                     </a>
 
-                    <a href="{% url 'session:create_session' %}?patient={{ p.id }}"
-                        class="btn btn-session">
-                        انشاء جلسة
+                    <a href="{% url 'session:create_session' p.file_number %}" class="action-link">
+                        إنشاء جلسة
                     </a>
 
-                    <a href="{% url 'treatment:create_treatment_plan' p.file_number %}"
-                        class="btn btn-plan">
-                        انشاء خطة
+                    <a href="{% url 'treatment:create_treatment_plan' p.file_number %}" class="action-link">
+                        إنشاء خطة
                     </a>
                 </td>
-
-
             </tr>
             {% endfor %}
         </tbody>
@@ -57,7 +71,11 @@
 
     {% else %}
         <div class="empty-state">
-            <p>لا يوجد مرضى حاليًا</p>
+            {% if query %}
+                <p>لا توجد نتائج مطابقة لـ "{{ query }}"</p>
+            {% else %}
+                <p>لا يوجد مرضى حاليًا</p>
+            {% endif %}
         </div>
     {% endif %}
 

@@ -6,6 +6,9 @@ from accounts.models import User
 from assessment.models import Assessment
 from accounts.models import User
 from accounts.forms import UserProfileForm, SpecialistProfileForm
+from specialist.forms import SpecialistCertificateForm
+from session.models import Session
+from django.db.models import Q
 from django.contrib import messages
 
 
@@ -40,6 +43,7 @@ def specialist_home(request):
 
     return render(request, "specialist/specialist_home.html", context)
 
+
 @login_required
 def specialist_patients_dashboard(request):
 
@@ -48,15 +52,22 @@ def specialist_patients_dashboard(request):
 
     specialist = get_object_or_404(Specialist, user=request.user)
 
-
     if specialist.verification_status != Specialist.VerificationStatus.APPROVED:
         return redirect("accounts:specialist_pending")
 
+    q = request.GET.get("q", "").strip()
 
     patients = Patient.objects.filter(
         assessments__specialist=specialist,
         assessments__status='ACCEPTED'
     ).distinct()
+
+    if q:
+        patients = patients.filter(
+            Q(user__first_name__icontains=q) |
+            Q(user__last_name__icontains=q) |
+            Q(file_number__icontains=q)
+        )
 
     patients_data = []
 
@@ -68,12 +79,17 @@ def specialist_patients_dashboard(request):
             "age": patient.age,
         })
 
-
     context = {
-        "patients": patients_data
+        "patients": patients_data,
+        "query": q,  
     }
 
-    return render(request, "specialist/specialist_patients_dashboard.html", context)
+    return render(
+        request,
+        "specialist/specialist_patients_dashboard.html",
+        context
+    )
+
 
 @login_required
 def specialist_consultations_dashboard(request):
@@ -98,6 +114,8 @@ def choose_specialist(request):
     }
 
     return render(request, "specialist/choose_specialist.html", context)
+
+
 @login_required
 def specialist_profile(request):
     user = request.user
@@ -109,6 +127,10 @@ def specialist_profile(request):
         specialist = Specialist.objects.get(user=user)
     except Specialist.DoesNotExist:
         return redirect('main:home')
+    
+    certificates = SpecialistCertificate.objects.filter(
+        specialist=specialist
+    )
 
     edit_mode = request.GET.get("edit") == "1"
 
@@ -131,6 +153,7 @@ def specialist_profile(request):
     context = {
         'user': user,
         'specialist': specialist,
+         "certificates": certificates,
         'user_form': user_form,
         'specialist_form': specialist_form,
         'edit_mode': edit_mode,
@@ -139,18 +162,47 @@ def specialist_profile(request):
     return render(request, 'specialist/specialist_profile.html', context)
 
 
+@login_required
+def edit_certificate(request, cert_id):
+    cert = get_object_or_404(
+        SpecialistCertificate,
+        id=cert_id,
+        specialist__user=request.user
+    )
+
+    if request.method == "POST":
+        form = SpecialistCertificateForm(request.POST, request.FILES, instance=cert)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "تم تحديث الشهادة بنجاح")
+            return redirect("specialist:specialist_profile")
+    else:
+        form = SpecialistCertificateForm(instance=cert)
+
+    return render(request, "specialist/edit_certificate.html", {
+        "form": form
+    })
+@login_required
+def delete_certificate(request, cert_id):
+    cert = get_object_or_404(
+        SpecialistCertificate,
+        id=cert_id,
+        specialist__user=request.user
+    )
+    cert.delete()
+    messages.success(request, "تم حذف الشهادة")
+    return redirect("specialist:specialist_profile")
 
 
 @login_required
 def add_certificate(request):
-
     if request.user.role != User.Role.SPECIALIST:
         return redirect("main:home")
 
     specialist = get_object_or_404(Specialist, user=request.user)
 
     if request.method == "POST":
-        form = SpecialistCertificate(request.POST, request.FILES)
+        form = SpecialistCertificateForm(request.POST, request.FILES)
 
         if form.is_valid():
             certificate = form.save(commit=False)
@@ -159,9 +211,10 @@ def add_certificate(request):
 
             messages.success(request, "تمت إضافة الشهادة بنجاح")
             return redirect("specialist:specialist_profile")
-
+        else:
+            print(form.errors)
     else:
-        form = SpecialistCertificate()
+        form = SpecialistCertificateForm()
 
     return render(
         request,
@@ -170,4 +223,19 @@ def add_certificate(request):
     )
 
 
+@login_required
+def specialist_sessions(request):
+    if not hasattr(request.user, "specialist"):
+        return redirect("main:home")
 
+    sessions = Session.objects.filter(
+        specialist=request.user.specialist
+    ).order_by("-start_time")
+
+    return render(
+        request,
+        "specialist/specialist_sessions.html",
+        {
+            "sessions": sessions
+        }
+    )

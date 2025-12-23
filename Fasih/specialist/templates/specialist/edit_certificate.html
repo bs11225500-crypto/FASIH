@@ -1,11 +1,11 @@
 {% extends "specialist/base_specialist.html" %}
 {% load static %}
 
-{% block title %}إضافة شهادة{% endblock %}
+{% block title %}تعديل الشهادة{% endblock %}
 
 {% block specialist_css %}
 <link rel="stylesheet" href="{% static 'css/specialist_profile.css' %}">
-{% endblock specialist_css %}
+{% endblock %}
 
 {% block specialist_content %}
 
@@ -13,7 +13,7 @@
 
   <div class="profile-card add-certificate-card">
 
-    <h3>إضافة شهادة</h3>
+    <h3>تعديل الشهادة</h3>
 
     <form method="post" enctype="multipart/form-data" class="certificate-form">
       {% csrf_token %}
@@ -28,11 +28,6 @@
         {{ form.description }}
       </div>
 
-      <div class="form-group">
-        <label>ملف الشهادة</label>
-        {{ form.certificate_file }}
-      </div>
-
       <div class="form-row">
         <div class="form-group">
           <label>تاريخ الإصدار</label>
@@ -40,14 +35,21 @@
         </div>
 
         <div class="form-group">
-          <label>تاريخ الانتهاء (اختياري)</label>
+          <label>تاريخ الانتهاء</label>
           {{ form.expiry_date }}
         </div>
       </div>
 
+      <div class="form-group">
+        <label>ملف الشهادة</label>
+        {{ form.certificate_file }}
+      </div>
+
       <div class="form-actions">
-        <a href="{% url 'specialist:specialist_profile' %}" class="cancel-btn">إلغاء</a>
-        <button type="submit" class="primary-btn">حفظ</button>
+        <button type="submit" class="primary-btn">حفظ التعديلات</button>
+        <a href="{% url 'specialist:specialist_profile' %}" class="cancel-btn">
+          إلغاء
+        </a>
       </div>
 
     </form>

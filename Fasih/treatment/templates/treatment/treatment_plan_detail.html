@@ -35,6 +35,50 @@
             {% endfor %}
         </ul>
         {% endif %}
+        <h2>الأيام داخل الخطة</h2>
+
+        <a href="{% url 'treatment:add_daily_plan' plan.id %}" class="primary-btn">
+            إضافة يوم
+        </a>
+
+        {% if plan.daily_plans.all %}
+            {% for day in plan.daily_plans.all %}
+                <div class="day-card">
+                    <h3>
+                        {{ day.day_name }} – {{ day.date }}
+                        (الأسبوع {{ day.week_number }})
+                    </h3>
+
+                    <p><strong>هدف اليوم:</strong> {{ day.goal_of_day }}</p>
+
+                    <a href="{% url 'treatment:add_daily_task' day.id %}">
+                        إضافة مهمة
+                    </a>
+
+                    {% if day.tasks.all %}
+                        <ul>
+                            {% for task in day.tasks.all %}
+                                <li>
+                                    {{ task.task_name }}
+                                    {% if task.status == "COMPLETED" %}
+                                        ✅
+                                    {% elif task.status == "NOT_COMPLETED" %}
+                                        ❌
+                                    {% else %}
+                                        ⏳
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>لا توجد مهام بعد</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>لم يتم إضافة أيام بعد</p>
+        {% endif %}
+
 
     </div>
 </div>

@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import TreatmentPlan, ShortTermGoal, ProgressReport
+from .models import TreatmentPlan, ShortTermGoal, ProgressReport, DailyPlan, DailyTask
 from patient.models import Patient
 from specialist.models import Specialist
 from django.contrib.auth.decorators import login_required
+from datetime import date
+
 
 
 @login_required
@@ -83,4 +85,65 @@ def add_short_term_goal(request, plan_id):
 
     return render(request, "treatment/add_short_term_goal.html", {
         "plan": treatment_plan
+    })
+
+
+
+
+@login_required
+def add_daily_plan(request, plan_id):
+    plan = get_object_or_404(TreatmentPlan, id=plan_id)
+    if DailyPlan.objects.filter(
+        treatment_plan=plan,
+        date=request.POST.get("date")
+        ).exists():
+            return render(request, "treatment/add_daily_plan.html", {
+                "plan": plan,
+                "error": "هذا اليوم مضاف مسبقًا"
+            })
+
+
+    if request.method == "POST":
+        DailyPlan.objects.create(
+            treatment_plan=plan,
+            date=request.POST.get("date"),
+            day_name=request.POST.get("day_name"),
+            goal_of_day=request.POST.get("goal_of_day")
+        )
+        return redirect("treatment:treatment_plan_detail", plan_id=plan.id)
+
+    return render(request, "treatment/add_daily_plan.html", {
+        "plan": plan
+    })
+
+@login_required
+def add_daily_task(request, day_id):
+    day = get_object_or_404(DailyPlan, id=day_id)
+
+    if request.method == "POST":
+        DailyTask.objects.create(
+            daily_plan=day,
+            task_name=request.POST.get("task_name")
+        )
+        return redirect(
+            "treatment:treatment_plan_detail",
+            plan_id=day.treatment_plan.id
+        )
+
+    return render(request, "treatment/add_daily_task.html", {
+        "day": day
+    })
+
+@login_required
+def today_tasks(request):
+    patient = request.user.patient
+    today = date.today()
+
+    daily_plan = DailyPlan.objects.filter(
+        treatment_plan__patient=patient,
+        date=today
+    ).first()
+
+    return render(request, "patient/today_tasks.html", {
+        "daily_plan": daily_plan
     })

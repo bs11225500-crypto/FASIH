@@ -11,6 +11,14 @@
 {% endblock %}
 
 {% block content %}
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+
+<button id="menuToggle" class="menu-toggle">
+  <span class="material-icons">menu</span>
+</button>
+
 <div class="specialist-layout">
 
     <!-- SIDEBAR -->
@@ -32,19 +40,21 @@
                 </a>
             </li>
 
-            <li class="{% if request.resolver_match.url_name == 'treatment_plan' %}active{% endif %}">
+            <li class="{% if request.resolver_match.url_name == 'treatment_patients' %}active{% endif %}">
                 <a href="{% url 'treatment:treatment_patients' %}">
-                    الخطة العلاجية
+                    عرض الخطط العلاجية
                 </a>
             </li>
             
            
 
-            <li class="{% if request.resolver_match.url_name == 'create_session' %}active{% endif %}">
-                <a href="#">
-                    إنشاء جلسة
+           <li class="{% if request.resolver_match.url_name == 'specialist_sessions' %}active{% endif %}">
+                <a href="{% url 'specialist:specialist_sessions' %}">
+                    عرض الجلسات المجدولة
                 </a>
             </li>
+
+
 
         </ul>
 
@@ -57,4 +67,20 @@
     </main>
 
 </div>
+<script>
+  const toggle = document.getElementById("menuToggle");
+  const sidebar = document.querySelector(".specialist-sidebar");
+  const overlay = document.getElementById("sidebarOverlay");
+
+  toggle.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("show");
+  });
+
+  overlay.addEventListener("click", () => {
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+  });
+</script>
+
 {% endblock %}

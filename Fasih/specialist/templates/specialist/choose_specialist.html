@@ -10,8 +10,10 @@
 {% block content %}
 
 <section class="choose-specialist-page">
-
-  <h1 class="page-title">اختاري الأخصائي المناسب </h1>
+  <div class="bg-circle bg-circle-1"></div>
+  <div class="bg-circle bg-circle-2"></div>
+  
+  <h1 class="page-title">اختر الأخصائي المناسب</h1>
 
   <div class="specialists-grid">
 
@@ -19,21 +21,43 @@
     <div class="specialist-card">
 
       <div class="avatar">
-        <span class="material-icons">person</span>
+        {% if specialist.user.profile_image %}
+          <img src="{{ specialist.user.profile_image.url }}" alt="صورة الأخصائي">
+        {% else %}
+          <span class="material-icons">person</span>
+        {% endif %}
       </div>
 
+      <!-- الاسم -->
       <h3 class="name">
         {{ specialist.user.get_full_name }}
       </h3>
 
+      <!-- التخصص -->
       <p class="spec">
         {{ specialist.specialization }}
       </p>
 
+      <!-- سنوات الخبرة -->
       <p class="exp">
-        {{ specialist.years_of_experience }} سنوات خبرة
+        🕒 {{ specialist.years_of_experience }} سنوات خبرة
       </p>
 
+      <!-- الشهادات -->
+      {% if specialist.certificates.exists %}
+        <ul class="cert-list">
+          {% for cert in specialist.certificates.all|slice:":2" %}
+            <li>{{ cert.title }}</li>
+          {% endfor %}
+
+          {% if specialist.certificates.count > 2 %}
+            <li class="more-cert">وغيرها…</li>
+          {% endif %}
+        </ul>
+      {% endif %}
+
+
+      <!-- زر الاختيار -->
       <a
         href="{% url 'assessment:form' %}?specialist={{ specialist.id }}"
         class="choose-btn"
