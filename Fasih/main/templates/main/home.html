@@ -10,25 +10,34 @@
 {% endblock extra_css %}
 
 {% block content %}
-
 <section class="home-hero">
 
-    <h1 class="home-title">نرافقك خطوة بخطوة في رحلة النطق</h1>
+    <h1 class="home-title">
+        نرافقك خطوة بخطوة في رحلة النطق
+    </h1>
+
     <p class="home-subtitle">
-        ابدأ بتقييم الحالة مع أخصائي نطق،
-        لنساعدك على بناء خطة علاجية مناسبة.
+        بدعم مستمر وخطوات واضحة تقود إلى تحسّن ملحوظ
     </p>
 
-    <div class="cards-wrapper single">
+    <div class="consultation-orbit">
+        <div class="nav-mascot">
+            <img src="{% static 'img/fasih.png' %}" alt="فصيح">
+        </div>
+    </div>
 
+ 
+
+    <div class="cards-wrapper single">
         <div class="card rectangular">
+
             <span class="material-icons card-icon">
                 psychology
             </span>
 
             <h3>استشارة</h3>
             <p>
-                اختيار أخصائي نطق مناسب،
+                اختر أخصائي نطق مناسب،
                 تعبئة استبيان شامل،
                 ثم إعداد خطة علاجية.
             </p>
@@ -38,10 +47,10 @@
             </a>
 
         </div>
-
     </div>
 
 </section>
+
 <!-- CONTACT SECTION -->
 <section class="contact-fullscreen">
 

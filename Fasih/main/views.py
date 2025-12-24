@@ -20,7 +20,7 @@ def home(request):
             message=request.POST.get('message'),
         )
 
-        return redirect('main:home')  # أو نفس الصفحة
+        return redirect('main:home')  
 
     return render(request, 'main/home.html')
 
