@@ -41,4 +41,4 @@ Fasih enables parents and specialists to monitor the child’s progress through 
 ## Team Members
 - Lama Alharbi
 - Abrar Alghamdi
-- Brouq Alqahtani
+- Brouq Alqahtani : Contribution to platform development, including the creation of speech therapy exercise videos used within assigned therapeutic tasks.
