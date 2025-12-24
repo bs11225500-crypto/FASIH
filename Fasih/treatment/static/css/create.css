@@ -1,10 +1,10 @@
 .treatment-fullscreen {
     min-height: 100vh;
-    padding: 110px 20px 60px;
+    padding: 60px 20px 60px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #e8f7f6, #f4fbff);
+  
 
 
 }
@@ -84,4 +84,91 @@ button {
 button:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(15, 164, 175, 0.35);
+}
+
+
+@media (max-width: 1024px) {
+
+  .treatment-card {
+    max-width: 760px;
+    padding: 36px;
+  }
+
+  .treatment-card h2 {
+    font-size: 26px;
+  }
+}
+
+
+@media (max-width: 768px) {
+
+  .treatment-fullscreen {
+    padding: 90px 16px 50px;
+  }
+
+  .treatment-card {
+    padding: 30px 22px;
+    border-radius: 18px;
+  }
+
+  .treatment-card h2 {
+    font-size: 22px;
+    margin-bottom: 24px;
+  }
+
+  .patient-info {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .section {
+    padding: 16px;
+    margin-bottom: 22px;
+  }
+
+  .section-title {
+    font-size: 15px;
+  }
+
+  input,
+  textarea {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  button {
+    font-size: 15px;
+    padding: 12px;
+    border-radius: 12px;
+  }
+}
+
+
+@media (max-width: 480px) {
+
+  .treatment-fullscreen {
+    padding: 80px 14px 40px;
+  }
+
+  .treatment-card {
+    padding: 24px 18px;
+  }
+
+  .treatment-card h2 {
+    font-size: 20px;
+  }
+
+  .section-title {
+    font-size: 14px;
+  }
+
+  input,
+  textarea {
+    font-size: 13px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 11px;
+  }
 }

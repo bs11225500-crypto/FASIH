@@ -7,115 +7,143 @@
 
 {% block specialist_content %}
 
-<div class="goal-wrapper">
-    <div class="goal-card">
+<div class="plan-page">
 
-        <h1 class="page-title">تفاصيل الخطة العلاجية</h1>
+    
+    <h1 class="page-title">تفاصيل الخطة العلاجية</h1>
 
-        <div class="plan-info">
-            <p><strong>التشخيص:</strong> {{ plan.diagnosis }}</p>
-            <p><strong>وصف المشكلة:</strong> {{ plan.problem_description }}</p>
-        
+    
+    <div class="plan-info">
+        <div class="info-item">
+            <span class="label">التشخيص:</span>
+            <span class="value">{{ plan.diagnosis }}</span>
         </div>
+        <div class="info-item">
+            <span class="label">وصف المشكلة:</span>
+            <span class="value">{{ plan.problem_description }}</span>
+        </div>
+    </div>
 
-        
-        <h2>الأيام داخل الخطة</h2>
+    <h2 class="section-title">الأيام داخل الخطة</h2>
 
-        {% if plan.daily_plans.all %}
-            {% for day in plan.daily_plans.all %}
-                <div class="day-card">
-                    <h3>
-                        {{ day.day_name }} – {{ day.date }}
-                        (الأسبوع {{ day.week_number }})
-                    </h3>
+    {% if plan.daily_plans.all %}
+        {% for day in plan.daily_plans.all %}
 
-                    <a href="{% url 'treatment:add_daily_task' day.id %}">
-                        إضافة مهمة
-                    </a>
+        <div class="day-section">
 
-                    {% if day.tasks.all %}
-                       <ul class="task-list">
-                        {% for task in day.tasks.all %}
-                            <li class="task-item">
+         
+            <div class="day-header">
+                <span class="day-title">
+                    {{ day.day_name }} – {{ day.date }}
+                </span>
+                <span class="week-badge">
+                    الأسبوع {{ day.week_number }}
+                </span>
+            </div>
 
-                                <span class="task-name">
-                                    {{ task.task_name }}
-                                    <div style="font-size:12px;color:red;">
-                                        status={{ task.status }} |
-                                        video={{ task.execution_video_url }}
-                                    </div>
+            
+            {% if day.tasks.exists %}
+            <table class="tasks-table">
+                <thead>
+                    <tr>
+                        <th>اسم المهمة</th>
+                        <th>الحالة</th>
+                        <th>التسجيل</th>
+                        <th>تعديل</th>
+                        <th>تم</th>
+                        <th>ملاحظات الأخصائي</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in day.tasks.all %}
+                    <tr>
+                        <td data-label="اسم المهمة">
+                            {{ task.task_name }}
+                        </td>
 
-                                </span>
+                        <td data-label="الحالة">
+                            {% if task.status == "COMPLETED" %}
+                                <span class="status done">مكتملة</span>
+                            {% elif task.status == "NOT_COMPLETED" %}
+                                <span class="status failed">غير مكتملة</span>
+                            {% else %}
+                                <span class="status pending">لم تبدأ</span>
+                            {% endif %}
+                        </td>
 
-                                <span class="task-status">
-                                    {% if task.status == "COMPLETED" %}
-                                        <span class="material-icons status-done">check_circle</span>
-                                    {% elif task.status == "NOT_COMPLETED" %}
-                                        <span class="material-icons status-failed">cancel</span>
-                                    {% endif %}
+                        <td data-label="التسجيل">
+                            {% if task.execution_video_url %}
+                                <a href="{% url 'treatment:view_task_execution' task.id %}">
+                                    <span class="material-icons icon play">play_circle</span>
+                                </a>
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
 
-                                </span>
+                        <td data-label="تعديل">
+                            <a href="{% url 'treatment:edit_daily_task' task.id %}">
+                                <span class="material-icons icon edit">edit</span>
+                            </a>
+                        </td>
 
-                                <span class="task-actions">
+                        <td data-label="تم">
+                            {% if task.status == "COMPLETED" %}
+                                <span class="material-icons icon done">check_circle</span>
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+                        <td data-label="ملاحظات الأخصائي">
+                            {% if task.specialist_notes %}
+                                {{ task.specialist_notes|truncatechars:40 }}
+                            {% else %}
+                                <span class="muted">—</span>
+                            {% endif %}
+                        </td>
 
-                                    <a href="{% url 'treatment:edit_daily_task' task.id %}" title="تعديل">
-                                        <span class="material-icons">edit</span>
-                                    </a>
-
-                                    {% if task.status == "COMPLETED" and task.execution_video_url %}
-                                        <a href="{% url 'treatment:view_task_execution' task.id %}"
-                                        title="عرض تسجيل المريض"
-                                        style="margin-right:8px;">
-                                            <span class="material-icons">play_circle</span>
-                                        </a>
-                                    {% endif %}
-
-                                </span>
-
-
-                            </li>
-                        {% endfor %}
-                    </ul>
-
-                    {% else %}
-                        <p>لا توجد مهام بعد</p>
-                    {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+                <div class="no-tasks">
+                    لا توجد مهام في هذا اليوم
                 </div>
-            {% endfor %}
-        {% else %}
-            <p>لم يتم إنشاء الأيام بعد</p>
-        {% endif %}
+            {% endif %}
 
-        <hr class="section-divider">
-
-        {% if plan.short_term_goals.exists %}
-
-            <ul class="goals-list">
-                {% for goal in plan.short_term_goals.all %}
-                    <li>
-                        {{ goal.description }} — {{ goal.target_accuracy }}%
-                    </li>
-                {% endfor %}
-            </ul>
-
-        {% else %}
-
-            <div class="final-goal-section">
-                <p class="final-goal-hint">
-                    بعد انتهاء الجلسات اليومية، أضف الهدف العلاجي النهائي للمريض
-                </p>
-
-                <a href="{% url 'treatment:add_short_term_goal' plan.id %}"
-                class="primary-btn final-goal-btn">
-                    إضافة الهدف العلاجي
+          
+            <div class="add-task-wrapper">
+                <a href="{% url 'treatment:add_daily_task' day.id %}" class="add-task-btn">
+                    + إضافة مهمة
                 </a>
             </div>
 
-        {% endif %}
+        </div>
 
+        {% endfor %}
+    {% else %}
+        <p>لم يتم إنشاء أيام للخطة بعد</p>
+    {% endif %}
 
+    <hr class="divider">
 
-    </div>
+    {% if plan.short_term_goals.exists %}
+        <ul class="goals-list">
+            {% for goal in plan.short_term_goals.all %}
+                <li>{{ goal.description }} — {{ goal.target_accuracy }}%</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="final-goal">
+            <p>بعد انتهاء الجلسات اليومية، أضف الهدف العلاجي النهائي للمريض</p>
+            <a href="{% url 'treatment:add_short_term_goal' plan.id %}"
+               class="add-task-btn">
+                إضافة الهدف العلاجي
+            </a>
+        </div>
+    {% endif %}
+
 </div>
 
 {% endblock %}

@@ -27,7 +27,10 @@ def daily_tasks(request):
         plan = TreatmentPlan.objects.filter(
             patient=patient
         ).order_by("-created_at").first()
-
+  
+        if plan and plan.status != TreatmentPlan.Status.ACTIVE:
+            return redirect("patient:treatment_plan")
+        
         if plan:
             days = DailyPlan.objects.filter(
                 treatment_plan=plan
@@ -49,6 +52,9 @@ def daily_tasks(request):
 def task_preview(request, task_id):
     task = get_object_or_404(DailyTask, id=task_id)
 
+    if task.daily_plan.treatment_plan.status != TreatmentPlan.Status.ACTIVE:
+        return redirect("patient:treatment_plan")
+
     video_url = f"{settings.R2_TRAINING_VIDEOS_URL}/letters/{task.target_letter}.mp4"
 
     return render(request, "task/task_preview.html", {
@@ -59,7 +65,10 @@ def task_preview(request, task_id):
 @login_required
 def task_execute(request, task_id):
     task = get_object_or_404(DailyTask, id=task_id)
-
+ 
+    if task.daily_plan.treatment_plan.status != TreatmentPlan.Status.ACTIVE:
+        return redirect("patient:treatment_plan")
+    
     if task.status == DailyTask.Status.COMPLETED:
         return redirect("task:task_preview", task_id=task.id)
 
@@ -72,6 +81,9 @@ def task_execute(request, task_id):
 @login_required
 def finish_task(request, task_id):
     task = get_object_or_404(DailyTask, id=task_id)
+ 
+    if task.daily_plan.treatment_plan.status != TreatmentPlan.Status.ACTIVE:
+        return redirect("patient:treatment_plan")
 
     if task.status == DailyTask.Status.COMPLETED:
         return JsonResponse({"error": "Task already completed"}, status=403)

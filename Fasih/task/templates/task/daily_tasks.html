@@ -41,19 +41,31 @@
                         <tr>
                             <th>اسم المهمة</th>
                             <th>الإجراء</th>
+                            <th>ملاحظات الأخصائي</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for task in day.tasks.all %}
                         <tr>
                             <td>{{ task.task_name }}</td>
+
                             <td>
-                                <a href="{% url 'task:task_preview' task.id %}"
-                                class="btn-task">
-                                عرض التمرين
+                                <a href="{% url 'task:task_preview' task.id %}" class="btn-task">
+                                    عرض التمرين
                                 </a>
                             </td>
+
+                            <td data-label="ملاحظات الأخصائي">
+                                {% if task.specialist_notes %}
+                                    <div class="notes-box">
+                                        {{ task.specialist_notes|truncatechars:60 }}
+                                    </div>
+                                {% else %}
+                                    <span class="muted">—</span>
+                                {% endif %}
+                            </td>
                         </tr>
+
                         {% endfor %}
                     </tbody>
                 </table>

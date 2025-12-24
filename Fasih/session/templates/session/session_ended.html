@@ -20,33 +20,38 @@
 
     <hr>
 
-    {% if is_specialist %}
+    <div class="session-actions">
 
-      {% if session.note %}
-        <a href="{% url 'patient:session_note_detail' session.id %}"
-           class="btn-primary">
-          عرض ملاحظات الجلسة
+      {% if is_specialist %}
+
+        {% if session.note %}
+          <a href="{% url 'patient:session_note_detail' session.id %}"
+            class="btn-primary">
+            عرض ملاحظات الجلسة
+          </a>
+        {% else %}
+          <a href="{% url 'session:add_session_note' session.id %}"
+            class="btn-primary">
+            إضافة ملاحظات الجلسة
+          </a>
+        {% endif %}
+
+        <a href="{% url 'specialist:specialist_home' %}"
+          class="btn-link">
+          العودة إلى لوحة الأخصائي
         </a>
+
       {% else %}
-        <a href="{% url 'session:add_session_note' session.id %}"
-           class="btn-primary">
-          إضافة ملاحظات الجلسة
+
+        <a href="{% url 'patient:session_log' %}"
+          class="btn-primary">
+          الرجوع إلى سجل الجلسات
         </a>
+
       {% endif %}
 
-      <a href="{% url 'specialist:dashboard' %}"
-         class="btn-secondary">
-        العودة إلى لوحة الأخصائي
-      </a>
+    </div>
 
-    {% else %}
-
-      <a href="{% url 'patient:session_log' %}"
-         class="btn-primary">
-        الرجوع إلى سجل الجلسات
-      </a>
-
-    {% endif %}
 
   </div>
 </div>

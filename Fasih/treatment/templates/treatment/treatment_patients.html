@@ -7,59 +7,57 @@
 
 {% block specialist_content %}
 
-<div class="treatment-card-wrapper">
-    <div class="treatment-card">
+<div class="patients-wrapper">
 
-        <h1 class="page-title">الخطط العلاجية</h1>
+    <h1 class="page-title">الخطط العلاجية</h1>
 
-        {% if patient_plans %}
-        <table class="sessions-table">
-            <thead>
-                <tr>
-                    <th>اسم المريض</th>
-                    <th>رقم الملف</th>
-                    <th>حالة الخطة</th>
-                    <th>التفاصيل</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in patient_plans %}
-                <tr>
-                    <td data-label="اسم المريض">
-                        {{ item.patient.user.get_full_name }}
-                    </td>
+    {% if patient_plans %}
+    <table class="patients-table">
+        <thead>
+            <tr>
+                <th>اسم المريض</th>
+                <th>رقم الملف</th>
+                <th>حالة الخطة</th>
+                <th>الإجراء</th>
+            </tr>
+        </thead>
 
-                    <td data-label="رقم الملف">
-                        {{ item.patient.file_number }}
-                    </td>
+        <tbody>
+            {% for item in patient_plans %}
+            <tr>
 
-                    <td data-label="حالة الخطة">
-                        <span class="status 
-                            {% if item.plan.status == 'ACTIVE' %}confirmed
-                            {% elif item.plan.status == 'COMPLETED' %}proposed
-                            {% else %}rejected{% endif %}">
-                            {{ item.plan.get_status_display }}
-                        </span>
-                    </td>
+                <td data-label="اسم المريض">
+                    {{ item.patient.user.get_full_name }}
+                </td>
 
-                    <td data-label="التفاصيل">
-                        <a class="details-btn"
-                           href="{% url 'treatment:treatment_plan_detail' item.plan.id %}">
-                            عرض التفاصيل
-                        </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-            <div class="empty-state">
-                <h3>لا توجد خطط علاجية حالياً</h3>
-                <p>سيتم عرض الخطط هنا عند إنشائها</p>
-            </div>
-        {% endif %}
+                <td data-label="رقم الملف">
+                    {{ item.patient.file_number }}
+                </td>
 
-    </div>
+                <td data-label="حالة الخطة">
+                    <span class="plan-status {{ item.plan.status|lower }}">
+                        {{ item.plan.get_status_display }}
+                    </span>
+                </td>
+
+                <td data-label="الإجراء">
+                    <a href="{% url 'treatment:treatment_plan_detail' item.plan.id %}"
+                       class="details-btn">
+                        عرض الخطة
+                    </a>
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+        <div class="empty-state">
+            <p>لا يوجد مرضى مرتبطين بك حالياً</p>
+        </div>
+    {% endif %}
+
 </div>
 
 {% endblock %}

@@ -2,22 +2,24 @@
 {% load static %}
 
 {% block specialist_css %}
-<link rel="stylesheet" href="{% static 'css/create.css' %}">
+<link rel="stylesheet" href="{% static 'css/add_daily_task.css' %}">
 {% endblock %}
 
 {% block specialist_content %}
-<div class="treatment-card-wrapper">
-    <div class="treatment-card">
+<div class="create-task-page">
+  <div class="create-task-wrapper">
+    <div class="create-task-card">
 
-        <h2 class="page-title">إضافة مهمة</h2>
+        <h2 class="create-task-title">إضافة مهمة</h2>
 
-        <form method="post">
+        <form method="post" class="create-task-form">
             {% csrf_token %}
 
-            <label>اسم المهمة</label>
-            <input type="text" name="task_name" required>
-            <label>الحرف المستهدف</label>
-            <select name="target_letter" required>
+            <label class="create-task-label">اسم المهمة</label>
+            <input type="text" name="task_name" required class="create-task-input">
+
+            <label class="create-task-label">الحرف المستهدف</label>
+            <select name="target_letter" required class="create-task-select">
                 <option value="">اختر حرف</option>
                 <option value="k">خ</option>
                 <option value="n">ن</option>
@@ -25,11 +27,14 @@
                 <option value="z">ز</option>
             </select>
 
-            <button type="submit" class="primary-btn">
+            <button type="submit" class="create-task-btn">
                 حفظ المهمة
             </button>
         </form>
 
     </div>
+  </div>
 </div>
 {% endblock %}
+
+

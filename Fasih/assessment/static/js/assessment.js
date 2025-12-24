@@ -97,10 +97,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // تحقق الأصوات
-        if (uploadedAudioPaths.includes(null)) {
+        const allAudiosUploaded = uploadedAudioPaths.every(path => path);
+
+        if (!allAudiosUploaded) {
           alert("🎙️ الرجاء تسجيل جميع الأصوات قبل الانتقال");
           return;
         }
+
       }
 
         currentStep++;
@@ -250,9 +253,15 @@ nextImageBtn.addEventListener("click", async () => {
     stopBtn.disabled = true;
 
 } else {
-    recordBtn.disabled = false;  
-    stopBtn.disabled = true;
-    alert("🎉 تم الانتهاء من تسجيل الأصوات، يمكنك الآن إكمال الاستبيان");
+  nextImageBtn.style.display = "none";
+
+  recordBtn.disabled = true;
+  stopBtn.disabled = true;
+  redoBtn.disabled = true;
+
+  mediaRecorder.stream.getTracks().forEach(track => track.stop());
+
+  statusText.textContent = " تم الانتهاء من تسجيل الأصوات";
 }
 
 });
@@ -335,7 +344,10 @@ if (submitBtn) {
 
       if (!res.ok) throw new Error("Submit failed");
 
-      alert("✅ تم إرسال التقييم بنجاح");
+     
+
+      window.location.href = "/";
+
       
 
     } catch (err) {

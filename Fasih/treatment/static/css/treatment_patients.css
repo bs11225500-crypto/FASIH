@@ -1,67 +1,174 @@
-.treatment-card-wrapper {
-    display: flex;
-    justify-content: center;
-    padding: 120px 60px 60px;
-}
-
-.treatment-card {
-    width: 100%;
-    max-width: 1000px;
-    background: #ffffff;
-    border-radius: 22px;
-    padding: 40px 45px;
-
-    box-shadow: 0 14px 34px rgba(0,0,0,0.06);
-}
-
-.page-title {
-    font-size: 26px;
-    font-weight: 700;
-    margin-bottom: 30px;
-}
-
 .patients-table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
 }
 
 .patients-table th,
 .patients-table td {
-    padding: 16px 20px;
-    text-align: right;
+  padding: 14px 16px;
+  text-align: center;
+  font-size: 14px;
 }
 
 .patients-table thead {
-    background: #f5f7fb;
+  background: #f1f5f9;
+  font-weight: 600;
 }
 
-.patients-table tbody tr:not(:last-child) {
-    border-bottom: 1px solid #eee;
+.patients-table tr:not(:last-child) {
+  border-bottom: 1px solid #eee;
 }
 
-.view-btn {
-    padding: 8px 16px;
-    border-radius: 20px;
-    text-decoration: none;
+
+.plan-status {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.plan-status.draft {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.plan-status.active {
+  background: #d4edda;
+  color: #155724;
+}
+
+.plan-status.completed {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.plan-status.canceled {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.details-btn {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
+  color: #fff;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+
+  .patients-table thead {
+    display: none;
+  }
+
+  .patients-table,
+  .patients-table tbody,
+  .patients-table tr,
+  .patients-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .patients-table tr {
+    margin-bottom: 16px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    padding: 12px;
+  }
+
+  .patients-table td {
+    text-align: right;
+    padding: 10px 8px;
     font-size: 13px;
-    font-weight: 600;
+    border-bottom: 1px solid #eee;
+    position: relative;
+  }
 
-    background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
-    color: #ffffff;
-}
-
-.empty-state {
+  .patients-table td:last-child {
+    border-bottom: none;
     text-align: center;
-    padding: 50px 20px;
+    margin-top: 10px;
+  }
+
+  .patients-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #555;
+    display: block;
+    margin-bottom: 4px;
+    font-size: 12px;
+  }
+
+  .details-btn {
+    display: inline-block;
+    width: 100%;
+    padding: 8px 0;
+  }
 }
 
-.empty-state h3 {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 8px;
+@media (max-width: 1024px) {
+  .patients-table th,
+  .patients-table td {
+    font-size: 13px;
+    padding: 12px;
+  }
+
+  .details-btn {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
 }
 
-.empty-state p {
-    font-size: 14px;
-    color: #777;
+
+@media (max-width: 768px) {
+
+  .patients-table tr {
+    padding: 14px;
+  }
+
+  .patients-table td {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    text-align: right;
+  }
+
+  .patients-table td::before {
+    font-size: 11px;
+    color: #6b7280;
+  }
+
+  .plan-status {
+    align-self: flex-start;
+    font-size: 11px;
+  }
+
+  .details-btn {
+    width: 100%;
+    text-align: center;
+    margin-top: 6px;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .patients-table tr {
+    padding: 16px;
+  }
+
+  .patients-table td {
+    font-size: 12px;
+  }
+
+  .details-btn {
+    font-size: 12px;
+    padding: 10px 0;
+  }
 }
