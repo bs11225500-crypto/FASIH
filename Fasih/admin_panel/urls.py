@@ -9,4 +9,7 @@ urlpatterns = [
     path('specialists/<int:id>/', views.specialist_review, name='specialist_review'),
     path('specialists/<int:id>/approve/', views.approve_specialist, name='approve_specialist'),
     path('specialists/<int:id>/reject/', views.reject_specialist, name='reject_specialist'),
+    path('messages/', views.contact_messages, name='contact_messages'),
+
+
 ]

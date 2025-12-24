@@ -5,6 +5,9 @@ from specialist.models import Specialist
 
 from .decorators import staff_required
 from django.template.loader import render_to_string
+from main.models import ContactMessage
+
+
 
 
 
@@ -134,3 +137,17 @@ def reject_specialist(request, id):
         'specialist': specialist
     })
 
+
+@staff_required
+def contact_messages(request):
+    messages = ContactMessage.objects.order_by('-created_at')
+
+    return render(
+        request,
+        'admin_panel/contact_messages.html',
+        {
+            'messages': messages
+        }
+    )
+    
+    

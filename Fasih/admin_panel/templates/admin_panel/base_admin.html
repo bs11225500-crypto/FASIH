@@ -18,8 +18,7 @@
         <ul class="sidebar-menu">
             <li class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
                 <a href="{% url 'admin_panel:dashboard' %}">
-                    الرئيسية
-                </a>
+لوحة التحكم                </a>
             </li>
 
             <li class="{% if request.resolver_match.url_name == 'specialist_list' %}active{% endif %}">
@@ -27,6 +26,11 @@
                     الأخصائيون
                 </a>
             </li>
+              <li class="{% if request.resolver_match.url_name == 'contact_messages' %}active{% endif %}">
+    <a href="{% url 'admin_panel:contact_messages' %}">
+        الرسائل
+    </a>
+</li>
         </ul>
 
     </aside>
@@ -36,6 +40,8 @@
             {% block admin_content %}{% endblock %}
         </div>
     </main>
+ 
+
 
 </div>
 {% endblock %}

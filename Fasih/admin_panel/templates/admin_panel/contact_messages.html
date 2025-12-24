@@ -1,0 +1,46 @@
+{% extends "admin_panel/base_admin.html" %}
+{% load static %}
+
+{% block admin_css %}
+<link rel="stylesheet" href="{% static 'css/contact_messages.css' %}">
+{% endblock %}
+
+
+{% block admin_content %}
+
+
+<h2 class="page-title">رسائل تواصل معنا</h2>
+
+<div class="messages-wrapper">
+
+    {% for msg in messages %}
+        <div class="message-card">
+
+            <div class="message-header">
+                <span class="message-name">
+                    {{ msg.first_name }} {{ msg.last_name }}
+                </span>
+                <span class="message-date">
+                    {{ msg.created_at|date:"M d, Y, h:i a" }}
+                </span>
+            </div>
+
+            <div class="message-info">
+                <p><strong>البريد:</strong> {{ msg.email }}</p>
+                {% if msg.phone %}
+                    <p><strong>الهاتف:</strong> {{ msg.phone }}</p>
+                {% endif %}
+            </div>
+
+            <div class="message-body">
+                {{ msg.message }}
+            </div>
+
+        </div>
+    {% empty %}
+        <p class="empty-msg">لا توجد رسائل</p>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
