@@ -35,6 +35,13 @@
         <div class="nav-links">
             <a href="{% url 'main:home' %}">الرئيسية</a>
             <a href="{% url 'main:about' %}">عن فَصِيح</a>
+            <a href="{% url 'specialist:choose_specialist' %}">الأخصائيون</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'accounts:my_dashboard' %}" class="dashboard-link">
+                    لوحة التحكم
+                </a>
+            {% endif %}
+
         </div>
 
         <div class="nav-actions">
