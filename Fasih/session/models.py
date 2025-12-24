@@ -47,13 +47,14 @@ class Session(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     def can_join(self):
         now = timezone.localtime(timezone.now())
-        start = timezone.localtime(self.start_time)
+        start = timezone.localtime(self.start_time) - timedelta(minutes=5)
         end = timezone.localtime(self.end_time)
 
         return (
             self.status == self.Status.CONFIRMED
             and start <= now <= end
         )
+
 
 
 

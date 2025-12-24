@@ -34,7 +34,8 @@
             <span class="material-icons">event</span>
             <h3>الجلسات المجدولة</h3>
             <p class="number">{{ sessions_count }}</p>
-            <a href="#" class="card-btn">عرض الجلسات</a>
+            <a href="{% url 'specialist:specialist_sessions' %}" class="card-btn">عرض الجلسات</a>
+            
         </div>
 
         <div class="card {% if new_consultations_count > 0 %}highlight{% endif %}">

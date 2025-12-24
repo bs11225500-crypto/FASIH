@@ -10,10 +10,17 @@ from specialist.forms import SpecialistCertificateForm
 from session.models import Session
 from django.db.models import Q
 from django.contrib import messages
+from django.utils import timezone
 
+def auto_complete_sessions():
+    Session.objects.filter(
+        status=Session.Status.CONFIRMED,
+        end_time__lt=timezone.now()
+    ).update(status=Session.Status.COMPLETED)
 
 @login_required
 def specialist_home(request):
+    auto_complete_sessions()
 
     if request.user.role != User.Role.SPECIALIST:
         return redirect("main:home")
@@ -33,7 +40,13 @@ def specialist_home(request):
         assessments__status='ACCEPTED'
     ).distinct().count()
 
-    sessions_count = 0  
+    sessions_count = Session.objects.filter(
+        specialist=specialist,
+        status=Session.Status.CONFIRMED,
+        start_time__gte=timezone.now()
+    ).count()
+
+ 
 
     context = {
         "new_consultations_count": new_consultations_count,
@@ -225,6 +238,7 @@ def add_certificate(request):
 
 @login_required
 def specialist_sessions(request):
+    auto_complete_sessions()
     if not hasattr(request.user, "specialist"):
         return redirect("main:home")
 
