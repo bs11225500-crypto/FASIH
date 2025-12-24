@@ -22,8 +22,11 @@ def register_account(request):
         form = AccountRegisterForm(request.POST)
 
         if not form.is_valid():
-            messages.error(request, "البيانات المدخلة غير صحيحة")
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, error)
             return render(request, 'accounts/sign_up.html', {'form': form})
+
 
         try:
             with transaction.atomic():

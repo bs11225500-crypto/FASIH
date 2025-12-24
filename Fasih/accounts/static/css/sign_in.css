@@ -1,11 +1,12 @@
-.auth-wrapper{
-  min-height: 100vh;
+.auth-wrapper {
+  min-height: 110vh;          
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 40px 16px;
-  box-sizing: border-box;
+  justify-content: center;
+  padding: 40px 16px;        
 }
+
+
 
 .auth-container{
   width: 900px;
@@ -320,6 +321,38 @@
 .auth-reset .reset-back:hover {
   color: #3A7BD5;
 }
+.form-messages {
+  margin-bottom: 16px;
+}
+
+.form-error-card {
+  background: #fff5f5;
+  border: 1px solid #f5c2c7;
+  color: #b42318;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+.auth-container{
+  height: 580px;         
+  max-height: 620px;
+}
+
+.auth-side.auth-form{
+  overflow: hidden;
+}
+
+.auth-form{
+  overflow-y: auto;
+  max-height: 100%;
+  padding-right: 6px;    
+}
+
 
 /* responsive*/
 

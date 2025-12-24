@@ -15,11 +15,13 @@
       <h2>إنشاء حساب</h2>
 
       {% if messages %}
-        <div class="messages">
-          {% for message in messages %}
-            <p class="msg {{ message.tags }}">{{ message }}</p>
-          {% endfor %}
-        </div>
+          <div class="form-messages">
+            {% for message in messages %}
+              <div class="form-error-card">
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
       {% endif %}
 
       <form method="post" action="{% url 'accounts:register' %}" novalidate>
@@ -56,6 +58,8 @@
         >
 
         <p id="match-password" class="password-match"></p>
+
+
 
         <button type="submit" class="primary-btn">
           إنشاء الحساب
