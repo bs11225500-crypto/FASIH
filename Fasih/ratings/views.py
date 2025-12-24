@@ -6,37 +6,21 @@ from specialist.models import Specialist
 from assessment.models import Assessment
 from .models import SpecialistRating
 
-
 @login_required
 def rate_specialist(request, specialist_id):
-    # لازم يكون Patient
-    if request.user.role != "PATIENT":
-        return HttpResponseForbidden("غير مسموح")
-
     patient = request.user.patient_profile
     specialist = get_object_or_404(Specialist, id=specialist_id)
 
-    # ✅ الشرط: لازم يكون بينهم ربط (Assessment مقبول)
-    is_linked = Assessment.objects.filter(
-        patient=patient,
-        specialist=specialist,
-        status="ACCEPTED"
-    ).exists()
+    if request.method == 'POST':
+        rating_value = request.POST.get('rating')
 
-    if not is_linked:
-        return HttpResponseForbidden("لا يمكنك تقييم هذا الأخصائي إلا بعد بدء التعامل معه")
+        if not rating_value:
+            return redirect('specialist:specialist_detail', specialist_id=specialist.id)
 
-    # بعدها فقط نسمح بالتقييم
-    rating_obj, created = SpecialistRating.objects.get_or_create(
-        patient=patient,
-        specialist=specialist
-    )
+        rating_obj, created = SpecialistRating.objects.update_or_create(
+            patient=patient,
+            specialist=specialist,
+            defaults={'rating': rating_value}
+        )
 
-    if request.method == "POST":
-        rating = request.POST.get("rating")
-        if rating in ["1", "2", "3", "4", "5"]:
-            rating_obj.rating = int(rating)
-            rating_obj.save()
-
-    # رجّعيه لصفحة التفاصيل (عدّلي الاسم حسب url عندك)
-    return redirect("specialist:specialist_detail", specialist_id=specialist.id)
+    return redirect('specialist:specialist_detail', specialist_id=specialist.id)

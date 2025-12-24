@@ -29,6 +29,7 @@
       <div class="info">
         <h2>{{ specialist.user.get_full_name }}</h2>
 
+        <!-- عرض التقييم -->
         <div class="rating main-rating">
           {% if specialist.ratings_count > 0 %}
             {% for _ in specialist.stars_range %}
@@ -85,14 +86,13 @@
   </div>
 </section>
 
-<!--  Popup التقييم  -->
+<!--  popup التقييم  -->
 
 <div id="ratingModal" class="rating-modal">
   <div class="rating-popup">
 
     <button class="close-btn" onclick="closeRatingModal()">×</button>
 
-    <!-- العنوان -->
     <h3 class="popup-title">اختر تقييمك للأخصائي</h3>
     <p class="popup-subtitle">اختر التقييم الذي يعكس تجربتك</p>
 
@@ -112,6 +112,7 @@
     </div>
 
     {% if can_rate %}
+    <!-- إضافة تقييم -->
     <form
       method="post"
       action="{% url 'ratings:rate_specialist' specialist.id %}"
@@ -123,32 +124,32 @@
 
         <label class="rating-row">
           <input type="radio" name="rating" value="5" required>
-          <span class="stars">★★★★★</span>
           <span class="label-text">ممتاز</span>
+          <span class="stars">★★★★★</span>
         </label>
 
         <label class="rating-row">
           <input type="radio" name="rating" value="4">
-          <span class="stars">★★★★☆</span>
           <span class="label-text">جيد جدًا</span>
+          <span class="stars">★★★★☆</span>
         </label>
 
         <label class="rating-row">
           <input type="radio" name="rating" value="3">
-          <span class="stars">★★★☆☆</span>
           <span class="label-text">جيد</span>
+          <span class="stars">★★★☆☆</span>
         </label>
 
         <label class="rating-row">
           <input type="radio" name="rating" value="2">
-          <span class="stars">★★☆☆☆</span>
           <span class="label-text">متوسط</span>
+          <span class="stars">★★☆☆☆</span>
         </label>
 
         <label class="rating-row">
-          <input type="radio" name="rating" value="1">
-          <span class="stars">★☆☆☆☆</span>
-          <span class="label-text">أقل من المتوسط</span>
+            <input type="radio" name="rating" value="1">
+            <span class="label-text">أقل من المتوسط</span>
+            <span class="stars">★☆☆☆☆</span>
         </label>
 
       </div>

@@ -20,4 +20,5 @@ class SpecialistCertificateForm(forms.ModelForm):
             "certificate_file",
             "issue_date",
             "expiry_date",
+           
         ]

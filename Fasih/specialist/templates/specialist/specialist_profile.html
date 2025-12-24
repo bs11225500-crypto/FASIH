@@ -41,9 +41,17 @@
       <p><strong>التخصص:</strong> {{ specialist.specialization }}</p>
       <p><strong>سنوات الخبرة:</strong> {{ specialist.years_of_experience }} سنوات</p>
       <p><strong>رقم الرخصة:</strong> {{ specialist.license_number }}</p>
+      {% if specialist.bio %}
+      <p><strong>نبذة عنك :</strong> {{ specialist.bio }}</p>
+
+      {% endif %}
+
     </div>
 
+
     <hr>
+
+
 
     <div class="certificates-section">
       <div class="certificates-header">
@@ -123,6 +131,32 @@
   </div>
   {% endif %}
 
+  <div class="profile-rating">
+    <h4>تقييم المرضى</h4>
+
+    {% if specialist.ratings_count > 0 %}
+      <div class="rating-stars">
+        {% for _ in specialist.stars_range %}
+          <span class="material-icons star filled">star</span>
+        {% endfor %}
+        <span class="rating-text">
+          {{ specialist.average_rating }}
+          ({{ specialist.ratings_count }} تقييم)
+        </span>
+      </div>
+
+      <p class="rating-note">
+        هذا التقييم ظاهر للمرضى في صفحة اختيار الأخصائي
+      </p>
+    {% else %}
+      <p class="no-rating">
+        لا يوجد تقييمات من المرضى حتى الآن
+      </p>
+    {% endif %}
+  </div>
+
+
+
   
   {% if edit_mode %}
   <form method="post" enctype="multipart/form-data" class="profile-card profile-form">
@@ -172,6 +206,11 @@
       <label>رقم الرخصة</label>
       {{ specialist_form.license_number }}
     </div>
+    <div class="form-group">
+      <label>نبذة عنك</label>
+      {{ specialist_form.bio }}
+    </div>
+
 
     <div class="form-actions">
       <button type="submit" class="primary-btn">حفظ</button>

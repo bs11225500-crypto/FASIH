@@ -89,12 +89,14 @@ class SpecialistProfileForm(forms.ModelForm):
         fields = [
             'specialization',
             'license_number',
-            'years_of_experience'
+            'years_of_experience',
+             'bio',
         ]
         labels = {
             'specialization': 'التخصص',
             'license_number': 'رقم رخصة مزاولة المهنة',
             'years_of_experience': 'سنوات الخبرة',
+            "bio":'نبذة عنك', 
         }
 
 class SpecialistCertificateForm(forms.ModelForm):
