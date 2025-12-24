@@ -11,9 +11,19 @@ from treatment.models import TreatmentPlan
 
 
 
+@login_required
 def payment_page(request):
+    payment = Payment.objects.filter(
+        user=request.user,
+        status="pending"
+    ).order_by("-created_at").first()
+
+    if not payment:
+        return redirect("patient:treatment_plan")
+
     return render(request, "payment/payment_page.html", {
-        "moyasar_publishable_key": settings.MOYASAR_PUBLISHABLE_KEY
+        "moyasar_publishable_key": settings.MOYASAR_PUBLISHABLE_KEY,
+        "amount_halalah": payment.amount * 100,  
     })
 
 @login_required
