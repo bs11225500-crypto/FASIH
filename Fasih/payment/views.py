@@ -25,7 +25,7 @@ def payment_callback(request):
 
     response = requests.get(
         f"https://api.moyasar.com/v1/payments/{moyasar_payment_id}",
-        auth=(settings.MOYASAR_SECRET_KEY, "")
+        auth=(settings.MOYASAR_PUBLISHABLE_KEY, "")
     )
 
     data = response.json()
@@ -43,7 +43,11 @@ def payment_callback(request):
     if data.get("status") == "paid":
         payment.status = "paid"
         payment.save()
-        return redirect("payment:payment_success")
+       
+        if payment.treatment_plan:
+            payment.treatment_plan.status = TreatmentPlan.Status.ACTIVE
+            payment.treatment_plan.save(update_fields=["status"])
+            return redirect("payment:payment_success")
 
     payment.status = "failed"
     payment.save()

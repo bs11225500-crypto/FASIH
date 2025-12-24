@@ -10,6 +10,8 @@ from django.core.files.base import ContentFile
 from .models import Assessment
 from specialist.models import Specialist 
 from patient.models import Patient
+from django.contrib import messages
+
 
 
 def assessment_form(request):
@@ -72,6 +74,11 @@ def submit_assessment(request):
         specialist=specialist,
         assessment_data=data["assessment_data"],
         audio_files=data["assessment_data"].get("images", [])
+    )
+ 
+    messages.success(
+        request,
+        " تم إرسال التقييم إلى الأخصائي بنجاح"
     )
 
     return JsonResponse({

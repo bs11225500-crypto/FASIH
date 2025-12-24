@@ -92,11 +92,12 @@
 }
 
 .days-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
   margin-top: 30px;
 }
+
 .pagination {
   display: flex;
   justify-content: center;

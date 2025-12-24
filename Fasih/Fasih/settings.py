@@ -166,7 +166,6 @@ BREVO_SENDER_NAME = os.getenv("BREVO_SENDER_NAME")
 
 
 MOYASAR_PUBLISHABLE_KEY = os.getenv("MOYASAR_PUBLISHABLE_KEY")
-MOYASAR_SECRET_KEY = os.getenv("MOYASAR_SECRET_KEY")
 
 # Public URL for training videos (Cloudflare R2)
 R2_TRAINING_VIDEOS_URL = "https://pub-fd6e2f30f561498581446f1d8c47bd4a.r2.dev"

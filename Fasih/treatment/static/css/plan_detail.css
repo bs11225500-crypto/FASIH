@@ -1,157 +1,290 @@
-.goal-wrapper {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 5px 20px 60px;
+
+.plan-page {
+  padding: 40px 60px 80px;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
-
-
-
-.goal-card {
-    width: 100%;
-    max-width: 860px; 
-    background: #ffffff;
-    border-radius: 18px;
-    padding: 40px;
-    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
-    margin: 0 auto;
-    border: 1.5px solid #78a3db; 
-
-
-}
 
 .page-title {
-    font-size: 26px;
-    font-weight: 700;
-    margin-bottom: 28px;
-    text-align: right;
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 30px;
 }
 
-.plan-summary-card {
-    background: #f9fafb;
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 30px;
-        border: 1.5px solid #85aae2; 
-
-}
-
-.summary-item {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 10px;
-}
-
-.summary-item .label {
-    font-weight: 600;
-    color: #666;
-    min-width: 120px;
-}
-
-.summary-item .value {
-    color: #222;
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 40px 0 20px;
 }
 
 
-.day-card {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 20px;
-    border: 1.5px solid #dbeafe;
+.plan-info {
+  background: #f9fafb;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 30px;
+  border: 1px solid #e5e7eb;
+}
 
+.info-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.label {
+  font-weight: 600;
+  color: #555;
+  min-width: 120px;
+}
+
+.value {
+  color: #111;
+}
+
+
+.day-section {
+  margin-bottom: 40px;
 }
 
 .day-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
 }
 
 .day-title {
-    font-weight: 600;
-    font-size: 15px;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .week-badge {
-    background: #eef2ff;
-    color: #3A7BD5;
-    padding: 4px 14px;
-    border-radius: 999px;
+  background: #eef2ff;
+  color: #3A7BD5;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+
+.tasks-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.05);
+}
+
+.tasks-table th,
+.tasks-table td {
+  padding: 16px 18px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+  font-size: 14px;
+}
+
+.tasks-table th {
+  background: #f5f7fb;
+  font-weight: 700;
+  color: #374151;
+}
+
+
+.status {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status.done {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status.failed {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.status.pending {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+
+.icon {
+  font-size: 22px;
+}
+
+.icon.play {
+  color: #6d28d9;
+}
+
+.icon.edit {
+  color: #2563eb;
+}
+
+.icon.done {
+  color: #16a34a;
+}
+
+
+.add-task-wrapper {
+  text-align: center;
+  margin-top: 14px;
+}
+
+.add-task-btn {
+  display: inline-block;
+  padding: 10px 26px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+.no-tasks {
+  background: #fafafa;
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.divider {
+  margin: 50px 0;
+  border: none;
+  border-top: 1px solid #eef2f6;
+}
+
+.goals-list {
+  list-style: disc;
+  padding-right: 20px;
+}
+
+.final-goal {
+  text-align: center;
+  background: #fafafa;
+  padding: 24px;
+  border-radius: 16px;
+}
+/* ===============================
+   Tablet (iPad & متوسط)
+================================ */
+@media (max-width: 1024px) {
+
+  .plan-page {
+    padding: 30px 30px 60px;
+  }
+
+  .tasks-table th,
+  .tasks-table td {
+    padding: 14px;
     font-size: 13px;
+  }
+
+  .page-title {
+    font-size: 24px;
+  }
+
+  .section-title {
+    font-size: 18px;
+  }
 }
 
+/* ===============================
+   Mobile
+================================ */
+@media (max-width: 768px) {
 
-.task-list {
-    list-style: none;
-    padding: 0;
-    margin-top: 12px;
-}
+  .plan-page {
+    padding: 20px 16px 40px;
+  }
 
-.task-row {
+  .day-header {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  /* اخفاء رأس الجدول */
+  .tasks-table thead {
+    display: none;
+  }
+
+  .tasks-table,
+  .tasks-table tbody,
+  .tasks-table tr,
+  .tasks-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .tasks-table tr {
+    background: #fff;
+    margin-bottom: 18px;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    padding: 14px 16px;
+  }
+
+  .tasks-table td {
+    border: none;
+    padding: 8px 0;
+    font-size: 14px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 12px;
-    padding: 10px 6px;
-    border-bottom: 1px solid #f0f3f6;
-}
+  }
 
-.task-row:last-child {
-    border-bottom: none;
-}
-
-.task-name {
-    flex: 1;
-    font-size: 14px;
-}
-
-.task-status .done {
-    color: #4CAF50;
-}
-
-.task-status .pending {
-    color: #bbb;
-}
-
-.edit-task {
-    color: #3A7BD5;
-    text-decoration: none;
-}
-
-.edit-task:hover {
-    opacity: 0.7;
-}
-
-
-.primary-btn {
-    min-width: 180px;
-    height: 48px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 28px;
-    border-radius: 999px;
-    border: none;
-    cursor: pointer;
-    background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
-    color: #ffffff;
-    font-size: 14px;
+  .tasks-table td::before {
+    content: attr(data-label);
     font-weight: 600;
-    text-decoration: none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    color: #6b7280;
+    font-size: 12px;
+  }
+
+  .icon {
+    font-size: 20px;
+  }
+
+  .add-task-btn {
+    width: 100%;
+    text-align: center;
+  }
 }
 
-.primary-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(58,123,213,0.35);
-}
+/* ===============================
+   Small Mobile
+================================ */
+@media (max-width: 480px) {
 
+  .page-title {
+    font-size: 22px;
+  }
 
-.section-divider {
-    margin: 36px 0;
-    border: none;
-    border-top: 1px solid #eef2f6;
+  .section-title {
+    font-size: 16px;
+  }
+
+  .tasks-table tr {
+    padding: 16px;
+  }
+
+  .tasks-table td {
+    font-size: 13px;
+  }
+
+  .status {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
 }
