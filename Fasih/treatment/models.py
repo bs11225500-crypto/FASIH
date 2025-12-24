@@ -6,7 +6,7 @@ from specialist.models import Specialist
 class TreatmentPlan(models.Model):
 
     class Status(models.TextChoices):
-        DRAFT = "DRAFT", "مسودة"
+        DRAFT = "DRAFT", "بانتظار الدفع"
         ACTIVE = "ACTIVE", "نشطة"
         COMPLETED = "COMPLETED", "مكتملة"
         CANCELED = "CANCELED", "ملغاة"

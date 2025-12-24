@@ -322,9 +322,11 @@ def start_treatment_payment(request):
     amount = calculate_treatment_price(
         treatment_plan.duration_weeks
     )
+    
 
     Payment.objects.create(
         user=user,
+        treatment_plan=treatment_plan,
         amount=amount,
         status="pending"
     )

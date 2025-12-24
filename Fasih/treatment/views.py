@@ -70,7 +70,7 @@ def create_treatment_plan(request, file_number):
             duration_weeks=int(request.POST.get("duration_weeks")),
             sessions_per_week=request.POST.get("sessions_per_week") or None,
             session_duration_minutes=request.POST.get("session_duration_minutes") or None,
-            status="ACTIVE"
+            status=TreatmentPlan.Status.DRAFT
         )
 
         total_days = plan.duration_weeks * 7
