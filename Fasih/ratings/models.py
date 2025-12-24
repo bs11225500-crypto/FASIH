@@ -16,14 +16,7 @@ class SpecialistRating(models.Model):
 
     rating = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
-    def average_rating(self):
-        return round(
-            self.ratings.aggregate(avg=Avg('rating'))['avg'] or 0,
-            1
-        )
 
-    def ratings_count(self):
-        return self.ratings.count()
 
     class Meta:
         unique_together = ('patient', 'specialist')

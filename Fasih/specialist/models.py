@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from django.db.models import Avg
+
 
 
 class Specialist(models.Model):
@@ -21,8 +23,21 @@ class Specialist(models.Model):
         choices=VerificationStatus.choices,
         default=VerificationStatus.PENDING
     )
+    bio = models.TextField(blank=True,verbose_name="نبذة عن الأخصائي")
+
 
     rejection_reason = models.TextField(blank=True)
+    def average_rating(self):
+        return round(self.ratings.aggregate(avg=Avg('rating'))['avg'] or 0,1)
+
+    def ratings_count(self):
+        return self.ratings.count()
+
+    def stars_range(self):
+        return range(int(self.average_rating()))
+
+
+
 
 
 class SpecialistCertificate(models.Model):

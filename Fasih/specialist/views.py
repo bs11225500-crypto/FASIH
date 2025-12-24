@@ -239,3 +239,28 @@ def specialist_sessions(request):
             "sessions": sessions
         }
     )
+
+
+def specialist_detail(request, specialist_id):
+    specialist = get_object_or_404(
+        Specialist,
+        id=specialist_id,
+        verification_status=Specialist.VerificationStatus.APPROVED
+    )
+
+    certificates = SpecialistCertificate.objects.filter(specialist=specialist)
+
+    can_rate = False
+    if request.user.is_authenticated and request.user.role == "PATIENT":
+        patient = request.user.patient_profile
+        can_rate = Assessment.objects.filter(
+            patient=patient,
+            specialist=specialist,
+            status="ACCEPTED"
+        ).exists()
+
+    return render(request, "specialist/specialist_detail.html", {
+        "specialist": specialist,
+        "certificates": certificates,
+        "can_rate": can_rate,
+    })

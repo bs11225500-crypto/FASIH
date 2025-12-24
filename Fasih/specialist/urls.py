@@ -14,6 +14,8 @@ urlpatterns = [
     path("certificates/<int:cert_id>/edit/", views.edit_certificate, name="edit_certificate"),
     path("certificates/<int:cert_id>/delete/", views.delete_certificate, name="delete_certificate"),
     path("specialist_sessions/",views.specialist_sessions,name="specialist_sessions"),
+    path("detail/<int:specialist_id>/",views.specialist_detail,name="specialist_detail"),
+
     
 ]
 

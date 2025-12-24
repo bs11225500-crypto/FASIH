@@ -15,10 +15,10 @@
   
   <h1 class="page-title">اختر الأخصائي المناسب</h1>
 
-  <div class="specialists-grid">
+  <div class="specialists-grid wide-cards">
 
     {% for specialist in specialists %}
-    <div class="specialist-card">
+    <div class="specialist-card wide-card">
 
       <div class="avatar">
         {% if specialist.user.profile_image %}
@@ -28,46 +28,38 @@
         {% endif %}
       </div>
 
-      <!-- الاسم -->
       <h3 class="name">
         {{ specialist.user.get_full_name }}
       </h3>
 
-      <!-- التخصص -->
-      <p class="spec">
-        {{ specialist.specialization }}
-      </p>
+      <p class="spec">{{ specialist.specialization }}</p>
 
-      <!-- سنوات الخبرة -->
       <p class="exp">
         🕒 {{ specialist.years_of_experience }} سنوات خبرة
       </p>
 
-      <!-- الشهادات -->
-      {% if specialist.certificates.exists %}
-        <ul class="cert-list">
-          {% for cert in specialist.certificates.all|slice:":2" %}
-            <li>{{ cert.title }}</li>
+      <div class="rating">
+        {% if specialist.ratings_count > 0 %}
+          {% for _ in specialist.stars_range %}
+            <span class="material-icons star filled">star</span>
           {% endfor %}
+          <span class="rating-text">
+            {{ specialist.average_rating }}
+            ({{ specialist.ratings_count }})
+          </span>
+        {% else %}
+          <span class="no-rating">لا يوجد تقييم بعد</span>
+        {% endif %}
+      </div>
 
-          {% if specialist.certificates.count > 2 %}
-            <li class="more-cert">وغيرها…</li>
-          {% endif %}
-        </ul>
-      {% endif %}
-
-
-      <!-- زر الاختيار -->
       <a
-        href="{% url 'assessment:form' %}?specialist={{ specialist.id }}"
+        href="{% url 'specialist:specialist_detail' specialist.id %}"
         class="choose-btn"
       >
-        اختر الأخصائي
+        عرض التفاصيل
       </a>
 
     </div>
-    {% empty %}
-      <p>لا يوجد أخصائيين معتمدين حالياً</p>
     {% endfor %}
 
   </div>

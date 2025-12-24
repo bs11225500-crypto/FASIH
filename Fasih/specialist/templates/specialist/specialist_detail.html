@@ -1,0 +1,174 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}تفاصيل الأخصائي{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/specialist_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="specialist-detail-page">
+
+  <div class="bg-circle bg-circle-1"></div>
+  <div class="bg-circle bg-circle-2"></div>
+
+  <div class="detail-card">
+
+    <div class="header">
+
+      <div class="avatar">
+        {% if specialist.user.profile_image %}
+          <img src="{{ specialist.user.profile_image.url }}" alt="صورة الأخصائي">
+        {% else %}
+          <span class="material-icons avatar-icon">person</span>
+        {% endif %}
+      </div>
+
+      <div class="info">
+        <h2>{{ specialist.user.get_full_name }}</h2>
+
+        <div class="rating main-rating">
+          {% if specialist.ratings_count > 0 %}
+            {% for _ in specialist.stars_range %}
+              <span class="material-icons star filled">star</span>
+            {% endfor %}
+            <span class="rating-text">
+              {{ specialist.average_rating }}
+              ({{ specialist.ratings_count }} تقييم)
+            </span>
+          {% else %}
+            <span class="no-rating">لا يوجد تقييم بعد</span>
+          {% endif %}
+        </div>
+
+        <button class="show-ratings-btn" onclick="openRatingModal()">
+          عرض التقييمات
+        </button>
+
+        <p class="spec">{{ specialist.specialization }}</p>
+        <p class="exp">
+          {{ specialist.years_of_experience|default:"—" }} سنوات خبرة
+        </p>
+      </div>
+
+    </div>
+
+    {% if specialist.bio %}
+    <div class="section">
+      <h3>نبذة عن الأخصائي</h3>
+      <p class="bio">{{ specialist.bio }}</p>
+    </div>
+    {% endif %}
+
+    {% if certificates %}
+    <div class="section">
+      <h3>الشهادات</h3>
+      <ul class="cert-list">
+        {% for cert in certificates %}
+          <li>{{ cert.title }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <div class="actions">
+      <a
+        href="{% url 'assessment:form' %}?specialist={{ specialist.id }}"
+        class="fasih-btn"
+      >
+        بدء استشارة
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!--  Popup التقييم  -->
+
+<div id="ratingModal" class="rating-modal">
+  <div class="rating-popup">
+
+    <button class="close-btn" onclick="closeRatingModal()">×</button>
+
+    <!-- العنوان -->
+    <h3 class="popup-title">اختر تقييمك للأخصائي</h3>
+    <p class="popup-subtitle">اختر التقييم الذي يعكس تجربتك</p>
+
+    <!-- ملخص التقييم -->
+    <div class="rating-summary">
+      <div class="rating-score">{{ specialist.average_rating|default:"0" }}</div>
+
+      <div class="rating-stars">
+        {% for _ in specialist.stars_range %}
+          <span class="material-icons filled">star</span>
+        {% endfor %}
+      </div>
+
+      <div class="rating-count">
+        {{ specialist.ratings_count }} تقييم
+      </div>
+    </div>
+
+    {% if can_rate %}
+    <form
+      method="post"
+      action="{% url 'ratings:rate_specialist' specialist.id %}"
+      class="rate-form-popup"
+    >
+      {% csrf_token %}
+
+      <div class="rating-options">
+
+        <label class="rating-row">
+          <input type="radio" name="rating" value="5" required>
+          <span class="stars">★★★★★</span>
+          <span class="label-text">ممتاز</span>
+        </label>
+
+        <label class="rating-row">
+          <input type="radio" name="rating" value="4">
+          <span class="stars">★★★★☆</span>
+          <span class="label-text">جيد جدًا</span>
+        </label>
+
+        <label class="rating-row">
+          <input type="radio" name="rating" value="3">
+          <span class="stars">★★★☆☆</span>
+          <span class="label-text">جيد</span>
+        </label>
+
+        <label class="rating-row">
+          <input type="radio" name="rating" value="2">
+          <span class="stars">★★☆☆☆</span>
+          <span class="label-text">متوسط</span>
+        </label>
+
+        <label class="rating-row">
+          <input type="radio" name="rating" value="1">
+          <span class="stars">★☆☆☆☆</span>
+          <span class="label-text">أقل من المتوسط</span>
+        </label>
+
+      </div>
+
+      <button type="submit" class="fasih-btn small">
+        حفظ التقييم
+      </button>
+    </form>
+    {% endif %}
+
+  </div>
+</div>
+
+<script>
+function openRatingModal() {
+  document.getElementById('ratingModal').style.display = 'flex';
+}
+function closeRatingModal() {
+  document.getElementById('ratingModal').style.display = 'none';
+}
+</script>
+
+{% endblock %}
