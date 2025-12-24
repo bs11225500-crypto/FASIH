@@ -123,7 +123,11 @@ class DailyTask(models.Model):
         blank=True,
         null=True
     )
-
+    specialist_notes = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="ملاحظات الأخصائي"
+    )
 # بدون تاسك حاليًا  
 class ProgressReport(models.Model):
     treatment_plan = models.ForeignKey(

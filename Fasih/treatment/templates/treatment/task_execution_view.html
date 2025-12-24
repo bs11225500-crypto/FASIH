@@ -1,30 +1,64 @@
 {% extends "specialist/base_specialist.html" %}
 {% load static %}
 
+{% block specialist_css %}
+<link rel="stylesheet" href="{% static 'css/task_execution_view.css' %}">
+{% endblock %}
+
 {% block specialist_content %}
+<div class="task-execution-wrapper">
+  <div class="task-execution-card">
 
-<div class="goal-wrapper">
-    <div class="goal-card">
+    <h2 class="task-execution-title">تسجيل تنفيذ المهمة</h2>
 
-        <h2 class="page-title">تسجيل تنفيذ المهمة</h2>
-
-        <p><strong>اسم المهمة:</strong> {{ task.task_name }}</p>
-        <p><strong>الحرف:</strong> {{ task.target_letter }}</p>
-
-        {% if task.execution_video_url %}
-            <video controls width="100%" style="margin-top:20px;">
-                <source src="{{ task.execution_video_url }}" type="video/webm">
-                المتصفح لا يدعم تشغيل الفيديو
-            </video>
-        {% else %}
-            <p>لا يوجد تسجيل لهذه المهمة</p>
-        {% endif %}
-
-        <a href="javascript:history.back()" class="secondary-btn" style="margin-top:20px;">
-            رجوع
-        </a>
-
+    <div class="task-info">
+      <p><strong>اسم المهمة:</strong> {{ task.task_name }}</p>
+      <p><strong>الحرف:</strong> {{ task.target_letter }}</p>
     </div>
+
+    {% if task.execution_video_url %}
+      <div class="video-wrapper">
+        <video controls>
+          <source src="{{ task.execution_video_url }}" type="video/webm">
+          المتصفح لا يدعم تشغيل الفيديو
+        </video>
+      </div>
+    {% else %}
+      <div class="no-video">
+        لا يوجد تسجيل لهذه المهمة
+      </div>
+    {% endif %}
+
+    {% if user.role == "SPECIALIST" %}
+      <form method="post" class="notes-section">
+        {% csrf_token %}
+
+        <label class="notes-label">ملاحظات الأخصائي</label>
+
+        <textarea
+          name="specialist_notes"
+          class="notes-textarea"
+          rows="4"
+          placeholder="اكتب ملاحظاتك على أداء الطفل هنا..."
+        >{{ task.specialist_notes }}</textarea>
+
+        <button type="submit" class="notes-save-btn">
+          حفظ الملاحظات
+        </button>
+      </form>
+
+    {% elif task.specialist_notes %}
+      <div class="notes-section read-only">
+        <h4>ملاحظات الأخصائي</h4>
+        <p>{{ task.specialist_notes }}</p>
+      </div>
+    {% endif %}
+
+    <a href="javascript:history.back()" class="back-btn">
+      رجوع
+    </a>
+
+  </div>
 </div>
 
 {% endblock %}

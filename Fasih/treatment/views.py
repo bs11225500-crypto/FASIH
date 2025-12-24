@@ -5,7 +5,9 @@ from specialist.models import Specialist
 from django.contrib.auth.decorators import login_required
 from datetime import date, timedelta, datetime
 from django.http import HttpResponseForbidden
-
+from datetime import timedelta
+from django.utils import timezone
+from django.contrib import messages
 
 
 
@@ -26,12 +28,19 @@ def treatment_patients(request):
             specialist=specialist
         ).order_by("-created_at").first()
 
-        if plan:  
+        if plan:
+          
+            end_date = plan.start_date + timedelta(days=plan.duration_weeks * 7)
+
+           
+            if timezone.now().date() > end_date and plan.status == "ACTIVE":
+                plan.status = "COMPLETED"
+                plan.save(update_fields=["status"])
+
             patient_plans.append({
                 "patient": patient,
                 "plan": plan
             })
-
     return render(
         request,
         "treatment/treatment_patients.html",
@@ -110,6 +119,7 @@ def add_short_term_goal(request, plan_id):
             description=request.POST.get("description"),
             target_accuracy=request.POST.get("target_accuracy")
         )
+        messages.success(request, "تمت إضافة الهدف العلاجي بنجاح")
         return redirect("treatment:treatment_plan_detail", plan_id=plan_id)
 
     return render(request, "treatment/add_short_term_goal.html", {
@@ -125,6 +135,7 @@ def edit_daily_task(request, task_id):
         task.task_name = request.POST.get("task_name")
       
         task.save()
+        messages.success(request, "تم تعديل المهمة بنجاح")
 
         return redirect(
             "treatment:treatment_plan_detail",
@@ -147,6 +158,7 @@ def add_daily_task(request, day_id):
             task_name=request.POST.get("task_name"),
             target_letter=request.POST.get("target_letter")
         )
+        messages.success(request, "تمت إضافة المهمة بنجاح")
         return redirect(
             "treatment:treatment_plan_detail",
             plan_id=day.treatment_plan.id
@@ -157,14 +169,27 @@ def add_daily_task(request, day_id):
     })
 
 
-
 @login_required
 def view_task_execution(request, task_id):
     task = get_object_or_404(DailyTask, id=task_id)
     specialist = get_object_or_404(Specialist, user=request.user)
 
+   
     if task.daily_plan.treatment_plan.specialist != specialist:
         return HttpResponseForbidden("غير مصرح لك")
+
+ 
+    if request.method == "POST":
+        notes = request.POST.get("specialist_notes", "").strip()
+        task.specialist_notes = notes
+        task.save()
+
+        messages.success(request, "تم حفظ ملاحظات الأخصائي بنجاح")
+
+        return redirect(
+            "treatment:view_task_execution",
+            task_id=task.id
+        )
 
     return render(
         request,

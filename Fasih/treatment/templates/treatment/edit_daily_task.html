@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block specialist_css %}
-<link rel="stylesheet" href="{% static 'css/create.css' %}">
+<link rel="stylesheet" href="{% static 'css/edit_daily_task.css' %}">
 {% endblock %}
 
 {% block specialist_content %}
@@ -12,16 +12,22 @@
 
         <h2 class="page-title">تعديل المهمة</h2>
 
-        <form method="post">
+        <form method="post" class="edit-task-form">
             {% csrf_token %}
 
-            <label>اسم المهمة</label>
-            <input type="text" name="task_name"
-                   value="{{ task.task_name }}" required>
+            <label for="task_name">اسم المهمة</label>
+            <input
+                type="text"
+                id="task_name"
+                name="task_name"
+                value="{{ task.task_name }}"
+                required
+            >
 
             <button type="submit" class="primary-btn">
                 حفظ التعديل
             </button>
+            
         </form>
 
     </div>
