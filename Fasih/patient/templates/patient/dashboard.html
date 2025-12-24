@@ -13,7 +13,7 @@
 
   <div class="dashboard-header">
     <h2>مرحبًا {{ user.get_full_name }}</h2>
-    <p>هذه لوحة التحكم الخاصة بالمريض</p>
+    <p>هذه لوحة التحكم الخاصة بك</p>
   </div>
 
   <div class="dashboard-grid">
@@ -29,6 +29,15 @@
           <li><strong>رقم الملف:</strong> {{ patient.file_number }}</li>
           <li><strong>العمر:</strong> {{ patient.age }} سنوات</li>
           <li><strong>الجنس:</strong> {{ patient.get_gender_display }}</li>
+
+          {% if linked_specialist %}
+            <li>
+              <strong>الأخصائي:</strong>
+              {{ linked_specialist.user.get_full_name }}
+            </li>
+          {% else %}
+            <li class="muted">لم يتم ربط أخصائي بعد</li>
+          {% endif %}
         </ul>
 
         <a href="{% url 'patient:profile' %}" class="card-link">
@@ -38,8 +47,7 @@
     </div>
 
     <!-- كارد حالة الاستشارة -->
-    <!-- كارد حالة الاستشارة -->
-    <div class="dashboard-card">
+    <div class="dashboard-card {% if assessment and assessment.status == 'ACCEPTED' %}card-active{% endif %}">
       <div class="card-header">
         <h3>حالة الاستشارة</h3>
       </div>
@@ -48,40 +56,39 @@
 
         {% if assessment %}
 
-          {% if assessment.status == "PENDING" %}
-            <p class="status pending">
-              ⏳ استشارتك قيد المراجعة
-            </p>
-            <span class="hint">
-              سيقوم الأخصائي بمراجعة الاستبيان قريبًا
-            </span>
+          {% if last_completed_session %}
+            <p class="status completed">تمت الجلسة الاستشارية</p>
+
+            {% if last_completed_session.note %}
+              <span class="hint">تمت إضافة ملاحظات الجلسة</span>
+            {% else %}
+              <span class="hint">بانتظار ملاحظات الأخصائي</span>
+            {% endif %}
+
+          {% elif assessment.status == "PENDING" %}
+            <p class="status pending">⏳ استشارتك قيد المراجعة</p>
+            <span class="hint">سيقوم الأخصائي بمراجعة الاستبيان قريبًا</span>
 
           {% elif assessment.status == "ACCEPTED" %}
-            <p class="status accepted">
-              ✅ تم قبول الاستشارة
-            </p>
-            <span class="hint">
-              سيتم تحديد الجلسة الاستشارية الأولى
-            </span>
+            <p class="status accepted">تم قبول الاستشارة</p>
+
+            {% if has_sessions %}
+              <span class="hint">تم تحديد جلسة استشارية</span>
+            {% else %}
+              <span class="hint">بانتظار تحديد موعد الجلسة الاستشارية</span>
+            {% endif %}
 
           {% elif assessment.status == "REJECTED" %}
-            <p class="status rejected">
-              ❌ تم رفض الاستشارة
-            </p>
-
+            <p class="status rejected">تم رفض الاستشارة</p>
             {% if assessment.rejection_reason %}
               <span class="hint">
                 السبب: {{ assessment.get_rejection_reason_display }}
               </span>
             {% endif %}
-
           {% endif %}
 
         {% else %}
-          <p class="muted">
-            لم يتم طلب استشارة بعد
-          </p>
-
+          <p class="muted">لم يتم طلب استشارة بعد</p>
           <a href="{% url 'specialist:choose_specialist' %}" class="card-link">
             طلب استشارة
           </a>
@@ -91,17 +98,14 @@
     </div>
 
     <!-- كارد مهامي اليوم -->
-    <div class="dashboard-card">
+    <div class="dashboard-card {% if today_tasks_count > 0 %}card-active{% endif %}">
       <div class="card-header">
         <h3>مهامي اليوم</h3>
       </div>
 
       <div class="card-body">
         {% if today_tasks_count > 0 %}
-          <p>
-            لديك <strong>{{ today_tasks_count }}</strong> مهام لليوم
-          </p>
-
+          <p>لديك <strong>{{ today_tasks_count }}</strong> مهام لليوم</p>
           <a href="{% url 'tasks:daily_tasks' %}" class="card-link">
             عرض المهام
           </a>
@@ -113,39 +117,79 @@
     </div>
 
     <!-- كارد جلساتي -->
-    <div class="dashboard-card
-      {% if next_session and not next_session.can_join %}
-        session-upcoming
-      {% endif %}
-    ">
+    <div class="dashboard-card {% if next_session or last_completed_session %}card-active{% endif %}">
       <div class="card-header">
         <h3>جلساتي</h3>
       </div>
 
       <div class="card-body">
-        {% if not has_sessions %}
-          <p class="muted">لا توجد جلسات مجدولة حاليًا</p>
-          <span class="hint">سيقوم الأخصائي بجدولة الجلسات لاحقًا</span>
 
-        {% elif next_session and not next_session.can_join %}
-          <p>لديك جلسة قادمة</p>
-          <p class="muted">🕒 {{ next_session.start_time }}</p>
+        {% if next_session %}
+          <p><strong>{{ next_session.title }}</strong></p>
+          <p class="muted">
+            🗓 {{ next_session.start_time|date:"Y-m-d" }}
+            {{ next_session.start_time|time:"H:i" }}
+          </p>
+          <p class="muted">
+            الأخصائي: {{ next_session.specialist.user.get_full_name }}
+          </p>
 
+          {% if next_session.can_join %}
+            <p class="status active">جلسة جارية الآن</p>
+            <a href="{% url 'session:join_session' next_session.id %}" class="card-link">
+              دخول الجلسة
+            </a>
+          {% else %}
+            <p class="status upcoming">جلسة قادمة</p>
+            <a href="{% url 'patient:sessions' %}" class="card-link">
+              عرض جميع الجلسات
+            </a>
+          {% endif %}
+
+        {% elif last_completed_session %}
+          <p><strong>{{ last_completed_session.title }}</strong></p>
+          <p class="muted">
+            🗓 {{ last_completed_session.start_time|date:"Y-m-d" }}
+            {{ last_completed_session.start_time|time:"H:i" }}
+          </p>
+          <p class="status completed">انتهت الجلسة</p>
+
+          {% if last_completed_session.note %}
+            <a href="{% url 'patient:session_note_detail' last_completed_session.id %}" class="card-link">
+              عرض ملاحظات الجلسة
+            </a>
+          {% else %}
+            <span class="hint">بانتظار ملاحظات الأخصائي</span>
+          {% endif %}
+
+        {% elif treatment_plan and treatment_plan.status != "ACTIVE" and assessment and assessment.status == "ACCEPTED" %}
+          <p class="muted">الجلسات العلاجية متاحة بعد تفعيل الخطة العلاجية</p>
+          <span class="hint">
+            الجلسة الاستشارية مجانية، أما الجلسات العلاجية فتتطلب إتمام الدفع
+          </span>
+          <a href="{% url 'patient:treatment_plan' %}" class="card-link">
+            تفعيل الخطة العلاجية
+          </a>
+
+        {% elif has_sessions %}
+          <p class="muted">لديك جلسات بانتظار التأكيد</p>
           <a href="{% url 'patient:sessions' %}" class="card-link">
             عرض الجلسات
           </a>
 
-        {% elif next_session and next_session.can_join %}
-          <p>جلسة جارية الآن</p>
+        {% elif assessment %}
+          <p class="muted">تم قبول الاستشارة وبانتظار تحديد الجلسة</p>
 
-          <a href="{% url 'session:join_session' next_session.id %}"
-             class="card-link">
-            دخول الجلسة
-          </a>
+        {% else %}
+          <p class="muted">لا توجد جلسات بعد</p>
+          <span class="hint">ابدأ بطلب استشارة أولًا</span>
         {% endif %}
+
       </div>
     </div>
-    <div class="dashboard-card">
+
+    <!-- كارد الخطة العلاجية -->
+    <div class="dashboard-card {% if treatment_plan and treatment_plan.status == 'ACTIVE' %}card-active{% endif %}">
       <div class="card-header">
         <h3>الخطة العلاجية</h3>
       </div>
@@ -153,6 +197,12 @@
       <div class="card-body">
         {% if treatment_plan %}
           <p>الحالة: {{ treatment_plan.get_status_display }}</p>
+
+          {% if treatment_plan.status != "ACTIVE" %}
+            <span class="hint">
+              الخطة غير مفعّلة حاليًا وسيتم تفعيلها بعد استكمال الإجراءات
+            </span>
+          {% endif %}
 
           <a href="{% url 'patient:treatment_plan' %}" class="card-link">
             عرض الخطة
@@ -162,7 +212,6 @@
         {% endif %}
       </div>
     </div>
-
 
   </div>
 </div>

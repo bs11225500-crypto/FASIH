@@ -1,94 +1,189 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>{{ session.title }} | فصيح</title>
+  <meta charset="UTF-8">
+  <title>{{ session.title }} | فصيح</title>
 
-    <!-- Jitsi API -->
-    <script src="https://meet.jit.si/external_api.js"></script>
+  <script src="https://unpkg.com/@daily-co/daily-js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <!-- خط -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Cairo', sans-serif;
-            background: #f4f7fb;
-        }
-
-        .session-header {
-            height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
-            color: #fff;
-            font-weight: 600;
-            font-size: 16px;
-        }
-
-        #meet {
-            width: 100%;
-            height: calc(100vh - 56px);
-        }
-    </style>
-</head>
-<body>
-
-<div class="session-header">
-    {{ session.title }} – جلسة نطق عبر فصيح
-</div>
-
-<div id="meet"></div>
-<script>
-  window.onload = function () {
-
-    if (typeof JitsiMeetExternalAPI === "undefined") {
-      alert("Jitsi API لم يتم تحميله");
-      return;
+  <style>
+    body { margin: 0; font-family: 'Cairo', sans-serif; background: #f4f7fb; }
+    .session-header {
+      height: 56px;
+      background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      font-weight: 600;
     }
+    .left, .right { display: flex; align-items: center; gap: 10px; }
+    #timer { padding: 4px 12px; border-radius: 8px; background: rgba(255,255,255,0.25); font-size: 14px; }
+    .warning { background: #ff9800 !important; }
+    .danger { background: #e53935 !important; }
+    .controls button {
+      background: rgba(255,255,255,0.25);
+      border: none;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .end-btn {
+      background: linear-gradient(135deg, #eb5757, #f2994a) !important;
+      font-weight: 700;
+    }
+    #daily-frame { width: 100%; height: calc(100vh - 56px); }
+  </style>
 
-    const domain = "meet.jit.si";
-
-    const options = {
-      roomName: "{{ session.room_name }}",
-      parentNode: document.getElementById("meet"),
-      width: "100%",
-      height: "100%",
-
-      userInfo: {
-        displayName: "{{ request.user.get_full_name|default:'مستخدم' }}"
-      },
-
-      configOverwrite: {
-        prejoinPageEnabled: false,
-        enableLobby: false,
-        disableInviteFunctions: true,
-        startWithAudioMuted: false,
-        startWithVideoMuted: false,
-        requireDisplayName: false,
-      },
-
-      interfaceConfigOverwrite: {
-        DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
-        SHOW_JITSI_WATERMARK: false,
-        SHOW_WATERMARK_FOR_GUESTS: false,
-        SHOW_BRAND_WATERMARK: false,
-      }
-    };
-
-    const api = new JitsiMeetExternalAPI(domain, options);
-
-    // منع شاشة تسجيل الدخول
-    api.addEventListener('videoConferenceJoined', () => {
-      console.log("تم الدخول بنجاح");
-    });
-
-  };
+<script>
+  const IS_SPECIALIST = "{{ is_specialist }}";
+  const JOIN_SESSION_URL = "{% url 'session:join_session' session.id %}";
+  const COMPLETE_SESSION_URL = "{% url 'session:complete_session' session.id %}";
 </script>
 
 
+
+</head>
+
+<body>
+
+<div class="session-header">
+  <div class="left">
+    <span>{{ session.title }}</span>
+    <div id="timer">00:00</div>
+  </div>
+
+  {% if is_specialist %}
+  <div class="controls right">
+    <button type="button" onclick="mutePatient()">كتم صوت المريض</button>
+    <button type="button" onclick="disableCamera()">إيقاف كاميرا المريض</button>
+    <button type="button" class="end-btn" onclick="endSession()">إنهاء الجلسة</button>
+  </div>
+  {% endif %}
+</div>
+
+<div id="daily-frame"></div>
+
+<script>
+let callFrame;
+let patientId = null;
+let seconds = 0;
+let timerInterval = null;
+let sessionEnded = false;
+let nextRedirectUrl = null; 
+
+function getCSRFToken() {
+  return document.cookie
+    .split("; ")
+    .find(row => row.startsWith("csrftoken="))
+    ?.split("=")[1];
+}
+
+window.onload = function () {
+
+  callFrame = DailyIframe.createFrame(
+    document.getElementById("daily-frame"),
+    {
+      showLeaveButton: false,
+      iframeStyle: { width: "100%", height: "100%", border: "0" }
+    }
+  );
+
+  callFrame.join({
+    url: "{{ session.meeting_url }}",
+    token: "{{ daily_token }}",
+    userName: "{{ request.user.get_full_name|default:'مستخدم فصيح' }}"
+  });
+
+  timerInterval = setInterval(updateTimer, 1000);
+
+  callFrame.on("participant-joined", (e) => {
+    if (!e.participant.local) {
+      patientId = e.participant.session_id;
+    }
+  });
+
+  callFrame.on("left-meeting", async () => {
+    if (sessionEnded) return;
+
+    sessionEnded = true;
+    clearInterval(timerInterval);
+
+    if (IS_SPECIALIST === "True") {
+      await completeSession();
+      if (nextRedirectUrl) {
+        window.location.href = nextRedirectUrl;
+        return;
+      }
+    }
+
+    window.location.href = JOIN_SESSION_URL;
+  });
+};
+
+function updateTimer() {
+  seconds++;
+
+  const min = String(Math.floor(seconds / 60)).padStart(2, "0");
+  const sec = String(seconds % 60).padStart(2, "0");
+
+  const timer = document.getElementById("timer"); 
+  timer.innerText = `${min}:${sec}`;
+
+  if (seconds >= 45 * 60) timer.classList.add("danger");
+  else if (seconds >= 30 * 60) timer.classList.add("warning");
+}
+
+function mutePatient() {
+  if (patientId) callFrame.updateParticipant(patientId, { setAudio: false });
+}
+
+function disableCamera() {
+  if (patientId) callFrame.updateParticipant(patientId, { setVideo: false });
+}
+
+async function endSession() {
+  if (!confirm("هل أنت متأكد من إنهاء الجلسة؟")) return;
+
+  sessionEnded = true;
+  clearInterval(timerInterval);
+
+  if (IS_SPECIALIST === "True") {
+    await completeSession();
+  }
+
+  callFrame.leave();
+
+  if (IS_SPECIALIST === "True" && nextRedirectUrl) {
+    window.location.href = nextRedirectUrl;
+    return;
+  }
+
+  window.location.href = JOIN_SESSION_URL;
+}
+
+async function completeSession() {
+  try {
+    const res = await fetch(COMPLETE_SESSION_URL, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": getCSRFToken()
+      }
+    });
+
+    const data = await res.json().catch(() => null);
+    if (data && data.redirect_url) {
+      nextRedirectUrl = data.redirect_url;
+    }
+  } catch (e) {
+    console.error("completeSession failed", e);
+  }
+}
+</script>
 
 </body>
 </html>

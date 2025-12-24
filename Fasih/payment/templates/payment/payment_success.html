@@ -11,16 +11,33 @@
 <section class="payment-success-page">
   <div class="payment-success-card">
     <h2>
-      تم الدفع بنجاح
+      تم الدفع بنجاح 
     </h2>
 
     <p>
-      شكرًا لك، تم إتمام عملية الدفع بنجاح
+      شكرًا لك، تم إتمام عملية الدفع بنجاح.
     </p>
 
-    <a href="{% url 'main:home' %}" class="success-btn">
-      العودة إلى الصفحة الرئيسية
-    </a>
+    <p class="success-hint">
+      تم تفعيل خطتك العلاجية ويمكنك الآن البدء في الجلسات والمتابعة.
+    </p>
+
+    <div class="success-actions">
+
+      <a href="{% url 'patient:treatment_plan' %}" class="success-btn">
+        عرض الخطة العلاجية
+      </a>
+
+      <a href="{% url 'patient:sessions' %}" class="secondary-btn">
+        الانتقال إلى الجلسات
+      </a>
+
+      <a href="{% url 'main:home' %}" class="link-btn">
+        العودة إلى الصفحة الرئيسية
+      </a>
+
+    </div>
   </div>
+
 </section>
 {% endblock %}

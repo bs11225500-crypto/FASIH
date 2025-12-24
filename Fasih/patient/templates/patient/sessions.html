@@ -11,13 +11,11 @@
 
 <div class="sessions-container">
 
-  <!-- Header -->
   <div class="page-header">
     <h2>جلساتي</h2>
     <p class="page-subtitle">متابعة الجلسات الاستشارية والعلاجية</p>
   </div>
 
-  {# ================= EMPTY STATE ================= #}
   {% if not consultation_sessions and not therapy_sessions %}
     <div class="sessions-empty-wrapper">
       <div class="sessions-empty-card">
@@ -34,6 +32,12 @@
             سيتم تحديد الجلسة الاستشارية قريبًا.
           </p>
 
+        {% elif assessment.status == "ACCEPTED" %}
+          <h3>بانتظار جدولة الجلسة</h3>
+          <p class="hint">
+            تم قبول الاستشارة وسيتم تحديد موعد الجلسة قريبًا.
+          </p>
+
         {% elif assessment.status == "REJECTED" %}
           <h3>تم رفض الاستشارة</h3>
           <p class="hint">
@@ -46,7 +50,7 @@
 
   {% else %}
 
-  {# ================= الجلسة الاستشارية ================= #}
+  {#  الجلسة الاستشارية  #}
   {% if consultation_sessions %}
   <section class="sessions-section">
     <h3 class="section-title">الجلسة الاستشارية</h3>
@@ -54,7 +58,6 @@
     {% for session in consultation_sessions %}
       <div class="consultation-card clean">
 
-        <!-- Header -->
         <div class="consultation-header">
           <h4>{{ session.title }}</h4>
           <span class="time">
@@ -63,16 +66,13 @@
           </span>
         </div>
 
-        <!-- ===== بانتظار المريض ===== -->
+        {#  بانتظار المريض  #}
         {% if session.status == "PROPOSED" %}
         <form method="post" action="{% url 'session:respond_session' session.id %}">
           {% csrf_token %}
 
           <div class="actions">
-            <button type="submit"
-                    name="action"
-                    value="accept"
-                    class="btn-accept">
+            <button type="submit" name="action" value="accept" class="btn-accept">
               أوافق
             </button>
 
@@ -83,7 +83,6 @@
             </button>
           </div>
 
-          <!-- سبب الرفض -->
           <div id="reject-box-{{ session.id }}" class="reject-box">
             <textarea name="reason"
                       placeholder="سبب عدم مناسبة الموعد"></textarea>
@@ -100,17 +99,13 @@
           </div>
         </form>
 
-        <!-- ===== مؤكدة ===== -->
+        {#  مؤكدة  #}
         {% elif session.status == "CONFIRMED" %}
-          <div class="status confirmed">
-            تم تأكيد الجلسة
-          </div>
+          <div class="status confirmed">تم تأكيد الجلسة</div>
 
           {% if session.can_join %}
             {% if not session.specialist_joined %}
-              <span class="muted">
-                ⏳ بانتظار دخول الأخصائي
-              </span>
+              <span class="muted">⏳ بانتظار دخول الأخصائي</span>
             {% else %}
               <a href="{% url 'session:join_session' session.id %}"
                  class="btn-primary">
@@ -119,15 +114,28 @@
             {% endif %}
           {% else %}
             <span class="muted">
-              ⏳ لم يحن وقت الجلسة بعد
+              🕒 موعد الجلسة:
+              {{ session.start_time|date:"Y-m-d" }}
+              {{ session.start_time|time:"H:i" }}
             </span>
           {% endif %}
 
-        <!-- ===== مرفوضة ===== -->
+        {#  منتهية  #}
+        {% elif session.status == "COMPLETED" %}
+          <div class="status completed">انتهت الجلسة</div>
+
+          {% if session.note %}
+            <a href="{% url 'patient:session_note_detail' session.id %}"
+               class="btn-primary">
+              عرض ملاحظات الجلسة
+            </a>
+          {% else %}
+            <span class="muted">⏳ بانتظار ملاحظات الأخصائي</span>
+          {% endif %}
+
+        {#  مرفوضة  #}
         {% elif session.status == "REJECTED" %}
-          <div class="status rejected">
-            تم رفض الجلسة
-          </div>
+          <div class="status rejected">تم رفض الجلسة</div>
 
           {% if session.patient_response_reason %}
             <p class="reject-reason">
@@ -142,32 +150,49 @@
   </section>
   {% endif %}
 
-  {# ================= الجلسات العلاجية ================= #}
+  {#  الجلسات العلاجية  #}
   <section class="sessions-section">
     <h3 class="section-title">الجلسات العلاجية</h3>
 
     {% if can_access_therapy_sessions and therapy_sessions %}
       {% for session in therapy_sessions %}
         <div class="therapy-card">
-          <h4>{{ session.title }}</h4>
-          <p>🗓 {{ session.start_time }}</p>
 
-          {% if session.can_join %}
-            {% if not session.specialist_joined %}
-              <span class="muted">
-                ⏳ بانتظار دخول الأخصائي
-              </span>
-            {% else %}
-              <a href="{% url 'session:join_session' session.id %}"
-                 class="btn-primary">
-                دخول الجلسة
-              </a>
-            {% endif %}
-          {% else %}
-            <span class="muted">
-              ⏳ لم يحن وقت الجلسة بعد
+          <div class="therapy-header">
+            <h4>{{ session.title }}</h4>
+            <span class="time">
+              {{ session.start_time|date:"Y-m-d" }}
+              {{ session.start_time|time:"H:i" }}
             </span>
+          </div>
+
+          {% if session.status == "CONFIRMED" %}
+            {% if session.can_join %}
+              {% if not session.specialist_joined %}
+                <span class="muted">⏳ بانتظار دخول الأخصائي</span>
+              {% else %}
+                <a href="{% url 'session:join_session' session.id %}"
+                   class="btn-primary">
+                  دخول الجلسة
+                </a>
+              {% endif %}
+            {% else %}
+              <span class="muted">⏳ لم يحن وقت الجلسة بعد</span>
+            {% endif %}
+
+          {% elif session.status == "COMPLETED" %}
+            <div class="status completed">انتهت الجلسة</div>
+
+            {% if session.note %}
+              <a href="{% url 'patient:session_note_detail' session.id %}"
+                 class="btn-primary">
+                عرض ملاحظات الجلسة
+              </a>
+            {% else %}
+              <span class="muted">⏳ بانتظار ملاحظات الأخصائي</span>
+            {% endif %}
           {% endif %}
+
         </div>
       {% endfor %}
     {% else %}

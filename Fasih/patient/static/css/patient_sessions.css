@@ -1,13 +1,9 @@
-/* =========================
-   صفحة جلساتي – فصيح
-   ========================= */
 
 .sessions-container {
   max-width: 1100px;
   margin: 0 auto;
 }
 
-/* Header */
 .page-header {
   margin-bottom: 24px;
 }
@@ -23,7 +19,6 @@
   font-size: 14px;
 }
 
-/* Empty State */
 .empty-state {
   background: #ffffff;
   border-radius: 12px;
@@ -42,7 +37,6 @@
   line-height: 1.7;
 }
 
-/* Sections */
 .sessions-section {
   margin-bottom: 32px;
 }
@@ -53,7 +47,6 @@
   font-weight: 600;
 }
 
-/* Session Card */
 .session-card {
   background: #ffffff;
   border-radius: 12px;
@@ -80,27 +73,33 @@
 
 /* حالات الجلسات */
 .session-card.pending {
-  border-right: 4px solid #facc15; /* أصفر */
+  border-right: 4px solid #facc15; 
 }
 
 .session-card.confirmed {
-  border-right: 4px solid #22c55e; /* أخضر */
+  border-right: 4px solid #22c55e; 
 }
 
-/* Buttons */
 .btn-primary {
-  display: inline-block;
-  padding: 8px 18px;
-  background: #2563eb;
-  color: #fff;
-  border-radius: 8px;
-  font-size: 14px;
-  text-decoration: none;
+    display: inline-block;
+    margin-top: 26px;
+    padding: 10px 30px;
+
+    background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
+    color: #ffffff;
+
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-primary:hover {
-  background: #1e40af;
-}
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(58,123,213,0.35);}
+
 
 .btn-success {
   background: #22c55e;
@@ -130,7 +129,6 @@
   background: #dc2626;
 }
 
-/* Forms داخل الكارد */
 .session-card form {
   margin-top: 8px;
 }
@@ -147,13 +145,12 @@
   resize: vertical;
 }
 
-/* Muted text */
 .muted {
   color: #6b7280;
   font-size: 14px;
 }
 
-/* Responsive */
+/* responsive */
 @media (max-width: 768px) {
   .sessions-container {
     padding: 0 8px;
@@ -163,7 +160,6 @@
     padding: 16px;
   }
 }
-/* ===== Empty State Card (مثل الخطة العلاجية) ===== */
 
 .sessions-empty-wrapper {
   display: flex;
@@ -209,18 +205,16 @@
   text-decoration: none;
   font-weight: 600;
 }
-/* كارد الاستشارة */
 .consultation-card.clean {
   background: #fff;
   border-radius: 14px;
   padding: 20px;
   margin-bottom: 16px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.04);
-  border-right: 5px solid #4fa3b8; /* لون هوية */
+  border-right: 5px solid #4fa3b8; 
   max-width: 620px;
 }
 
-/* الهيدر */
 .consultation-header {
   display: flex;
   justify-content: space-between;
@@ -238,7 +232,6 @@
   color: #777;
 }
 
-/* الأزرار */
 .actions {
   display: flex;
   gap: 12px;
@@ -263,7 +256,6 @@
   cursor: pointer;
 }
 
-/* صندوق الرفض */
 .reject-box {
   display: none;
   margin-top: 12px;
@@ -300,7 +292,6 @@
   display: block;
 }
 
-/* ✨ الحل */
 .actions {
   position: relative;
   z-index: 2;

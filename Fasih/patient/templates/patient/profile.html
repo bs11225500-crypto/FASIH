@@ -95,7 +95,7 @@
   </form>
   {% endif %}
 
-  {# ===== عرض الاستبيان (صح – بدون JSON) ===== #}
+  {# ===== عرض الاستبيان ===== #}
   {% if assessment %}
   <div class="profile-card">
 
@@ -159,26 +159,50 @@
   </div>
   {% endif %}
 
-  {# ===== حالة الاستشارة ===== #}
+  {# ===== حالة الاستشارة (مُحدّثة) ===== #}
   <div class="profile-card">
     <h3>حالة الاستشارة</h3>
 
     {% if assessment %}
-      {% if assessment.status == "PENDING" %}
+
+      {% if last_completed_session %}
+        <p class="status completed">✅ تمت الجلسة الاستشارية</p>
+
+        <p class="muted">
+           {{ last_completed_session.start_time|date:"Y-m-d" }}
+          {{ last_completed_session.start_time|time:"H:i" }}
+        </p>
+
+        {% if last_completed_session.note %}
+          <a href="{% url 'patient:session_note_detail' last_completed_session.id %}"
+             class="card-link">
+            عرض ملاحظات الجلسة
+          </a>
+        {% else %}
+          <span class="hint">
+            ⏳ لم تتم إضافة ملاحظات الجلسة بعد
+          </span>
+        {% endif %}
+
+      {% elif assessment.status == "PENDING" %}
         <p class="status pending">⏳ استشارتك قيد المراجعة</p>
 
       {% elif assessment.status == "ACCEPTED" %}
-        <p class="status accepted">✅ تم قبول الاستشارة</p>
-        <span class="hint">سيتم التواصل معك لتحديد الجلسة الاستشارية الأولى</span>
+        <p class="status accepted"> تم قبول الاستشارة</p>
+        <span class="hint">
+          سيتم التواصل معك لتحديد الجلسة الاستشارية الأولى
+        </span>
 
       {% elif assessment.status == "REJECTED" %}
-        <p class="status rejected">❌ تم رفض الاستشارة</p>
+        <p class="status rejected"> تم رفض الاستشارة</p>
+
         {% if assessment.rejection_reason %}
           <span class="hint">
             سبب الرفض: {{ assessment.get_rejection_reason_display }}
           </span>
         {% endif %}
       {% endif %}
+
     {% else %}
       <p class="muted">لم يتم طلب استشارة بعد.</p>
       <a href="{% url 'specialist:choose_specialist' %}" class="card-link">

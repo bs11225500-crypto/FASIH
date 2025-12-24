@@ -1,6 +1,6 @@
 .session-detail-container {
   max-width: 720px;
-  margin: 120px auto 40px; /* ⬅️ زودنا المسافة من فوق */
+  margin: 120px auto 40px; 
 }
 
 .session-card {
@@ -86,4 +86,132 @@
 
 .start-session-btn:active {
   transform: scale(0.97);
+}
+.btn-primary-gradient {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 14px 36px;
+  border-radius: 14px;
+
+  background: linear-gradient(135deg, #6fcf97, #56ccf2);
+  color: #ffffff;
+
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+
+  box-shadow: 0 10px 25px rgba(86, 204, 242, 0.35);
+  transition: all 0.25s ease;
+}
+
+.btn-primary-gradient .icon {
+  font-size: 18px;
+}
+.btn-primary {
+    display: inline-block;
+    margin-top: 26px;
+    padding: 10px 30px;
+
+    background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
+    color: #ffffff;
+
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(58,123,213,0.35);}
+
+.btn-primary-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(86, 204, 242, 0.45);
+  background: linear-gradient(135deg, #5ecf8e, #45bde8);
+}
+
+.btn-primary-gradient:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 18px rgba(86, 204, 242, 0.3);
+}
+
+/*responsive*/
+@media (max-width: 768px) {
+
+  .session-detail-container {
+    max-width: 100%;
+    margin: 90px 16px 32px;  
+  }
+
+  .page-header h2 {
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .page-subtitle {
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .session-card {
+    padding: 20px 16px;
+    border-radius: 14px;
+  }
+
+  .session-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .label {
+    font-size: 13px;
+  }
+
+  .value {
+    font-size: 15px;
+  }
+
+  .status-badge {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+
+  .session-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 28px;
+  }
+
+  .btn-primary-gradient {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 12px;
+  }
+}
+
+
+
+@media (max-width: 400px) {
+
+  .session-detail-container {
+    margin-top: 80px;
+  }
+
+  .page-header h2 {
+    font-size: 20px;
+  }
+
+  .btn-primary-gradient {
+    font-size: 15px;
+    padding: 12px;
+  }
 }

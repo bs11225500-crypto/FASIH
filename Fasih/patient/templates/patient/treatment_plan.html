@@ -11,7 +11,6 @@
 
 <div class="treatment-container">
 
-  <!-- Header -->
   <div class="page-header">
     <h2>الخطة العلاجية</h2>
     <p class="page-subtitle">
@@ -21,7 +20,7 @@
 
   {% if treatment_plan %}
 
-    <!-- ====== في حال وجود خطة ====== -->
+    <!--  في حال وجود خطة  -->
     <div class="dashboard-card treatment-card">
 
       <div class="treatment-section">
@@ -63,9 +62,45 @@
         </ul>
       </div>
 
+      {# ====== الدفع ====== #}
       {% if treatment_plan.status != "ACTIVE" %}
-        <div class="treatment-alert">
-          يرجى إتمام الدفع لتفعيل الخطة العلاجية
+
+        {% if treatment_price %}
+          <div class="treatment-price-card">
+
+            <h4>تفاصيل الدفع</h4>
+
+            <p class="price-row">
+              <span>مدة الخطة:</span>
+              <strong>{{ treatment_plan.duration_weeks }} أسابيع</strong>
+            </p>
+
+            <p class="price-row total">
+              <span>السعر الإجمالي:</span>
+              <strong>{{ treatment_price }} ريال</strong>
+            </p>
+
+            <form method="post" action="{% url 'patient:start_treatment_payment' %}">
+              {% csrf_token %}
+              <button type="submit" class="btn-primary">
+                إتمام الدفع
+              </button>
+            </form>
+
+            <p class="hint">
+              سيتم تفعيل الخطة العلاجية بعد إتمام الدفع بنجاح
+            </p>
+
+          </div>
+        {% else %}
+          <p class="muted">
+            لم يتم احتساب سعر الخطة بعد
+          </p>
+        {% endif %}
+
+      {% else %}
+        <div class="treatment-alert success">
+          ✅ الخطة العلاجية مفعّلة ويمكنك البدء بالجلسات العلاجية
         </div>
       {% endif %}
 
@@ -73,7 +108,6 @@
 
   {% else %}
 
-    <!-- ====== Empty State (كارد مركزي) ====== -->
     <div class="treatment-empty-wrapper">
       <div class="treatment-empty-card">
 

@@ -1,9 +1,70 @@
-{% extends "main/base.html" %}
+{% extends "patient/base_patient.html" %}
+{% load static %}
 
 {% block title %}الجلسة لم تبدأ{% endblock %}
 
-{% block content %}
-<h2>{{ session.title }}</h2>
-<p>⏳ الجلسة لم تبدأ بعد</p>
-<p>يرجى الانتظار حتى موعد الجلسة</p>
+{% block patient_css %}
+<link rel="stylesheet" href="{% static 'css/session_state.css' %}">
+{% endblock %}
+
+{% block patient_content %}
+<div class="session-state-wrapper">
+  <div class="session-state-card">
+
+    <h2>⏳ الجلسة لم تبدأ بعد</h2>
+
+    <p>
+      موعد الجلسة:<br>
+      <strong>{{ session.start_time|date:"Y-m-d H:i" }}</strong>
+    </p>
+
+    <div id="countdown" class="countdown normal">
+      جارٍ حساب الوقت المتبقي...
+    </div>
+
+    <a href="{% url 'patient:sessions' %}" class="btn-primary">
+      العودة إلى جلساتي
+    </a>
+
+  </div>
+</div>
+
+<script>
+  const sessionStartTime = new Date("{{ session.start_time|date:'c' }}").getTime();
+  const countdownEl = document.getElementById("countdown");
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const diff = sessionStartTime - now;
+
+    if (diff <= 0) {
+      countdownEl.innerHTML = "✅ الجلسة بدأت الآن";
+      countdownEl.className = "countdown started";
+
+      setTimeout(() => {
+        window.location.href = "{% url 'session:join_session' session.id %}";
+      }, 1500);
+
+      return;
+    }
+
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    countdownEl.innerHTML =
+      `⏱ متبقي ${hours} ساعة : ${minutes} دقيقة : ${seconds} ثانية`;
+
+    if (diff <= 60 * 1000) {
+      countdownEl.className = "countdown danger";
+    } else if (diff <= 10 * 60 * 1000) {
+      countdownEl.className = "countdown warning";
+    } else {
+      countdownEl.className = "countdown normal";
+    }
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
 {% endblock %}

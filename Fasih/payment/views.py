@@ -5,6 +5,8 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from .models import Payment
+from treatment.models import TreatmentPlan
+
 
 
 
@@ -14,13 +16,12 @@ def payment_page(request):
         "moyasar_publishable_key": settings.MOYASAR_PUBLISHABLE_KEY
     })
 
-
-
+@login_required
 def payment_callback(request):
     moyasar_payment_id = request.GET.get("id")
 
     if not moyasar_payment_id:
-        return redirect("payment:payment_failed")  
+        return redirect("payment:payment_failed")
 
     response = requests.get(
         f"https://api.moyasar.com/v1/payments/{moyasar_payment_id}",
@@ -30,11 +31,12 @@ def payment_callback(request):
     data = response.json()
 
     payment = Payment.objects.filter(
-        user=request.user
-    ).last()  
+        user=request.user,
+        status="pending"
+    ).order_by("-created_at").first()
 
     if not payment:
-        return redirect("payment:payment_failed")  
+        return redirect("payment:payment_failed")
 
     payment.moyasar_payment_id = moyasar_payment_id
 
@@ -42,14 +44,27 @@ def payment_callback(request):
         payment.status = "paid"
         payment.save()
         return redirect("payment:payment_success")
-    else:
-        payment.status = "failed"
-        payment.save()
-        return redirect("payment:payment_failed")
+
+    payment.status = "failed"
+    payment.save()
+    return redirect("payment:payment_failed")
 
 
 
+
+@login_required
 def payment_success(request):
+    if request.user.is_authenticated and hasattr(request.user, "patient_profile"):
+        treatment_plan = TreatmentPlan.objects.filter(
+            patient=request.user.patient_profile,
+            status=TreatmentPlan.Status.DRAFT
+        ).order_by("-created_at").first()
+
+
+        if treatment_plan:
+            treatment_plan.status = TreatmentPlan.Status.ACTIVE
+            treatment_plan.save()
+
     return render(request, "payment/payment_success.html")
 
 
