@@ -26,11 +26,11 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('patient/', include('patient.urls')),
     path('payment/', include('payment.urls')),
-    path('report/', include('report.urls')),
     path('session/', include('session.urls')),
     path('specialist/', include('specialist.urls')),
     path('task/', include('task.urls')),
     path('treatment/', include('treatment.urls')),
     path('assessment/', include('assessment.urls')),
     path('admin-panel/', include('admin_panel.urls')),
+    path('ratings/', include('ratings.urls')),
 ]  +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

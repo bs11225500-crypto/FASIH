@@ -47,14 +47,15 @@ INSTALLED_APPS = [
     'accounts',
     'patient',
     'payment',
-    'report',
     'session',
     'specialist',
     'task',
     'treatment',
     'assessment', 
     'storages',
-    'admin_panel',   
+    'admin_panel', 
+    'ratings',
+  
 ]
 AUTH_USER_MODEL = 'accounts.User'
 
