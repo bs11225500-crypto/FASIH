@@ -43,6 +43,7 @@ class Session(models.Model):
 
     specialist_joined = models.BooleanField(default=False)
 
+
     created_at = models.DateTimeField(auto_now_add=True)
     def can_join(self):
         now = timezone.localtime(timezone.now())

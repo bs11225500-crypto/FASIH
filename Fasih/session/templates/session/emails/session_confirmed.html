@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body style="margin:0;padding:0;background:#f4f6f8;font-family:Cairo,Arial,sans-serif">
+
+  <table width="100%" cellpadding="0" cellspacing="0" style="padding:30px 0">
+    <tr>
+      <td align="center">
+
+        <table width="600" cellpadding="0" cellspacing="0"
+          style="background:#ffffff;border-radius:14px;padding:32px;box-shadow:0 10px 30px rgba(0,0,0,0.08)">
+
+          <tr>
+            <td style="text-align:center;padding-bottom:20px">
+              <h2 style="margin:0;color:#2c3e50">تم تأكيد جلستك ✅</h2>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="color:#333;font-size:15px;line-height:1.8">
+              <p>مرحبًا <strong>{{ patient_name }}</strong>،</p>
+
+              <p>
+                نود إعلامك بأنه تم تأكيد جلستك مع الأخصائي
+                <strong>{{ specialist_name }}</strong>.
+              </p>
+
+              <p>
+                🗓 <strong>التاريخ:</strong> {{ date }}<br>
+                 <strong>الوقت:</strong> {{ time }}
+              </p>
+
+              <p>
+                نرجو الحضور في الوقت المحدد.
+              </p>
+
+              <p style="margin-top:24px">
+                مع خالص التحية،<br>
+                <strong>فريق منصة فصيح</strong>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+
+        <p style="font-size:12px;color:#999;margin-top:16px">
+          هذه رسالة تلقائية، لا حاجة للرد عليها
+        </p>
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

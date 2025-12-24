@@ -11,6 +11,7 @@ from django.urls import reverse
 from patient.models import Patient
 from .models import Session,SessionNote
 from session.daily import create_daily_room, create_daily_token
+from session.email_service import (send_session_confirmed_email,send_session_cancelled_email,send_session_completed_email)
 
 
 
@@ -67,6 +68,8 @@ def create_session(request, file_number):
             session_type=session_type,
             status=status
         )
+        if status == Session.Status.CONFIRMED:
+            send_session_confirmed_email(session)
 
         messages.success(request, "تم إنشاء الجلسة بنجاح ")
         return redirect("session:session_detail", session.id)
@@ -104,7 +107,6 @@ def join_session(request, session_id):
         messages.error(request, "لا تملك صلاحية الدخول لهذه الجلسة")
         return redirect("main:home")
 
-    # 🔴 الجلسة انتهت → صفحة session_ended
     if session.status == Session.Status.COMPLETED:
         return render(
             request,
@@ -174,9 +176,10 @@ def respond_session(request, session_id):
         action = request.POST.get("action")
 
         if action == "accept":
-            # ✅ فقط تأكيد – بدون إنشاء غرفة
             session.status = Session.Status.CONFIRMED
             session.save()
+            send_session_confirmed_email(session)
+
 
             messages.success(request, "تم تأكيد الجلسة بنجاح")
 
@@ -185,11 +188,10 @@ def respond_session(request, session_id):
             session.patient_response_reason = request.POST.get("reason")
             session.patient_suggested_times = request.POST.get("suggested_times")
             session.save()
+            send_session_cancelled_email(session)
 
-            messages.info(
-                request,
-                "تم إرسال رفض الموعد واقتراح أوقات بديلة"
-            )
+
+            messages.info(request,"تم إرسال رفض الموعد واقتراح أوقات بديلة")
 
         return redirect("patient:sessions")
 
@@ -204,6 +206,7 @@ def complete_session(request, session_id):
     if hasattr(request.user, "specialist"):
         session.status = Session.Status.COMPLETED
         session.save()
+        send_session_completed_email(session)
         return JsonResponse({
             "status": "completed",
             "redirect_url": reverse("session:join_session", args=[session.id])
@@ -227,14 +230,12 @@ def add_session_note(request, session_id):
         messages.info(request, "لا يمكن إضافة ملاحظات قبل انتهاء الجلسة")
         return redirect("session:session_detail", session.id)
 
-    # لا تكرر الملاحظات
     if hasattr(session, "note"):
         return redirect("session:session_detail", session.id)
 
     if request.method == "POST":
         notes = request.POST.get("notes")
 
-        # ✅ هنا بالضبط
         SessionNote.objects.create(
             session=session,
             specialist=request.user.specialist,
