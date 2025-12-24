@@ -76,3 +76,80 @@
   font-size: 13px;
   color: #777;
 }
+.execute-info-box {
+  background: linear-gradient(135deg, #f5f9ff, #f0fdf9);
+  border: 1px solid #dbeafe;
+  border-radius: 18px;
+  padding: 18px 20px;
+  margin-bottom: 22px;
+  text-align: right;
+}
+
+.execute-info-title {
+  font-weight: 800;
+  color: #3A7BD5;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.execute-info-item {
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 6px;
+  line-height: 1.6;
+}
+/* =========================
+   Mobile & Small Screens
+   ========================= */
+@media (max-width: 480px) {
+
+  .execute-wrapper {
+    padding: 16px;
+    min-height: auto;
+  }
+
+  .execute-card {
+    padding: 22px 18px;
+    border-radius: 18px;
+  }
+
+  .execute-title {
+    font-size: 19px;
+  }
+
+  .execute-subtitle {
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+
+  .camera-box {
+    border-radius: 14px;
+  }
+
+  .controls {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .btn {
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+
+  .execute-info-box {
+    padding: 14px 16px;
+    border-radius: 14px;
+  }
+
+  .execute-info-title {
+    font-size: 14px;
+  }
+
+  .execute-info-item {
+    font-size: 13px;
+  }
+
+  .hint {
+    font-size: 12px;
+  }
+}
