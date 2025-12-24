@@ -10,20 +10,16 @@
 
 {% block content %}
 
-<!-- Overlay -->
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<!-- زر التوجل (موبايل فقط) -->
 <button id="menuToggle" class="menu-toggle">
   <span class="material-icons">menu</span>
 </button>
 
-<!-- Wrapper ينزل المحتوى تحت النافبار -->
 <div class="patient-page">
 
   <div class="patient-layout">
 
-    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-header">
         <h3>لوحة المريض</h3>
@@ -43,6 +39,10 @@
           class="{% if request.resolver_match.url_name == 'sessions' %}active{% endif %}">
           جلساتي
         </a>
+        <a href="{% url 'patient:session_log' %}" class="{% if request.resolver_match.url_name == 'session_log' %}active{% endif %}">
+          سجل الجلسات
+        </a>
+
         <a href="{% url 'patient:treatment_plan' %}"
           class="{% if request.resolver_match.url_name == 'treatment_plan' %}active{% endif %}">
           الخطة العلاجية
@@ -61,7 +61,6 @@
       </nav>
     </aside>
 
-    <!-- Main Content -->
     <main class="patient-content">
       {% block patient_content %}{% endblock %}
     </main>

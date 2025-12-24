@@ -14,11 +14,12 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -168,5 +169,8 @@ MOYASAR_SECRET_KEY = os.getenv("MOYASAR_SECRET_KEY")
 
 # Public URL for training videos (Cloudflare R2)
 R2_TRAINING_VIDEOS_URL = "https://pub-fd6e2f30f561498581446f1d8c47bd4a.r2.dev"
+DAILY_API_KEY = os.getenv("DAILY_API_KEY")
+DAILY_DOMAIN = os.getenv("DAILY_DOMAIN")
+
 
 

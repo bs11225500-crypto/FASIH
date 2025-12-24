@@ -1,0 +1,68 @@
+{% extends "specialist/base_specialist.html" %}
+{% load static %}
+
+{% block title %}ملاحظات الجلسة{% endblock %}
+
+{% block specialist_css %}
+<link rel="stylesheet" href="{% static 'css/session_note.css' %}">
+{% endblock %}
+
+{% block specialist_content %}
+<div class="page-local-wrapper">
+
+
+  <div class="note-wrapper">
+
+    <div class="note-card">
+
+      <div class="note-header">
+        <h2>ملاحظات الجلسة</h2>
+        <p class="sub">
+          {{ session.title }} - {{ session.patient.user.get_full_name }}
+        </p>
+      </div>
+
+      <div class="session-meta">
+        <div class="meta-item">
+          <span class="meta-label">تاريخ الجلسة</span>
+          <span class="meta-value">
+            {{ session.start_time|date:"Y-m-d" }}
+          </span>
+        </div>
+
+        <div class="meta-item">
+          <span class="meta-label">وقت الجلسة</span>
+          <span class="meta-value">
+            {{ session.start_time|time:"H:i" }}
+          </span>
+        </div>
+      </div>
+
+      <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label>ملاحظات الأخصائي</label>
+          <textarea
+            name="notes"
+            placeholder="اكتب ملاحظاتك حول أداء المريض، التفاعل، الملاحظات السريرية..."
+            required></textarea>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn-primary">
+            حفظ الملاحظات
+          </button>
+
+          <a href="{% url 'session:session_detail' session.id %}"
+            class="btn-secondary">
+            إلغاء
+          </a>
+        </div>
+      </form>
+
+    </div>
+
+  </div>
+</div>
+{% endblock %}

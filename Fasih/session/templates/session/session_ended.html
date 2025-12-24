@@ -1,0 +1,53 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}انتهت الجلسة{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/session_state.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="session-state-wrapper">
+  <div class="session-state-card">
+
+    <h2>انتهت الجلسة</h2>
+
+    <p>
+      تم إنهاء الجلسة بنجاح.<br>
+      نأمل أن تكون التجربة مفيدة.
+    </p>
+
+    <hr>
+
+    {% if is_specialist %}
+
+      {% if session.note %}
+        <a href="{% url 'patient:session_note_detail' session.id %}"
+           class="btn-primary">
+          عرض ملاحظات الجلسة
+        </a>
+      {% else %}
+        <a href="{% url 'session:add_session_note' session.id %}"
+           class="btn-primary">
+          إضافة ملاحظات الجلسة
+        </a>
+      {% endif %}
+
+      <a href="{% url 'specialist:dashboard' %}"
+         class="btn-secondary">
+        العودة إلى لوحة الأخصائي
+      </a>
+
+    {% else %}
+
+      <a href="{% url 'patient:session_log' %}"
+         class="btn-primary">
+        الرجوع إلى سجل الجلسات
+      </a>
+
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

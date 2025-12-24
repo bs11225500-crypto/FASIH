@@ -1,8 +1,12 @@
 from django.db import models
 from django.conf import settings
+from treatment.models import TreatmentPlan
+
 
 class Payment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    treatment_plan = models.ForeignKey(TreatmentPlan,on_delete=models.CASCADE,null=True,blank=True,related_name="payments")
+
     amount = models.PositiveIntegerField()  
     moyasar_payment_id = models.CharField(max_length=255, blank=True, null=True)
     status = models.CharField(

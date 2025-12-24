@@ -1,0 +1,54 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}ملاحظات الجلسة{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/session_note.css' %}">
+
+{% endblock %}
+
+{% block content %}
+<div class="page-local-wrapper">
+
+
+    <div class="note-view-wrapper">
+
+    <div class="note-view-card">
+
+        <h2 class="note-title">ملاحظات الجلسة</h2>
+
+        <p class="note-subtitle">
+        {{ session.title }} - {{ session.patient.user.get_full_name }}
+        </p>
+
+        <div class="note-meta">
+        <div>
+            <span class="label">تاريخ الجلسة</span>
+            <span>{{ session.start_time|date:"d-m-Y" }}</span>
+        </div>
+        <div>
+            <span class="label">وقت الجلسة</span>
+            <span>{{ session.start_time|time:"H:i" }}</span>
+        </div>
+        </div>
+
+        <hr>
+
+        <div class="note-content">
+        {{ session.note.notes }}
+        </div>
+
+        <div class="note-actions">
+        <a href="{% url 'session:session_detail' session.id %}" class="btn-primary">
+        رجوع لتفاصيل الجلسة
+        </a>
+
+        </div>
+
+    </div>
+
+    </div>
+
+</div>
+{% endblock %}

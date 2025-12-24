@@ -22,7 +22,6 @@
         <form method="post">
             {% csrf_token %}
 
-            <!-- نوع الجلسة -->
             <div class="form-group">
                 <label>نوع الجلسة</label>
                 <select name="session_type" required>
@@ -32,13 +31,11 @@
                 </select>
             </div>
 
-            <!-- عنوان الجلسة -->
             <div class="form-group">
                 <label>عنوان الجلسة</label>
                 <input type="text" name="title" required>
             </div>
 
-            <!-- رقم ملف المريض (للعرض فقط) -->
             <div class="form-group">
                 <label>رقم ملف المريض</label>
                 <input
@@ -48,13 +45,11 @@
                 >
             </div>
 
-            <!-- وقت البداية -->
             <div class="form-group">
                 <label>وقت بداية الجلسة</label>
                 <input type="datetime-local" name="start_time" required>
             </div>
 
-            <!-- وقت النهاية -->
             <div class="form-group">
                 <label>وقت نهاية الجلسة</label>
                 <input type="datetime-local" name="end_time" required>

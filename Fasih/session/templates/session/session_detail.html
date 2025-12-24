@@ -40,9 +40,21 @@
 
     <div class="session-row">
       <span class="label">حالة الجلسة</span>
-      <span class="status-badge {{ session.status|lower }}">
-        {{ session.get_status_display }}
-      </span>
+
+      {% if session.status == "COMPLETED" %}
+        <span class="status-badge completed">✔ منتهية</span>
+
+      {% elif session.status == "CONFIRMED" %}
+        <span class="status-badge confirmed">⏳ مؤكدة</span>
+
+      {% elif session.status == "PROPOSED" %}
+        <span class="status-badge proposed">⌛ بانتظار التأكيد</span>
+
+      {% else %}
+        <span class="status-badge">
+          {{ session.get_status_display }}
+        </span>
+      {% endif %}
     </div>
 
   </div>
@@ -50,18 +62,26 @@
   <div class="session-actions">
 
     {% if can_join %}
-        <div class="session-start-wrapper">
-        <a href="{% url 'session:join_session' session.id %}"
-            class="start-session-btn">
-            <span class="icon">▶</span>
-            بدء الجلسة
-        </a>
-        </div>
+      <a href="{% url 'session:join_session' session.id %}"
+         class="btn-primary">
+        ▶ بدء الجلسة
+      </a>
+    {% endif %}
 
-    {% else %}
-      <span class="muted">
-        ⏳ لا يمكن دخول الجلسة الآن
-      </span>
+    {% if session.status == "COMPLETED" and user.specialist %}
+
+      {% if session.note %}
+        <a href="{% url 'session:session_note_detail' session.id %}"
+           class="btn-primary">
+          عرض ملاحظات الجلسة
+        </a>
+      {% else %}
+        <a href="{% url 'session:add_session_note' session.id %}"
+           class="btn-primary">
+          إضافة ملاحظة الجلسة
+        </a>
+      {% endif %}
+
     {% endif %}
 
   </div>

@@ -57,6 +57,10 @@ class TreatmentPlan(models.Model):
     def __str__(self):
         return f"Treatment Plan - {self.patient.file_number}"
 
+def calculate_treatment_price(duration_weeks):
+    BASE_PRICE = 100
+    WEEKLY_PRICE = 20
+    return BASE_PRICE + max(0, duration_weeks - 1) * WEEKLY_PRICE
 
 class ShortTermGoal(models.Model):
     treatment_plan = models.ForeignKey(
