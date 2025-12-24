@@ -6,12 +6,19 @@ from specialist.models import Specialist
 from .decorators import staff_required
 from django.template.loader import render_to_string
 from main.models import ContactMessage
+from django.core.paginator import Paginator
+
 
 
 
 
 
 # Create your views here.
+
+from main.models import ContactMessage
+from specialist.models import Specialist
+from .decorators import staff_required
+from django.shortcuts import render
 
 @staff_required
 def dashboard(request):
@@ -23,6 +30,8 @@ def dashboard(request):
         verification_status=Specialist.VerificationStatus.APPROVED
     ).count()
 
+    unread_messages_count = ContactMessage.objects.filter(is_read=False).count()
+
     return render(
         request,
         'admin_panel/dashboard.html',
@@ -30,6 +39,7 @@ def dashboard(request):
             'total_specialists': total_specialists,
             'pending_specialists': pending_specialists,
             'approved_specialists': approved_specialists,
+            'unread_messages_count': unread_messages_count,  
         }
     )
 
@@ -41,10 +51,10 @@ def specialist_list(request):
         .prefetch_related('certificates')
         .order_by('-id')
     )
-
-    return render(request, 'admin_panel/specialist_list.html', {
-        'specialists': specialists
-    })
+    paginator = Paginator(specialists, 10)  # ⭐ 10 أخصائيين في الصفحة
+    page_number = request.GET.get('page')
+    specialists = paginator.get_page(page_number)
+    return render(request, 'admin_panel/specialist_list.html', {'specialists': specialists})
 
 
 @staff_required
@@ -140,14 +150,31 @@ def reject_specialist(request, id):
 
 @staff_required
 def contact_messages(request):
-    messages = ContactMessage.objects.order_by('-created_at')
+    unread_qs = ContactMessage.objects.filter(is_read=False).order_by('-created_at')
+    read_qs = ContactMessage.objects.filter(is_read=True).order_by('-created_at')
+
+    unread_paginator = Paginator(unread_qs, 6)
+    read_paginator = Paginator(read_qs, 6)
+
+    unread_page = request.GET.get('unread_page')
+    read_page = request.GET.get('read_page')
+
+    unread_messages = unread_paginator.get_page(unread_page)
+    read_messages = read_paginator.get_page(read_page)
 
     return render(
         request,
         'admin_panel/contact_messages.html',
         {
-            'messages': messages
+            'unread_messages': unread_messages,
+            'read_messages': read_messages,
         }
     )
-    
-    
+
+
+@staff_required
+def mark_message_read(request, message_id):
+    msg = get_object_or_404(ContactMessage, id=message_id)
+    msg.is_read = True
+    msg.save()
+    return redirect('admin_panel:contact_messages')

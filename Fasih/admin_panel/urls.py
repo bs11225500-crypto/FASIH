@@ -10,6 +10,8 @@ urlpatterns = [
     path('specialists/<int:id>/approve/', views.approve_specialist, name='approve_specialist'),
     path('specialists/<int:id>/reject/', views.reject_specialist, name='reject_specialist'),
     path('messages/', views.contact_messages, name='contact_messages'),
+    path('messages/<int:message_id>/read/',views.mark_message_read,name='mark_message_read'),
+
 
 
 ]

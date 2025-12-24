@@ -23,19 +23,45 @@
 
     <div class="dashboard-cards">
 
+        <!-- إجمالي الأخصائيين -->
         <div class="dashboard-card card-white">
             <h4>إجمالي الأخصائيين</h4>
             <span class="card-number">{{ total_specialists }}</span>
         </div>
 
+        <!-- بانتظار المراجعة -->
         <div class="dashboard-card card-yellow">
             <h4>بانتظار المراجعة</h4>
             <span class="card-number">{{ pending_specialists }}</span>
+
+            {% if pending_specialists %}
+                <a href="{% url 'admin_panel:specialist_list' %}" class="card-btn">
+                    مراجعة الطلبات
+                </a>
+            {% endif %}
         </div>
 
+        <!-- معتمدين -->
         <div class="dashboard-card card-green">
             <h4>معتمدين</h4>
             <span class="card-number">{{ approved_specialists }}</span>
+        </div>
+
+        <!-- رسائل تواصل معنا -->
+        <div class="dashboard-card {% if unread_messages_count %}card-green{% else %}card-gray{% endif %}">
+            <h4>رسائل تواصل معنا</h4>
+
+            {% if unread_messages_count %}
+                <span class="card-number">{{ unread_messages_count }}</span>
+                <p class="card-hint">لديك رسائل جديدة</p>
+
+                <a href="{% url 'admin_panel:contact_messages' %}" class="card-btn">
+                    عرض الرسائل
+                </a>
+            {% else %}
+                <span class="card-number">✓</span>
+                <p class="card-hint">لا توجد رسائل جديدة</p>
+            {% endif %}
         </div>
 
     </div>

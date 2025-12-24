@@ -1,13 +1,12 @@
 {% extends "admin_panel/base_admin.html" %}
-
 {% load static %}
 
-
 {% block admin_css %}
-<link rel="stylesheet" href="{% static 'css/review.css' %}">
+<link rel="stylesheet" href="{% static 'css/reject_specialist.css' %}">
 {% endblock %}
 
 {% block admin_content %}
+
 <div class="reject-wrapper">
 
     <div class="reject-card">
@@ -25,36 +24,39 @@
             </strong>
         </p>
 
-        <form method="post" class="reject-form">
+        <!-- فورم واحد فقط -->
+        <form method="post"
+              action="{% url 'admin_panel:reject_specialist' specialist.id %}"
+              class="reject-form"
+              onsubmit="return confirmReject();">
+
             {% csrf_token %}
 
             <label for="reason">سبب الرفض</label>
+
             <textarea
                 name="reason"
                 id="reason"
                 placeholder="اكتب سبب الرفض بشكل واضح..."
                 required
             ></textarea>
-            <form
-                action="{% url 'admin_panel:reject_specialist' specialist.id %}"
-                method="get"
-                onsubmit="return confirmReject();"
-                style="display:inline-block;"
-            >
-                <button type="submit" class="btn reject">
+
+            <div class="reject-actions">
+                <button type="submit" class="btn btn-reject">
                     تأكيد الرفض
                 </button>
-            </form>
 
-                <a href="{% url 'admin_panel:specialist_list' %}" class="btn-cancel">
+                <a href="{% url 'admin_panel:specialist_list' %}" class="btn btn-cancel">
                     إلغاء
                 </a>
             </div>
+
         </form>
 
     </div>
 
 </div>
+
 <script>
 function confirmReject() {
     return confirm(

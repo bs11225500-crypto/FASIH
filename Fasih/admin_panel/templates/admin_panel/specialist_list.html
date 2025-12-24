@@ -68,6 +68,28 @@
             {% endfor %}
         </tbody>
     </table>
+    {% if specialists.has_other_pages %}
+    <div class="pagination">
+
+        {% if specialists.has_previous %}
+            <a href="?page={{ specialists.previous_page_number }}" class="page-btn">
+                السابق
+            </a>
+        {% endif %}
+
+        <span class="page-info">
+            صفحة {{ specialists.number }} من {{ specialists.paginator.num_pages }}
+        </span>
+
+        {% if specialists.has_next %}
+            <a href="?page={{ specialists.next_page_number }}" class="page-btn">
+                التالي
+            </a>
+        {% endif %}
+
+    </div>
+    {% endif %}
+
 
 </div>
 {% endblock %}
