@@ -38,6 +38,33 @@ Fasih enables parents and specialists to monitor the child’s progress through 
 - **Scalable System Design**  
   Designed to be flexible and scalable, allowing future expansion to support a wider range of ages and speech therapy cases.
 
+## Environment Variables Setup
+
+This project requires several environment variables to be configured in order to function properly.  
+Create a `.env` file in the root directory of the project and add the following variables.
+
+**Important:**  
+
+```env
+# Brevo (Email Service)
+BREVO_API_KEY=your_brevo_api_key
+BREVO_SENDER_EMAIL=your_sender_email@example.com
+BREVO_SENDER_NAME=Fasih
+
+# Daily (Online Video Sessions)
+DAILY_API_KEY=your_daily_api_key
+DAILY_DOMAIN=https://your_project.daily.co
+
+# Cloudflare R2 (Media Storage)
+R2_ACCESS_KEY=your_r2_access_key
+R2_SECRET_KEY=your_r2_secret_key
+R2_BUCKET_NAME=your_bucket_name
+R2_ACCOUNT_ID=your_account_id
+
+# Moyasar (Payment Gateway)
+MOYASAR_PUBLISHABLE_KEY=your_moyasar_publishable_key
+
+
 ## Team Members
 - Lama Alharbi
 - Abrar Alghamdi
