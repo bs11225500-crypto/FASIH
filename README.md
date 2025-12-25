@@ -65,9 +65,7 @@ R2_ACCOUNT_ID=your_account_id
 MOYASAR_PUBLISHABLE_KEY=your_moyasar_publishable_key
 
 
-
-##  Team Members
-
+- **  Team Members**  
 - **Lama Alharbi**  
 - **Abrar Alghamdi**  
 - **Brouq Alqahtani** – Contribution to platform development, including the creation of speech therapy exercise videos used within assigned therapeutic tasks.
