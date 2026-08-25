@@ -38,7 +38,8 @@
                 <th>اسم المريض</th>
                 <th>رقم الملف</th>
                 <th>العمر</th>
-                <th></th>
+                <th>الاستبيان</th>
+                <th>الإجراء المناسب</th>
             </tr>
         </thead>
 
@@ -51,11 +52,13 @@
 
                 <td data-label="العمر">{{ p.age }}</td>
 
-                <td data-label="الإجراءات" class="actions">
+                <td data-label="الاستبيان">
                     <a href="{% url 'assessment:assessment_detail' p.id %}" class="action-link">
                         الاستبيان
                     </a>
+                </td>
 
+                <td data-label="الإجراء المناسب" class="actions">
                     <a href="{% url 'session:create_session' p.file_number %}" class="action-link">
                         إنشاء جلسة
                     </a>

@@ -22,29 +22,41 @@
 .patients-table thead {
     background: #f5f7fb;
 }
+.patients-table th {
+    font-weight: 700;
+    font-size: 13px;
+    color: #6b7280;
+}
 
+.patients-table th:nth-child(5) {
+    text-align: center;
+}
 .actions {
   display: flex;
   gap: 18px;
-  justify-content: flex-start;   
+  justify-content: center;  
   padding-right: 5px;          
 }
 
 .action-link {
-  font-size: 14px;
-  font-weight: 500;
-  color: #3A7BD5;               
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  transition: color 0.2s ease;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
   white-space: nowrap;
+  transition: 0.2s ease;
 }
 
 .action-link:hover {
-  color: #2c5fb8;
-  text-decoration: underline;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 6px 18px rgba(58,123,213,0.30);
 }
 
 

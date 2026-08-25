@@ -23,6 +23,29 @@
                 value="{{ task.task_name }}"
                 required
             >
+            <label for="target_letter">الحرف المستهدف</label>
+
+                <select id="target_letter" name="target_letter" required>
+                    <option value="th" {% if task.target_letter == "th" %}selected{% endif %}>ث</option>
+                    <option value="j" {% if task.target_letter == "j" %}selected{% endif %}>ج</option>
+                    <option value="d" {% if task.target_letter == "d" %}selected{% endif %}>د</option>
+                    <option value="b" {% if task.target_letter == "b" %}selected{% endif %}>ب</option>
+                    <option value="r" {% if task.target_letter == "r" %}selected{% endif %}>ر</option>
+                    <option value="z" {% if task.target_letter == "z" %}selected{% endif %}>ز</option>
+                    <option value="s" {% if task.target_letter == "s" %}selected{% endif %}>س</option>
+                    <option value="sh" {% if task.target_letter == "sh" %}selected{% endif %}>ش</option>
+                    <option value="s2" {% if task.target_letter == "s2" %}selected{% endif %}>ص</option>
+                    <option value="th2" {% if task.target_letter == "th2" %}selected{% endif %}>ظ</option>
+                    <option value="f" {% if task.target_letter == "f" %}selected{% endif %}>ف</option>
+                    <option value="q" {% if task.target_letter == "q" %}selected{% endif %}>ق</option>
+                    <option value="k" {% if task.target_letter == "k" %}selected{% endif %}>ك</option>
+                    <option value="l" {% if task.target_letter == "l" %}selected{% endif %}>ل</option>
+                    <option value="n" {% if task.target_letter == "n" %}selected{% endif %}>ن</option>
+                    <option value="h" {% if task.target_letter == "h" %}selected{% endif %}>هـ</option>
+                    <option value="a" {% if task.target_letter == "a" %}selected{% endif %}>ع</option>
+                    <option value="m" {% if task.target_letter == "m" %}selected{% endif %}>م</option>
+                    <option value="kh" {% if task.target_letter == "kh" %}selected{% endif %}>خ</option>
+                </select>
 
             <button type="submit" class="primary-btn">
                 حفظ التعديل
