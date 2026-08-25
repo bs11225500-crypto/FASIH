@@ -133,6 +133,7 @@ def edit_daily_task(request, task_id):
 
     if request.method == "POST":
         task.task_name = request.POST.get("task_name")
+        task.target_letter = request.POST.get("target_letter")
       
         task.save()
         messages.success(request, "تم تعديل المهمة بنجاح")

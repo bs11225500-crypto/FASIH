@@ -103,7 +103,7 @@ class DailyTask(models.Model):
 
     task_name = models.CharField(max_length=255)
     target_letter = models.CharField(
-        max_length=1,
+        max_length=5,
         help_text="الحرف المستهدف في المهمة"
     )
 

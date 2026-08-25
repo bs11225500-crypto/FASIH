@@ -49,8 +49,6 @@
                         <th>اسم المهمة</th>
                         <th>الحالة</th>
                         <th>التسجيل</th>
-                        <th>تعديل</th>
-                        <th>تم</th>
                         <th>ملاحظات الأخصائي</th>
                     </tr>
                 </thead>
@@ -58,7 +56,13 @@
                     {% for task in day.tasks.all %}
                     <tr>
                         <td data-label="اسم المهمة">
-                            {{ task.task_name }}
+                            <div class="task-name-cell">
+                                <span>{{ task.task_name }}</span>
+
+                                <a href="{% url 'treatment:edit_daily_task' task.id %}" class="edit-task-link">
+                                    <span class="material-icons">edit</span>
+                                </a>
+                            </div>
                         </td>
 
                         <td data-label="الحالة">
@@ -77,23 +81,13 @@
                                     <span class="material-icons icon play">play_circle</span>
                                 </a>
                             {% else %}
-                                —
+                                <span class="muted">لم يتم التسجيل بعد</span>
                             {% endif %}
                         </td>
 
-                        <td data-label="تعديل">
-                            <a href="{% url 'treatment:edit_daily_task' task.id %}">
-                                <span class="material-icons icon edit">edit</span>
-                            </a>
-                        </td>
+                        
 
-                        <td data-label="تم">
-                            {% if task.status == "COMPLETED" %}
-                                <span class="material-icons icon done">check_circle</span>
-                            {% else %}
-                                —
-                            {% endif %}
-                        </td>
+                       
                         <td data-label="ملاحظات الأخصائي">
                             {% if task.specialist_notes %}
                                 {{ task.specialist_notes|truncatechars:40 }}
