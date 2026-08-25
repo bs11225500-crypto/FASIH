@@ -195,6 +195,7 @@ def edit_certificate(request, cert_id):
     return render(request, "specialist/edit_certificate.html", {
         "form": form
     })
+
 @login_required
 def delete_certificate(request, cert_id):
     cert = get_object_or_404(

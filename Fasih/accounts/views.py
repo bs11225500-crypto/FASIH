@@ -47,23 +47,29 @@ def register_account(request):
 
 
 def login_view(request):
+    next_url = request.GET.get('next') or request.POST.get('next')
+    consultation = request.GET.get('consultation') or request.POST.get('consultation')
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
 
         if not email or not password:
             messages.error(request, "الرجاء إدخال البريد الإلكتروني وكلمة المرور")
-            return render(request, 'accounts/sign_in.html')
+            return render(request, 'accounts/sign_in.html', {'next': next_url})
 
         try:
             user = authenticate(request, email=email, password=password)
 
             if not user or not user.is_active:
                 messages.error(request, "بيانات الدخول غير صحيحة")
-                return render(request, 'accounts/sign_in.html')
+                return render(request, 'accounts/sign_in.html', {'next': next_url})
 
             login(request, user)
             messages.success(request, "تم تسجيل الدخول بنجاح")
+
+            if next_url:
+                return redirect(next_url)
+            
             return post_login_redirect(request)
 
 
@@ -71,7 +77,7 @@ def login_view(request):
             print("LOGIN ERROR:", e)
             messages.error(request,"حدث خطأ غير متوقع أثناء تسجيل الدخول، حاول مرة أخرى")
 
-    return render(request, 'accounts/sign_in.html')
+    return render(request, 'accounts/sign_in.html', {'next': next_url, 'consultation': consultation})
 
 
 def logout_view(request):

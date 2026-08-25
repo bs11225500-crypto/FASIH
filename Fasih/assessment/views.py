@@ -1,5 +1,8 @@
+from email.utils import quote
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
 import json
@@ -14,7 +17,19 @@ from django.contrib import messages
 
 
 
+
 def assessment_form(request):
+    if not request.user.is_authenticated:
+        messages.warning(request,"يرجى تسجيل الدخول أولًا لبدء الاستشارة")
+
+        login_url = reverse('accounts:login')
+        current_url = request.get_full_path()
+
+        return redirect(
+            f"{login_url}?next={quote(current_url)}&consultation=1"
+        )
+
+
     specialist_id = request.GET.get("specialist")
 
     if not specialist_id:

@@ -13,9 +13,16 @@
 
     <div class="auth-side auth-form">
       <h2>تسجيل الدخول</h2>
+ 
 
       <form method="post" action="{% url 'accounts:login' %}">
         {% csrf_token %}
+
+          {% if next %}
+            <input type="hidden" name="next" value="{{ next }}">
+          {% endif %}
+        
+
 
         <input type="email" name="email" placeholder="البريد الإلكتروني" required>
         <input type="password" name="password" placeholder="كلمة المرور" required>
