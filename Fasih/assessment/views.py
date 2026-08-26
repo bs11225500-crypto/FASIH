@@ -93,12 +93,13 @@ def submit_assessment(request):
  
     messages.success(
         request,
-        " تم إرسال التقييم إلى الأخصائي بنجاح"
+        "تم إرسال تقييمك بنجاح، وسيتم التواصل معكم قريبًا."
     )
 
     return JsonResponse({
         "status": "success",
-        "assessment_id": assessment.id
+        "assessment_id": assessment.id,
+        "redirect_url": "/"
     })
 
 

@@ -11,63 +11,58 @@ document.addEventListener("DOMContentLoaded", function () {
     progressText.textContent = `${currentStep + 1} / ${total}`;
     progressFill.style.width = `${((currentStep + 1) / total) * 100}%`;
   }
+
   function isStepComplete(stepElement) {
 
-  /* ===== الصفحة الأولى ===== */
-  if (stepElement.querySelector('input[name="strangers_understand"]')) {
+    if (stepElement.querySelector('input[name="strangers_understand"]')) {
+      const requiredRadios = [
+        "strangers_understand",
+        "speech_sessions",
+        "ear_fluids",
+        "adenoids",
+        "language_delay",
+        "developmental"
+      ];
 
-    const requiredRadios = [
-      "strangers_understand",
-      "speech_sessions",
-      "ear_fluids",
-      "adenoids",
-      "language_delay",
-      "developmental"
-    ];
+      for (let name of requiredRadios) {
+        if (!stepElement.querySelector(`input[name="${name}"]:checked`)) {
+          return false;
+        }
+      }
 
-    for (let name of requiredRadios) {
-      if (!stepElement.querySelector(`input[name="${name}"]:checked`)) {
-        return false;
+      const devYes = stepElement.querySelector(
+        'input[name="developmental"][value="نعم"]:checked'
+      );
+      const diagnosis = stepElement.querySelector(
+        'input[data-question-id="diagnosis_details"]'
+      );
+
+      if (devYes && !diagnosis.value.trim()) return false;
+    }
+
+    if (stepElement.querySelector('.letters-grid')) {
+      const checkedLetters = stepElement.querySelectorAll(
+        'input[name="difficult_letters"]:checked'
+      );
+      if (checkedLetters.length === 0) return false;
+    }
+
+    if (stepElement.querySelector('input[name="outside_family"]')) {
+      const requiredRadios = [
+        "outside_family",
+        "same_errors",
+        "tries_correct"
+      ];
+
+      for (let name of requiredRadios) {
+        if (!stepElement.querySelector(`input[name="${name}"]:checked`)) {
+          return false;
+        }
       }
     }
 
-    const devYes = stepElement.querySelector(
-      'input[name="developmental"][value="نعم"]:checked'
-    );
-    const diagnosis = stepElement.querySelector(
-      'input[data-question-id="diagnosis_details"]'
-    );
-
-    if (devYes && !diagnosis.value.trim()) return false;
+    return true;
   }
-
-  /* ===== الصفحة الثانية (الحروف) ===== */
-  if (stepElement.querySelector('.letters-grid')) {
-    const checkedLetters = stepElement.querySelectorAll(
-      'input[name="difficult_letters"]:checked'
-    );
-    if (checkedLetters.length === 0) return false;
-  }
-
-  /* ===== الصفحة الثالثة ===== */
-  if (stepElement.querySelector('input[name="outside_family"]')) {
-
-    const requiredRadios = [
-      "outside_family",
-      "same_errors",
-      "tries_correct"
-    ];
-
-    for (let name of requiredRadios) {
-      if (!stepElement.querySelector(`input[name="${name}"]:checked`)) {
-        return false;
-      }
-    }
-  }
-
-  return true;
-}
-
 
   function showStep(index) {
     steps.forEach(step => step.classList.remove("active"));
@@ -76,39 +71,37 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   document.querySelectorAll(".next-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      if (currentStep < steps.length - 1) {
-        const currentStepElement = steps[currentStep];
+    btn.addEventListener("click", async () => {
+      const currentStepElement = steps[currentStep];
 
-        if (!isStepComplete(currentStepElement)) {
-        alert("⚠️ الرجاء تعبئة جميع الأسئلة");
+      if (!isStepComplete(currentStepElement)) {
+        alert("⚠️ الرجاء تعبئة جميع الأسئلة المطلوبة");
         return;
-        }
-        if (currentStep === 1) {
-
-        // تحقق الحروف
-        const selectedLetters = document.querySelectorAll(
-          'input[name="difficult_letters"]:checked'
-        );
-
-        if (selectedLetters.length === 0) {
-          alert("⚠️ الرجاء اختيار حرف واحد على الأقل");
-          return;
-        }
-
-        // تحقق الأصوات
-        const allAudiosUploaded = uploadedAudioPaths.every(path => path);
-
-        if (!allAudiosUploaded) {
-          alert("🎙️ الرجاء تسجيل جميع الأصوات قبل الانتقال");
-          return;
-        }
-
       }
 
+      if (currentStep === 1) {
+        const success = await uploadCurrentAudio();
+        if (!success) return; 
+
+        if (currentImageIndex < images.length - 1) {
+          currentImageIndex++;
+          updateImage();
+
+          audioPreview.src = "";
+          audioPreview.style.display = "none";
+          statusText.textContent = "";
+
+          redoBtn.disabled = true;
+          recordBtn.disabled = false;
+          stopBtn.disabled = true;
+
+          return; 
+        }
+      }
+
+      if (currentStep < steps.length - 1) {
         currentStep++;
         showStep(currentStep);
-
       }
     });
   });
@@ -136,14 +129,11 @@ let currentImageIndex = 0;
 
 function updateImage() {
   document.getElementById("currentImage").src = images[currentImageIndex];
-  
 }
-
 
 function collectFormAnswers() {
   const answers = {};
 
- 
   document.querySelectorAll("input, textarea").forEach(input => {
     if (!input.name) return;
 
@@ -157,7 +147,6 @@ function collectFormAnswers() {
     }
   });
 
-
   const selectedLetters = [];
   document.querySelectorAll('input[name="difficult_letters"]:checked')
     .forEach(cb => {
@@ -169,18 +158,14 @@ function collectFormAnswers() {
   return answers;
 }
 
-
-
 let mediaRecorder;
 let audioChunks = [];
 let imageRecordings = [null, null, null, null];
 let uploadedAudioPaths = [null, null, null, null];
 
-
 const recordBtn = document.getElementById("recordBtn");
 const stopBtn = document.getElementById("stopBtn");
-const redoBtn = document.getElementById("redoBtn");
-const nextImageBtn = document.getElementById("nextImageBtn");
+const redoBtndisabled = true;
 
 const statusText = document.getElementById("recordStatus");
 const audioPreview = document.getElementById("audioPreview");
@@ -203,9 +188,8 @@ navigator.mediaDevices.getUserMedia({ audio: true })
       audioPreview.style.display = "block";
 
       statusText.textContent = `✅ تم تسجيل الصوت للصورة ${currentImageIndex + 1}`;
-      recordBtn.disabled = true;   // اقفل بدء التسجيل
+      recordBtn.disabled = true;
       redoBtn.disabled = false;
-      
     };
   })
   .catch(() => {
@@ -227,6 +211,7 @@ stopBtn.addEventListener("click", () => {
 
 redoBtn.addEventListener("click", () => {
   imageRecordings[currentImageIndex] = null;
+  uploadedAudioPaths[currentImageIndex] = null;
   audioPreview.src = "";
   audioPreview.style.display = "none";
   statusText.textContent = "🔄 يمكنك إعادة التسجيل";
@@ -234,44 +219,11 @@ redoBtn.addEventListener("click", () => {
   recordBtn.disabled = false;
 });
 
-
-
-nextImageBtn.addEventListener("click", async () => {
-  const success = await uploadCurrentAudio();
-  if (!success) return;
-
-  if (currentImageIndex < images.length - 1) {
-    currentImageIndex++;
-    updateImage();
-
-    audioPreview.src = "";
-    audioPreview.style.display = "none";
-    statusText.textContent = "";
-
-    redoBtn.disabled = true;
-    recordBtn.disabled = false;
-    stopBtn.disabled = true;
-
-} else {
-  nextImageBtn.style.display = "none";
-
-  recordBtn.disabled = true;
-  stopBtn.disabled = true;
-  redoBtn.disabled = true;
-
-  mediaRecorder.stream.getTracks().forEach(track => track.stop());
-
-  statusText.textContent = " تم الانتهاء من تسجيل الأصوات";
-}
-
-});
-
-
 async function uploadCurrentAudio() {
   const audioBlob = imageRecordings[currentImageIndex];
 
   if (!audioBlob) {
-    alert("⚠️ سجلي الصوت قبل الانتقال");
+    alert("⚠️ سجل الصوت قبل الانتقال");
     return false;
   }
 
@@ -291,7 +243,6 @@ async function uploadCurrentAudio() {
     console.log("Uploaded:", data);
     uploadedAudioPaths[currentImageIndex] = data.file;
 
-    
     return true;
 
   } catch (err) {
@@ -300,13 +251,12 @@ async function uploadCurrentAudio() {
   }
 }
 
-
 const submitBtn = document.getElementById("submitAssessmentBtn");
 
 if (submitBtn) {
-  submitBtn.addEventListener("click", async () => {
+  submitBtn.addEventListener("click", async (e) => {
+    e.preventDefault(); 
 
-    /* ===== تحقق الصفحة الثالثة ===== */
     const requiredRadios = [
       "outside_family",
       "same_errors",
@@ -344,11 +294,8 @@ if (submitBtn) {
 
       if (!res.ok) throw new Error("Submit failed");
 
-     
-
-      window.location.href = "/";
-
-      
+      const data = await res.json();
+      window.location.href = data.redirect_url || "/";
 
     } catch (err) {
       alert("❌ حدث خطأ أثناء الإرسال");
@@ -356,6 +303,3 @@ if (submitBtn) {
     }
   });
 }
-
-
-

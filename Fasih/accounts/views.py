@@ -220,7 +220,6 @@ def specialist_pending(request):
     if specialist.verification_status == Specialist.VerificationStatus.REJECTED:
         return redirect('accounts:specialist_rejected')
 
-    messages.info(request,"حسابك قيد المراجعة حاليًا، سيتم إشعارك بعد الموافقة")
 
     return render(request, 'accounts/specialist_pending.html')
 

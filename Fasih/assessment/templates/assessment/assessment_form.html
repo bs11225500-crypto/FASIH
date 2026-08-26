@@ -15,65 +15,59 @@
       <div class="progress-fill"></div>
     </div>
   </div>
-    <form id="assessmentForm">
 
-        <input type="hidden" id="specialist_id" value="{{ specialist.id }}">
+  <form id="assessmentForm">
 
-    <!--page 1-->
+    <input type="hidden" id="specialist_id" value="{{ specialist.id }}">
+
+    <!-- page 1 -->
     <div class="form-step active">
 
         <h2>الجزء الأول: التاريخ المرضي</h2>
         <hr>
 
         <div class="question">
-        <label>هل يفهم كلامه الغرباء؟</label>
-        <label><input type="radio" name="strangers_understand" value="نعم" data-question-id="strangers_understand"> نعم</label>
-        <label><input type="radio" name="strangers_understand" value="أحيانًا" data-question-id="strangers_understand"> أحيانًا</label>
-        <label><input type="radio" name="strangers_understand" value="لا" data-question-id="strangers_understand"> لا</label>
-
+            <label>هل يفهم كلامه الغرباء؟</label>
+            <label><input type="radio" name="strangers_understand" value="نعم" data-question-id="strangers_understand"> نعم</label>
+            <label><input type="radio" name="strangers_understand" value="أحيانًا" data-question-id="strangers_understand"> أحيانًا</label>
+            <label><input type="radio" name="strangers_understand" value="لا" data-question-id="strangers_understand"> لا</label>
         </div>
 
         <div class="question">
-        <label>هل سبق واخذ جلسات تخاطب؟</label>
-        <label><input type="radio" name="speech_sessions" value="نعم" data-question-id="speech_sessions"> نعم</label>
-        <label><input type="radio" name="speech_sessions" value="لا" data-question-id="speech_sessions"> لا</label>
-
+            <label>هل سبق واخذ جلسات تخاطب؟</label>
+            <label><input type="radio" name="speech_sessions" value="نعم" data-question-id="speech_sessions"> نعم</label>
+            <label><input type="radio" name="speech_sessions" value="لا" data-question-id="speech_sessions"> لا</label>
         </div>
 
         <div class="question">
-        <label>هل سبق وكان لديه سوائل في الأذن؟</label>
-        <label><input type="radio" name="ear_fluids" value="نعم" data-question-id="ear_fluids"> نعم</label>
-        <label><input type="radio" name="ear_fluids" value="لا" data-question-id="ear_fluids"> لا</label>
-
+            <label>هل سبق وكان لديه سوائل في الأذن؟</label>
+            <label><input type="radio" name="ear_fluids" value="نعم" data-question-id="ear_fluids"> نعم</label>
+            <label><input type="radio" name="ear_fluids" value="لا" data-question-id="ear_fluids"> لا</label>
         </div>
 
         <div class="question">
-        <label>هل لديه لحميات في الأنف؟</label>
-        <label><input type="radio" name="adenoids" value="نعم" data-question-id="adenoids"> نعم</label>
-        <label><input type="radio" name="adenoids" value="لا" data-question-id="adenoids"> لا</label>
-
+            <label>هل لديه لحميات في الأنف؟</label>
+            <label><input type="radio" name="adenoids" value="نعم" data-question-id="adenoids"> نعم</label>
+            <label><input type="radio" name="adenoids" value="لا" data-question-id="adenoids"> لا</label>
         </div>
 
         <div class="question">
-        <label>هل لديه تاريخ في التأخر اللغوي؟</label>
-        <label><input type="radio" name="language_delay" value="نعم" data-question-id="language_delay"> نعم</label>
-        <label><input type="radio" name="language_delay" value="لا" data-question-id="language_delay"> لا</label>
-
+            <label>هل لديه تاريخ في التأخر اللغوي؟</label>
+            <label><input type="radio" name="language_delay" value="نعم" data-question-id="language_delay"> نعم</label>
+            <label><input type="radio" name="language_delay" value="لا" data-question-id="language_delay"> لا</label>
         </div>
 
         <div class="question">
-        <label>هل سبق وتم تشخيصه باضطراب نمائي؟</label>
-        <label><input type="radio" name="developmental" value="نعم" data-question-id="developmental"> نعم</label>
-        <label><input type="radio" name="developmental" value="لا" data-question-id="developmental"> لا</label>
-
+            <label>هل سبق وتم تشخيصه باضطراب نمائي؟</label>
+            <label><input type="radio" name="developmental" value="نعم" data-question-id="developmental"> نعم</label>
+            <label><input type="radio" name="developmental" value="لا" data-question-id="developmental"> لا</label>
         </div>
 
         <div class="question">
-        <label>في حال نعم، يرجى ذكر التشخيص</label>
-        <input type="text" data-question-id="diagnosis_details">
+            <label>في حال نعم، يرجى ذكر التشخيص</label>
+            <input type="text" data-question-id="diagnosis_details">
         </div>
 
-        
         <div class="form-footer">
             <a href="/" class="btn-secondary">رجوع</a>
             <button type="button" class="btn-primary next-btn">التالي</button>
@@ -87,57 +81,47 @@
         <hr>
 
         <div class="question" id="lettersQuestion">
-        <label>ضعي ✔ على الحرف الذي لا يستطيع الطفل نطقه</label>
+            <label>ضعي ✔ على الحرف الذي لا يستطيع الطفل نطقه</label>
 
-        <div class="letters-grid">
-            <label><input type="checkbox" name="difficult_letters" value="ف"> ف</label>
-            <label><input type="checkbox" name="difficult_letters" value="د"> د</label>
-            <label><input type="checkbox" name="difficult_letters" value="ن"> ن</label>
-            <label><input type="checkbox" name="difficult_letters" value="ل"> ل</label>
-            <label><input type="checkbox" name="difficult_letters" value="ر"> ر</label>
-            <label><input type="checkbox" name="difficult_letters" value="س"> س</label>
-            <label><input type="checkbox" name="difficult_letters" value="ز"> ز</label>
-            <label><input type="checkbox" name="difficult_letters" value="ش"> ش</label>
-            <label><input type="checkbox" name="difficult_letters" value="ص"> ص</label>
-            <label><input type="checkbox" name="difficult_letters" value="ج"> ج</label>
-            <label><input type="checkbox" name="difficult_letters" value="ث"> ث</label>
-            <label><input type="checkbox" name="difficult_letters" value="ب"> ب</label>
-            <label><input type="checkbox" name="difficult_letters" value="ظ"> ظ</label>
-            <label><input type="checkbox" name="difficult_letters" value="ك"> ك</label>
-            <label><input type="checkbox" name="difficult_letters" value="ق"> ق</label>
-            <label><input type="checkbox" name="difficult_letters" value="خ"> خ</label>
-            <label><input type="checkbox" name="difficult_letters" value="م"> م</label>
-            <label><input type="checkbox" name="difficult_letters" value="ع"> ع</label>
-            <label><input type="checkbox" name="difficult_letters" value="هـ"> هـ</label>
+            <div class="letters-grid">
+                <label><input type="checkbox" name="difficult_letters" value="ف"> ف</label>
+                <label><input type="checkbox" name="difficult_letters" value="د"> د</label>
+                <label><input type="checkbox" name="difficult_letters" value="ن"> ن</label>
+                <label><input type="checkbox" name="difficult_letters" value="ل"> ل</label>
+                <label><input type="checkbox" name="difficult_letters" value="ر"> ر</label>
+                <label><input type="checkbox" name="difficult_letters" value="س"> س</label>
+                <label><input type="checkbox" name="difficult_letters" value="ز"> ز</label>
+                <label><input type="checkbox" name="difficult_letters" value="ش"> ش</label>
+                <label><input type="checkbox" name="difficult_letters" value="ص"> ص</label>
+                <label><input type="checkbox" name="difficult_letters" value="ج"> ج</label>
+                <label><input type="checkbox" name="difficult_letters" value="ث"> ث</label>
+                <label><input type="checkbox" name="difficult_letters" value="ب"> ب</label>
+                <label><input type="checkbox" name="difficult_letters" value="ظ"> ظ</label>
+                <label><input type="checkbox" name="difficult_letters" value="ك"> ك</label>
+                <label><input type="checkbox" name="difficult_letters" value="ق"> ق</label>
+                <label><input type="checkbox" name="difficult_letters" value="خ"> خ</label>
+                <label><input type="checkbox" name="difficult_letters" value="م"> م</label>
+                <label><input type="checkbox" name="difficult_letters" value="ع"> ع</label>
+                <label><input type="checkbox" name="difficult_letters" value="هـ"> هـ</label>
+            </div>
         </div>
 
-        </div>
+        <div class="audio-step-container">
 
-        <div class="question audio-step">
-
-            <p class="audio-instruction">
-                اوصف الصورة بصوتك
-            </p>
+            <p class="audio-instruction">اوصف الصورة بصوتك</p>
 
             <div class="image-box">
                 <img id="currentImage" src="/static/img/img1.jpeg" alt="صورة التقييم">
             </div>
 
             <div class="audio-controls">
-                <button type="button" id="recordBtn">🎙️ بدء التسجيل</button>
-                <button type="button" id="stopBtn" disabled>⏹️ إيقاف</button>
-                <button type="button" id="redoBtn" disabled>🔄 إعادة تسجيل</button>
+                <button type="button" id="recordBtn">بدء التسجيل</button>
+                <button type="button" id="stopBtn" disabled>إيقاف</button>
+                <button type="button" id="redoBtn" disabled>إعادة تسجيل</button>
                 <span id="recordStatus"></span>
             </div>
 
-            <!-- الصوت -->
             <audio id="audioPreview" controls style="display:none; margin-top:15px;"></audio>
-
-            <div class="audio-navigation">
-                <button type="button" id="nextImageBtn" class="btn-primary">
-                    التالي
-                </button>
-            </div>
 
         </div>
 
@@ -155,38 +139,42 @@
         <hr>
 
         <div class="question">
-        <label>هل يفهم كلام طفلك أشخاص خارج الأسرة؟</label>
-        <label><input type="radio" name="outside_family" value="نعم" data-question-id="outside_family"> نعم</label>
-        <label><input type="radio" name="outside_family" value="أحيانًا" data-question-id="outside_family"> أحيانًا</label>
-        <label><input type="radio" name="outside_family" value="لا" data-question-id="outside_family"> لا</label>
+            <label>هل يفهم كلام طفلك أشخاص خارج الأسرة؟</label>
+            <div class="radio-group">
+                <label><input type="radio" name="outside_family" value="نعم" data-question-id="outside_family"> نعم</label>
+                <label><input type="radio" name="outside_family" value="أحيانًا" data-question-id="outside_family"> أحيانًا</label>
+                <label><input type="radio" name="outside_family" value="لا" data-question-id="outside_family"> لا</label>
+            </div>
         </div>
 
         <div class="question">
-        <label>هل يخطئ في نفس الحروف غالبًا؟</label>
-        <label><input type="radio" name="same_errors" value="نعم" data-question-id="same_errors"> نعم</label>
-        <label><input type="radio" name="same_errors" value="لا" data-question-id="same_errors"> لا</label>
-
+            <label>هل يخطئ في نفس الحروف غالبًا؟</label>
+            <div class="radio-group">
+                <label><input type="radio" name="same_errors" value="نعم" data-question-id="same_errors"> نعم</label>
+                <label><input type="radio" name="same_errors" value="لا" data-question-id="same_errors"> لا</label>
+            </div>
         </div>
 
         <div class="question">
-        <label>هل يحاول الطفل نطق الحرف بشكل صحيح عند تنبيهه؟</label>
-        <label><input type="radio" name="tries_correct" value="نعم" data-question-id="tries_correct"> نعم</label>
-        <label><input type="radio" name="tries_correct" value="لا" data-question-id="tries_correct"> لا</label>
-        <label><input type="radio" name="tries_correct" value="لم نلاحظ" data-question-id="tries_correct"> لم نلاحظ</label>
-
+            <label>هل يحاول الطفل نطق الحرف بشكل صحيح عند تنبيهه؟</label>
+            <div class="radio-group">
+                <label><input type="radio" name="tries_correct" value="نعم" data-question-id="tries_correct"> نعم</label>
+                <label><input type="radio" name="tries_correct" value="لا" data-question-id="tries_correct"> لا</label>
+                <label><input type="radio" name="tries_correct" value="لم نلاحظ" data-question-id="tries_correct"> لم نلاحظ</label>
+            </div>
         </div>
 
         <div class="form-footer">
             <button type="button" class="btn-secondary prev-btn">السابق</button>
             <button type="button" id="submitAssessmentBtn" class="btn-primary">
-            إرسال التقييم
+                إرسال التقييم
             </button>
         </div>
 
     </div>
 
-    </form>
-    </div>
+  </form>
+</div>
 {% endblock %}
 
 {% block extra_js %}
