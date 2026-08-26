@@ -3,11 +3,9 @@ from .models import TreatmentPlan, ShortTermGoal, ProgressReport, DailyPlan, Dai
 from patient.models import Patient
 from specialist.models import Specialist
 from django.contrib.auth.decorators import login_required
-from datetime import date, timedelta, datetime
 from django.http import HttpResponseForbidden
-from datetime import timedelta
-from django.utils import timezone
 from django.contrib import messages
+from datetime import timedelta, datetime
 
 
 
@@ -29,18 +27,9 @@ def treatment_patients(request):
         ).order_by("-created_at").first()
 
         if plan:
-          
-            end_date = plan.start_date + timedelta(days=plan.duration_weeks * 7)
+            plan.update_status_if_expired()
 
-           
-            if timezone.now().date() > end_date and plan.status == "ACTIVE":
-                plan.status = "COMPLETED"
-                plan.save(update_fields=["status"])
-
-            patient_plans.append({
-                "patient": patient,
-                "plan": plan
-            })
+        patient_plans.append({"patient": patient,"plan": plan })
     return render(
         request,
         "treatment/treatment_patients.html",

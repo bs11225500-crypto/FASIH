@@ -1,5 +1,6 @@
+
 .treatment-container {
-  max-width: 900px;
+  max-width: 1150px;
   margin: 0 auto;
   padding: 24px 16px 60px;
 }
@@ -21,7 +22,10 @@
   font-size: 15px;
 }
 
+
 .treatment-card {
+  max-width: 900px;
+  margin: 0 auto;
   padding: 28px;
   border-radius: 16px;
   background: #ffffff;
@@ -213,5 +217,162 @@
   .price-row {
     flex-direction: column;
     gap: 6px;
+  }
+}
+
+
+
+
+
+
+
+/* =========================
+   Treatment Plans List
+========================= */
+
+.plans-list-card {
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.07);
+}
+
+.treatment-plans-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.treatment-plans-table thead {
+  background: #f7f8fb;
+}
+
+.treatment-plans-table th {
+  padding: 20px 16px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #4b5563;
+}
+
+.treatment-plans-table td {
+  padding: 20px 16px;
+  font-size: 15px;
+  color: #1f2937;
+  border-top: 1px solid #eef0f3;
+}
+
+.treatment-plans-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.treatment-plans-table tbody tr:hover {
+  background: #fafbfc;
+}
+
+/* زر عرض التفاصيل */
+.view-plan-btn {
+  display: inline-block;
+  padding: 9px 20px;
+  border-radius: 999px;
+
+  background: linear-gradient(135deg, #3A7BD5, #7ED6A7);
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.view-plan-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(58, 123, 213, 0.25);
+}
+
+/* الحالة الملغاة */
+.status.canceled {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+
+/* =========================
+   Treatment Detail Back Button
+========================= */
+
+.back-section {
+  margin-bottom: 18px;
+}
+
+.back-plans-btn {
+  display: inline-block;
+  padding: 9px 18px;
+  border-radius: 999px;
+
+  background: #ffffff;
+  color: #3A7BD5;
+
+  border: 1px solid #dbe3ef;
+
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.back-plans-btn:hover {
+  background: #f8fafc;
+  transform: translateY(-1px);
+}
+
+
+/* =========================
+   Responsive Table
+========================= */
+
+@media (max-width: 768px) {
+
+  .plans-list-card {
+    overflow-x: auto;
+  }
+
+  .treatment-plans-table {
+    min-width: 700px;
+  }
+}
+
+
+
+.treatment-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.info-card {
+  background: #f9fafb;
+  padding: 18px;
+  border-radius: 12px;
+}
+
+.info-card span {
+  display: block;
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.info-card strong {
+  font-size: 15px;
+  color: #111827;
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  .treatment-info-grid {
+    grid-template-columns: 1fr;
   }
 }

@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from datetime import date
+from datetime import date, timedelta
 from .models import Patient
 from accounts.models import User
 from accounts.forms import UserProfileForm, PatientProfileForm
@@ -214,30 +214,59 @@ def patient_treatment_plan(request):
 
     patient = user.patient_profile
 
-    treatment_plan = TreatmentPlan.objects.filter(
+    treatment_plans = TreatmentPlan.objects.filter(
         patient=patient
-    ).order_by("-created_at").first()
+    ).order_by("-created_at")
+
+    for plan in treatment_plans:
+        plan.update_status_if_expired()
 
     assessment = Assessment.objects.filter(
         patient=patient
     ).order_by("-created_at").first()
 
+    context = {
+        "treatment_plans": treatment_plans,
+        "assessment": assessment,
+    }
+
+    return render(
+        request,
+        "patient/treatment_plan.html",
+        context
+    )
+
+
+@login_required
+def patient_treatment_plan_detail(request, plan_id):
+    user = request.user
+
+    if user.role != User.Role.PATIENT:
+        return redirect("main:home")
+
+    patient = user.patient_profile
+
+    treatment_plan = get_object_or_404(
+        TreatmentPlan,
+        id=plan_id,
+        patient=patient
+    )
+
     treatment_price = None
 
-    if treatment_plan and treatment_plan.status != TreatmentPlan.Status.ACTIVE:
+    if treatment_plan.status == TreatmentPlan.Status.DRAFT:
         treatment_price = calculate_treatment_price(
             treatment_plan.duration_weeks
         )
 
     context = {
         "treatment_plan": treatment_plan,
-        "assessment": assessment,
         "treatment_price": treatment_price,
     }
 
     return render(
         request,
-        "patient/treatment_plan.html",
+        "patient/treatment_plan_detail.html",
         context
     )
 
@@ -312,11 +341,15 @@ def start_treatment_payment(request):
 
     patient = user.patient_profile
 
-    treatment_plan = TreatmentPlan.objects.filter(
-        patient=patient
-    ).order_by("-created_at").first()
+    plan_id = request.POST.get("plan_id")
 
-    if not treatment_plan or treatment_plan.status == TreatmentPlan.Status.ACTIVE:
+    treatment_plan = get_object_or_404(
+        TreatmentPlan,
+        id=plan_id,
+        patient=patient
+    )
+
+    if treatment_plan.status != TreatmentPlan.Status.DRAFT:
         return redirect("patient:treatment_plan")
 
     amount = calculate_treatment_price(

@@ -1,0 +1,195 @@
+{% extends "patient/base_patient.html" %}
+{% load static %}
+
+{% block title %}تفاصيل الخطة العلاجية{% endblock %}
+
+{% block patient_css %}
+<link rel="stylesheet" href="{% static 'css/patient_treatment_plan.css' %}">
+{% endblock %}
+
+{% block patient_content %}
+
+<div class="treatment-container">
+
+  <div class="page-header">
+    <h2>تفاصيل الخطة العلاجية</h2>
+    <p class="page-subtitle">
+      تفاصيل الخطة العلاجية ومتابعة حالتها
+    </p>
+  </div>
+
+  <!-- الرجوع إلى قائمة الخطط -->
+  <div class="back-section">
+    <a href="{% url 'patient:treatment_plan' %}" class="back-plans-btn">
+        <span class="arrow">&#8594;</span>
+        <span>الرجوع إلى قائمة الخطط</span>
+    </a>
+  </div>
+
+
+  <div class="dashboard-card treatment-card">
+
+    <div class="treatment-info-grid">
+
+    <div class="info-card">
+        <span>الأخصائي</span>
+        <strong>{{ treatment_plan.specialist.user.get_full_name }}</strong>
+    </div>
+
+    <div class="info-card">
+        <span>التشخيص</span>
+        <strong>{{ treatment_plan.diagnosis }}</strong>
+    </div>
+
+    <div class="info-card">
+        <span>وصف الحالة</span>
+        <strong>{{ treatment_plan.problem_description }}</strong>
+    </div>
+
+    </div>
+
+    <!-- معلومات الخطة -->
+    <div class="treatment-meta">
+
+      <div>
+        <span>تاريخ بداية الخطة</span>
+        <strong>{{ treatment_plan.start_date|date:"Y/m/d" }}</strong>
+      </div>
+
+      <div>
+        <span>مدة الخطة</span>
+        <strong>{{ treatment_plan.duration_weeks }} أسابيع</strong>
+      </div>
+
+      <div>
+        <span>عدد الجلسات أسبوعيًا</span>
+        <strong>
+          {% if treatment_plan.sessions_per_week %}
+            {{ treatment_plan.sessions_per_week }}
+          {% else %}
+            غير محدد
+          {% endif %}
+        </strong>
+      </div>
+
+      <div>
+        <span>مدة الجلسة</span>
+        <strong>
+          {% if treatment_plan.session_duration_minutes %}
+            {{ treatment_plan.session_duration_minutes }} دقيقة
+          {% else %}
+            غير محددة
+          {% endif %}
+        </strong>
+      </div>
+
+      <div>
+        <span>حالة الخطة</span>
+        <strong class="status {{ treatment_plan.status|lower }}">
+          {{ treatment_plan.get_status_display }}
+        </strong>
+      </div>
+
+    </div>
+
+
+    <!-- الأهداف قصيرة المدى -->
+    <div class="treatment-section">
+
+      <h4>الأهداف قصيرة المدى</h4>
+
+      <ul class="goals-list">
+
+        {% for goal in treatment_plan.short_term_goals.all %}
+
+          <li>
+            <span>{{ goal.description }}</span>
+            <small>الدقة المستهدفة: {{ goal.target_accuracy }}%</small>
+          </li>
+
+        {% empty %}
+
+          <li class="muted">
+            لا توجد أهداف قصيرة المدى
+          </li>
+
+        {% endfor %}
+
+      </ul>
+
+    </div>
+
+
+    <!-- حالة الخطة والدفع -->
+
+    {% if treatment_plan.status == "DRAFT" %}
+
+      {% if treatment_price %}
+
+        <div class="treatment-price-card">
+
+          <h4>تفاصيل الدفع</h4>
+
+          <p class="price-row">
+            <span>مدة الخطة:</span>
+            <strong>{{ treatment_plan.duration_weeks }} أسابيع</strong>
+          </p>
+
+          <p class="price-row total">
+            <span>السعر الإجمالي:</span>
+            <strong>{{ treatment_price }} ريال</strong>
+          </p>
+
+          <form method="post"
+                action="{% url 'patient:start_treatment_payment' %}">
+
+            {% csrf_token %}
+
+            <input
+              type="hidden"
+              name="plan_id"
+              value="{{ treatment_plan.id }}"
+            >
+
+            <button type="submit" class="btn-primary">
+              إتمام الدفع
+            </button>
+
+          </form>
+
+          <p class="hint">
+            سيتم تفعيل الخطة العلاجية بعد إتمام الدفع بنجاح
+          </p>
+
+        </div>
+
+      {% endif %}
+
+
+    {% elif treatment_plan.status == "ACTIVE" %}
+
+      <div class="treatment-alert success">
+        الخطة العلاجية مفعّلة ويمكنك البدء بالجلسات العلاجية
+      </div>
+
+
+    {% elif treatment_plan.status == "COMPLETED" %}
+
+      <div class="treatment-alert">
+        تم اكتمال هذه الخطة العلاجية
+      </div>
+
+
+    {% elif treatment_plan.status == "CANCELED" %}
+
+      <div class="treatment-alert">
+        تم إلغاء هذه الخطة العلاجية
+      </div>
+
+    {% endif %}
+
+  </div>
+
+</div>
+
+{% endblock %}

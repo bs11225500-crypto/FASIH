@@ -35,16 +35,31 @@
                 </td>
 
                 <td data-label="حالة الخطة">
-                    <span class="plan-status {{ item.plan.status|lower }}">
-                        {{ item.plan.get_status_display }}
-                    </span>
+                    {% if item.plan %}
+                        <span class="plan-status {{ item.plan.status|lower }}">
+                            {{ item.plan.get_status_display }}
+                        </span>
+                    {% else %}
+                        <span class="plan-status no-plan">
+                            لا توجد خطة
+                        </span>
+                    {% endif %}
                 </td>
 
                 <td data-label="الإجراء">
-                    <a href="{% url 'treatment:treatment_plan_detail' item.plan.id %}"
-                       class="details-btn">
-                        عرض الخطة
-                    </a>
+
+                    {% if item.plan %}
+                        <a href="{% url 'treatment:treatment_plan_detail' item.plan.id %}"
+                        class="details-btn">
+                            عرض الخطة
+                        </a>
+                    {% else %}
+                        <a href="{% url 'treatment:create_treatment_plan' item.patient.file_number %}"
+                        class="details-btn">
+                            إنشاء خطة
+                        </a>
+                    {% endif %}
+
                 </td>
 
             </tr>

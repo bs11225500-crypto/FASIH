@@ -1,6 +1,7 @@
 from django.db import models
 from patient.models import Patient
 from specialist.models import Specialist
+from datetime import date, timedelta
 
 
 class TreatmentPlan(models.Model):
@@ -53,9 +54,18 @@ class TreatmentPlan(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    @property
+    def end_date(self):
+        return self.start_date + timedelta(weeks=self.duration_weeks)
+
+    def update_status_if_expired(self):
+        if self.status == self.Status.ACTIVE and date.today() > self.end_date:
+            self.status = self.Status.COMPLETED
+            self.save(update_fields=["status"])
 
     def __str__(self):
         return f"Treatment Plan - {self.patient.file_number}"
+    
 
 def calculate_treatment_price(duration_weeks):
     BASE_PRICE = 100

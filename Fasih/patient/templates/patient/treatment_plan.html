@@ -1,7 +1,7 @@
 {% extends "patient/base_patient.html" %}
 {% load static %}
 
-{% block title %}الخطة العلاجية{% endblock %}
+{% block title %}الخطط العلاجية{% endblock %}
 
 {% block patient_css %}
 <link rel="stylesheet" href="{% static 'css/patient_treatment_plan.css' %}">
@@ -12,97 +12,64 @@
 <div class="treatment-container">
 
   <div class="page-header">
-    <h2>الخطة العلاجية</h2>
+    <h2>خططي العلاجية</h2>
     <p class="page-subtitle">
-      متابعة الخطة العلاجية الخاصة بحالتك
+      يمكنك متابعة جميع الخطط العلاجية السابقة والحالية
     </p>
   </div>
 
-  {% if treatment_plan %}
+  {% if treatment_plans %}
 
-    <!--  في حال وجود خطة  -->
-    <div class="dashboard-card treatment-card">
+    <div class="dashboard-card plans-list-card">
 
-      <div class="treatment-section">
-        <h4>التشخيص</h4>
-        <p>{{ treatment_plan.diagnosis }}</p>
-      </div>
+      <table class="treatment-plans-table">
+        <thead>
+          <tr>
+            <th>تاريخ الخطة</th>
+            <th>الأخصائي</th>
+            <th>المدة</th>
+            <th>الحالة</th>
+            <th>الإجراء</th>
+          </tr>
+        </thead>
 
-      <div class="treatment-section">
-        <h4>الهدف طويل المدى</h4>
-        <p>{{ treatment_plan.long_term_goal }}</p>
-      </div>
+        <tbody>
 
-      <div class="treatment-meta">
-        <div>
-          <span>مدة الخطة</span>
-          <strong>{{ treatment_plan.duration_weeks }} أسابيع</strong>
-        </div>
+          {% for plan in treatment_plans %}
+            <tr>
 
-        <div>
-          <span>حالة الخطة</span>
-          <strong class="status {{ treatment_plan.status|lower }}">
-            {{ treatment_plan.get_status_display }}
-          </strong>
-        </div>
-      </div>
+              <td>
+                {{ plan.created_at|date:"Y/m/d" }}
+              </td>
 
-      <div class="treatment-section">
-        <h4>الأهداف قصيرة المدى</h4>
+              <td>
+                {{ plan.specialist.user.get_full_name }}
+              </td>
 
-        <ul class="goals-list">
-          {% for goal in treatment_plan.short_term_goals.all %}
-            <li>
-              <span>{{ goal.description }}</span>
-              <small>{{ goal.target_accuracy }}%</small>
-            </li>
-          {% empty %}
-            <li class="muted">لا توجد أهداف قصيرة المدى</li>
+              <td>
+                {{ plan.duration_weeks }} أسابيع
+              </td>
+
+              <td>
+                <span class="status {{ plan.status|lower }}">
+                  {{ plan.get_status_display }}
+                </span>
+              </td>
+
+              <td>
+                <a
+                  href="{% url 'patient:treatment_plan_detail' plan.id %}"
+                  class="view-plan-btn"
+                >
+                  عرض التفاصيل
+                </a>
+              </td>
+
+            </tr>
           {% endfor %}
-        </ul>
-      </div>
 
-      {# ====== الدفع ====== #}
-      {% if treatment_plan.status != "ACTIVE" %}
-
-        {% if treatment_price %}
-          <div class="treatment-price-card">
-
-            <h4>تفاصيل الدفع</h4>
-
-            <p class="price-row">
-              <span>مدة الخطة:</span>
-              <strong>{{ treatment_plan.duration_weeks }} أسابيع</strong>
-            </p>
-
-            <p class="price-row total">
-              <span>السعر الإجمالي:</span>
-              <strong>{{ treatment_price }} ريال</strong>
-            </p>
-
-            <form method="post" action="{% url 'patient:start_treatment_payment' %}">
-              {% csrf_token %}
-              <button type="submit" class="btn-primary">
-                إتمام الدفع
-              </button>
-            </form>
-
-            <p class="hint">
-              سيتم تفعيل الخطة العلاجية بعد إتمام الدفع بنجاح
-            </p>
-
-          </div>
-        {% else %}
-          <p class="muted">
-            لم يتم احتساب سعر الخطة بعد
-          </p>
-        {% endif %}
-
-      {% else %}
-        <div class="treatment-alert success">
-          ✅ الخطة العلاجية مفعّلة ويمكنك البدء بالجلسات العلاجية
-        </div>
-      {% endif %}
+        </tbody>
+      </table>
 
     </div>
 
@@ -112,6 +79,7 @@
       <div class="treatment-empty-card">
 
         {% if not assessment %}
+
           <h3>لم تبدأ الخطة العلاجية بعد</h3>
 
           <p>
@@ -122,11 +90,15 @@
             لبدء رحلتك العلاجية، يرجى اختيار أخصائي وتعبئة استبيان الاستشارة الأولى.
           </p>
 
-          <a href="{% url 'specialist:choose_specialist' %}" class="primary-btn">
+          <a
+            href="{% url 'specialist:choose_specialist' %}"
+            class="primary-btn"
+          >
             اختيار أخصائي
           </a>
 
         {% else %}
+
           <h3>بانتظار الأخصائي</h3>
 
           <p>
@@ -136,6 +108,7 @@
           <p class="hint">
             ستظهر الخطة هنا بعد مراجعة الاستبيان والجلسة الاستشارية الأولى.
           </p>
+
         {% endif %}
 
       </div>

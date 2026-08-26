@@ -14,5 +14,6 @@ urlpatterns = [
     path("session-log/",views.patient_session_log,name="session_log"),
     path("session-notes/<int:session_id>/",views.session_note_detail,name="session_note_detail"),
     path("treatment/start-payment/",views.start_treatment_payment,name="start_treatment_payment"),
+    path("treatment-plan/<int:plan_id>/",views.patient_treatment_plan_detail,name="treatment_plan_detail"),
 ]
 
