@@ -13,10 +13,8 @@
     <link rel="website icon" type="image/png" href="{% static 'img/logo.png' %}">
 
 
-    <!-- Google Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <!-- Arabic Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
@@ -91,18 +89,17 @@
     </nav>
 
 
-    {% if messages %}
-    <div class="toast-wrapper">
-        {% for msg in messages %}
-            <div class="toast {{ msg.tags }}">
-                {{ msg }}
-            </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-
-
     <main class="page-wrapper">
+        {% if messages %}
+            <div id="auto-dismiss-alert" style="display: flex; justify-content: center; width: 100%; margin-top: 140px; margin-bottom: -100px; padding: 0 15px; position: relative; z-index: 10; transition: opacity 0.6s ease, transform 0.6s ease;">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}" style="max-width: 480px; width: 90%; padding: 10px 20px; border-radius: 25px; background: linear-gradient(135deg, #3a8edc 0%, #68d3a6 100%); color: #ffffff; border: none; font-family: 'Cairo', sans-serif; font-size: 0.88rem; font-weight: 600; text-align: center; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
         {% block content %}{% endblock content %}
     </main>
 
@@ -110,6 +107,21 @@
         <p>© 2025 منصة النطق — جميع الحقوق محفوظة</p>
     </footer>
     <script src="{% static 'js/base.js' %}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const alertBox = document.getElementById('auto-dismiss-alert');
+            if (alertBox) {
+                setTimeout(function() {
+                    alertBox.style.opacity = '0';
+                    alertBox.style.transform = 'translateY(-10px)';
+                    setTimeout(function() {
+                        alertBox.style.display = 'none';
+                    }, 600); 
+                }, 4000); 
+            }
+        });
+    </script>
 
     {% block extra_js %}
     {% endblock extra_js %}
