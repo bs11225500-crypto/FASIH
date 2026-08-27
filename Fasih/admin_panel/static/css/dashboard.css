@@ -176,3 +176,37 @@
         font-size: 30px;
     }
 }
+
+/* Chart */
+.dashboard-chart-card {
+    margin-top: 30px;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 24px;
+    height: 350px;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
+}
+
+.dashboard-chart-card h3 {
+    margin: 0 0 20px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #374151;
+    text-align: right;
+}
+
+.dashboard-chart-card canvas {
+    width: 100% !important;
+    height: 270px !important;
+}
+
+@media (max-width: 576px) {
+    .dashboard-chart-card {
+        height: 320px;
+        padding: 18px;
+    }
+
+    .dashboard-chart-card canvas {
+        height: 240px !important;
+    }
+}
