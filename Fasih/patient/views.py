@@ -51,12 +51,16 @@ def patient_dashboard(request):
     # أقرب جلسة مؤكدة 
     next_session = confirmed_sessions.first() if confirmed_sessions.exists() else None
     last_completed_session = patient.sessions.filter(status=Session.Status.COMPLETED).order_by("-start_time").first()
+    last_completed_initial_session = patient.sessions.filter(session_type=Session.SessionType.INITIAL,status=Session.Status.COMPLETED).order_by("-start_time").first()
 
 
     # الخطة العلاجية
     treatment_plan = TreatmentPlan.objects.filter(
         patient=patient
     ).order_by("-created_at").first()
+
+    if treatment_plan:
+        treatment_plan.update_status_if_expired()
     assessment = Assessment.objects.filter(patient=patient).order_by("-created_at").first()
     linked_specialist = None
 
@@ -91,6 +95,7 @@ def patient_dashboard(request):
         'assessment': assessment,
         "linked_specialist": linked_specialist,
         "last_completed_session": last_completed_session,
+        "last_completed_initial_session": last_completed_initial_session,
         "has_active_treatment": has_active_treatment,
         'has_specialist': False,
     }
@@ -179,6 +184,8 @@ def patient_sessions(request):
     treatment_plan = TreatmentPlan.objects.filter(
         patient=patient
     ).order_by("-created_at").first()
+    if treatment_plan:
+        treatment_plan.update_status_if_expired()
 
     #  الجلسة الاستشارية (تشمل PROPOSED و CONFIRMED)
     consultation_sessions = patient.sessions.filter(
@@ -224,10 +231,16 @@ def patient_treatment_plan(request):
     assessment = Assessment.objects.filter(
         patient=patient
     ).order_by("-created_at").first()
+    last_completed_initial_session = Session.objects.filter(
+        patient=patient,
+        session_type=Session.SessionType.INITIAL,
+        status=Session.Status.COMPLETED
+    ).order_by("-start_time").first()
 
     context = {
         "treatment_plans": treatment_plans,
         "assessment": assessment,
+        "last_completed_initial_session": last_completed_initial_session,
     }
 
     return render(
