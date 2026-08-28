@@ -66,6 +66,31 @@
 
     </div>
 
+    <div class="dashboard-chart-card">
+        <h3>التسجيلات خلال آخر 6 أشهر</h3>
+
+        <canvas
+            id="specialistsChart"
+            data-labels='[
+                {% for item in specialists_by_month %}
+                    "{{ item.month|date:'M Y' }}"{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ]'
+            data-values='[
+                {% for item in specialists_by_month %}
+                    {{ item.count }}{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ]'
+            data-patients='[
+                {% for item in patients_by_month %}
+                    {{ item.count }}{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ]'>
+        </canvas>
+    </div>
+
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
 
 {% endblock %}

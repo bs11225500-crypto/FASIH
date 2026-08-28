@@ -9,16 +9,17 @@ from main.models import ContactMessage
 from django.core.paginator import Paginator
 
 
-
-
-
-
-# Create your views here.
-
 from main.models import ContactMessage
 from specialist.models import Specialist
 from .decorators import staff_required
 from django.shortcuts import render
+
+from django.db.models.functions import TruncMonth
+from django.db.models import Count
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+from accounts.models import User
+
 
 @staff_required
 def dashboard(request):
@@ -32,6 +33,51 @@ def dashboard(request):
 
     unread_messages_count = ContactMessage.objects.filter(is_read=False).count()
 
+    raw_data = (
+        Specialist.objects
+        .annotate(month=TruncMonth("user__date_joined"))
+        .values("month")
+        .annotate(count=Count("id"))
+        .order_by("month")
+    )
+
+    patients_raw_data = (
+        User.objects
+        .filter(role=User.Role.PATIENT)
+        .annotate(month=TruncMonth("date_joined"))
+        .values("month")
+        .annotate(count=Count("id"))
+        .order_by("month")
+    )
+
+    counts_by_month = {
+        item["month"].strftime("%Y-%m"): item["count"]
+        for item in raw_data
+    }
+
+    patients_counts_by_month = {
+        item["month"].strftime("%Y-%m"): item["count"]
+        for item in patients_raw_data
+    }
+
+    today = datetime.today()
+
+    specialists_by_month = []
+    patients_by_month = []
+
+    for i in range(5, -1, -1):
+        month_date = today - relativedelta(months=i)
+        month_key = month_date.strftime("%Y-%m")
+
+        specialists_by_month.append({
+            "month": month_date,
+            "count": counts_by_month.get(month_key, 0)
+        })
+        patients_by_month.append({
+            "month": month_date,
+            "count": patients_counts_by_month.get(month_key, 0)
+        })
+
     return render(
         request,
         'admin_panel/dashboard.html',
@@ -40,6 +86,8 @@ def dashboard(request):
             'pending_specialists': pending_specialists,
             'approved_specialists': approved_specialists,
             'unread_messages_count': unread_messages_count,  
+            'specialists_by_month': specialists_by_month,
+            'patients_by_month': patients_by_month,
         }
     )
 
