@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from datetime import date, timedelta
+from django.utils import timezone
 from .models import Patient
 from accounts.models import User
 from accounts.forms import UserProfileForm, PatientProfileForm
@@ -40,9 +41,10 @@ def patient_dashboard(request):
         status=Session.Status.PROPOSED
     ).order_by("start_time")
 
-    # جلسات مؤكدة
+    # جلسات مؤكدة حالية أو قادمة
     confirmed_sessions = patient.sessions.filter(
-        status=Session.Status.CONFIRMED
+        status=Session.Status.CONFIRMED,
+        end_time__gte=timezone.now()
     ).order_by("start_time")
 
     # هل لدى المريض أي جلسات)
