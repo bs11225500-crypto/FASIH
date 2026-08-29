@@ -99,21 +99,53 @@
     </div>
 
     <!-- كارد مهامي اليوم -->
-    <div class="dashboard-card {% if today_tasks_count > 0 %}card-active{% endif %}">
+    <div class="dashboard-card {% if today_tasks_count > 0 or has_pending_tasks %}card-active{% endif %}">
       <div class="card-header">
         <h3>مهامي اليوم</h3>
       </div>
 
       <div class="card-body">
+
         {% if today_tasks_count > 0 %}
-          <p>لديك <strong>{{ today_tasks_count }}</strong> مهام لليوم</p>
-          <a href="{% url 'tasks:daily_tasks' %}" class="card-link">
+
+        {% if today_tasks_count == 1 %}
+          <p>لديك مهمة علاجية لليوم</p>
+        {% else %}
+          <p>
+            لديك <strong>{{ today_tasks_count }}</strong> مهام علاجية لليوم
+          </p>
+        {% endif %}
+
+          <a href="{% url 'task:daily_tasks' %}" class="card-link">
             عرض المهام
           </a>
+
+        {% elif has_pending_tasks %}
+
+          <p>
+            لديك مهام علاجية بانتظار إكمالها
+          </p>
+
+          <span class="hint">
+            راجع مهام خطتك العلاجية وواصل تقدمك
+          </span>
+
+          <a href="{% url 'task:daily_tasks' %}" class="card-link">
+            عرض المهام
+          </a>
+
         {% else %}
-          <p class="muted">لا توجد مهام اليوم</p>
-          <span class="hint">سيقوم الأخصائي بإضافة المهام عند بدء الخطة</span>
+
+          <p class="muted">
+            لا توجد مهام حالياً
+          </p>
+
+          <span class="hint">
+            ستظهر المهام هنا عند إضافتها إلى خطتك العلاجية
+          </span>
+
         {% endif %}
+
       </div>
     </div>
 
